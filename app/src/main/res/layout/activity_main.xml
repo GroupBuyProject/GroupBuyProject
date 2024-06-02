@@ -44,7 +44,7 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/bottomNavigation"
             android:layout_below="@+id/circular_icon"
-            android:layout_marginTop="60dp" />
+            android:layout_marginTop="60dp"/>
 
 
     </FrameLayout>
