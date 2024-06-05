@@ -1,4 +1,4 @@
-package com.talshavit.groupbuyproject;
+package com.talshavit.groupbuyproject.models;
 
 public enum Category {
     FruitsAndVegetables,

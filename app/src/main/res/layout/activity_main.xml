@@ -31,13 +31,6 @@
             android:layout_gravity="center_horizontal"/>
 
 
-        <!--    <androidx.appcompat.widget.Toolbar-->
-        <!--        android:id="@+id/topBar"-->
-        <!--        android:layout_width="match_parent"-->
-        <!--        android:layout_height="60dp"-->
-        <!--        android:background="@color/white"-->
-        <!--        />-->
-
         <FrameLayout
             android:id="@+id/frame_layout"
             android:layout_width="match_parent"

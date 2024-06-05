@@ -5,7 +5,8 @@
     android:layout_height="160dp"
     android:layout_margin="20dp"
     app:cardCornerRadius="12dp"
-    app:cardElevation="4dp">
+    app:cardElevation="4dp"
+    android:backgroundTint="@color/lightGreen">
 
     <TextView
         android:id="@+id/text_item"

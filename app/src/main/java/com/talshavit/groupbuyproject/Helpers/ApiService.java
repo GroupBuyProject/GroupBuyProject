@@ -1,4 +1,6 @@
-package com.talshavit.groupbuyproject;
+package com.talshavit.groupbuyproject.Helpers;
+
+import com.talshavit.groupbuyproject.models.Item;
 
 import java.util.List;
 
@@ -9,8 +11,8 @@ import retrofit2.http.POST;
 
 public interface ApiService {
     @GET("/api/markets")
-    Call<List<Market>> getAllMarkets();
+    Call<List<Item>> getAllItems();
 
     @POST("/api/markets")
-    Call<Market> addMarket(@Body Market market);
+    Call<Item> addItem(@Body Item item);
 }

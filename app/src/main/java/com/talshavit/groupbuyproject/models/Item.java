@@ -1,30 +1,42 @@
-package com.talshavit.groupbuyproject;
+package com.talshavit.groupbuyproject.models;
 
 
-public class Market {
+public class Item {
     private String id;
     private String name;
     private String price;
     private String img;
     private String company;
     private Category category;
+    private int count;
 
-    public Market() {
+    public Item() {
     }
 
-    public Market(String name, String price, String img, String company, Category category) {
+    public Item(String id, String name, String price, String img, String company, Category category) {
+        this.id = id;
         this.name = name;
         this.price = price;
         this.img = img;
         this.company = company;
         this.category = category;
+        this.count = 0;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Item setId(String id) {
+        this.id = id;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public Market setName(String name) {
+    public Item setName(String name) {
         this.name = name;
         return this;
     }
@@ -33,7 +45,7 @@ public class Market {
         return price;
     }
 
-    public Market setPrice(String price) {
+    public Item setPrice(String price) {
         this.price = price;
         return this;
     }
@@ -42,7 +54,7 @@ public class Market {
         return img;
     }
 
-    public Market setImg(String img) {
+    public Item setImg(String img) {
         this.img = img;
         return this;
     }
@@ -51,7 +63,7 @@ public class Market {
         return company;
     }
 
-    public Market setCompany(String company) {
+    public Item setCompany(String company) {
         this.company = company;
         return this;
     }
@@ -60,8 +72,17 @@ public class Market {
         return category;
     }
 
-    public Market setCategory(Category category) {
+    public Item setCategory(Category category) {
         this.category = category;
+        return this;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public Item setCount(int count) {
+        this.count = count;
         return this;
     }
 }
