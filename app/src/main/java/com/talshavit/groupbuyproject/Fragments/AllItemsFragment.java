@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.talshavit.groupbuyproject.Helpers.ItemsAdapterView;
+import com.talshavit.groupbuyproject.models.Category;
 import com.talshavit.groupbuyproject.models.Item;
 import com.talshavit.groupbuyproject.R;
 
@@ -24,13 +26,17 @@ public class AllItemsFragment extends Fragment {
     private ItemsAdapterView itemsAdapterView;
     private RecyclerView recyclerViewItem;
 
-    public AllItemsFragment(){
+    private AppCompatTextView title;
+
+    private String categoryName;
+
+    public AllItemsFragment() {
     }
 
-    public AllItemsFragment(ArrayList<Item> allItemsByCategories) {
+    public AllItemsFragment(ArrayList<Item> allItemsByCategories, String categoryName) {
         this.allItemsByCategories = allItemsByCategories;
+        this.categoryName = categoryName;
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,16 +58,14 @@ public class AllItemsFragment extends Fragment {
 
     private void initView() {
         initAdapter(recyclerViewItem, itemsAdapterView);
+        title.setText(categoryName);
     }
 
     private void findViews(View view) {
         recyclerViewItem = view.findViewById(R.id.recyclerView);
-        itemsAdapterView = new ItemsAdapterView(getContext(), allItemsByCategories);
+        itemsAdapterView = new ItemsAdapterView(getContext(), allItemsByCategories, "AllItemsFragment");
+        title = view.findViewById(R.id.title);
     }
-
-
-
-
 
     private void initAdapter(RecyclerView recyclerView, RecyclerView.Adapter myAdapter) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());

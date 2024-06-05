@@ -5,10 +5,11 @@ public enum Category {
     DairyAndEggs,
     MeatPoultryAndFish,
     Bread,
-    SaladsAndDeli,
     DrinksWineAlcoholAndTobacco,
-    SnacksCerealsCakesAndCookies,
+    SaladsAndDeli,
     BakingProductsAndCannedGoods,
-    CleaningProductsAndDisposables,
-    NutsSpicesAndDriedFruits
+    SnacksCerealsCakesAndCookies,
+    NutsSpicesAndDriedFruits,
+    CleaningProductsAndDisposables
+
 }

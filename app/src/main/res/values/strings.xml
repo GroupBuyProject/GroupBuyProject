@@ -2,6 +2,8 @@
     <string name="app_name">GroupBuyProject</string>
     <string name="addItem">הוספה</string>
     <string name="unit">יח\'</string>
+    <string name="unitFruit">ק"\ג</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.CartFragment">
+    tools:context=".Fragments.CartFragment"
+    android:orientation="vertical">
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txt"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/lightGreen"
+        android:text="Cart"
+        android:paddingTop="20dp"
+        android:gravity="center"
+        android:textSize="48sp"/>
 
     <include layout="@layout/fragment_all_items"
         android:id="@+id/layout"/>
 
-</RelativeLayout>
+</LinearLayout>

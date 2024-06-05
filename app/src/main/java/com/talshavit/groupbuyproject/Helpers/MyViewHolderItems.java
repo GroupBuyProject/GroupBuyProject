@@ -16,7 +16,7 @@ public class MyViewHolderItems extends RecyclerView.ViewHolder{
     AppCompatTextView itemName, market, company, unit, count;
     ShapeableImageView img;
     MaterialButton addItemButton;
-    AppCompatImageButton minus, plus, comment;
+    AppCompatImageButton minus, plus, comment, xButton;
 
 
     public MyViewHolderItems(@NonNull View itemView) {
@@ -35,5 +35,6 @@ public class MyViewHolderItems extends RecyclerView.ViewHolder{
         minus = itemView.findViewById(R.id.minus);
         plus = itemView.findViewById(R.id.plus);
         comment = itemView.findViewById(R.id.comment);
+        xButton = itemView.findViewById(R.id.xButton);
     }
 }

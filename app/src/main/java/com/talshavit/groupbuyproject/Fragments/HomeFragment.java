@@ -119,13 +119,14 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ArrayList<CategoriesModel> listCategory = new ArrayListCategory().setArrayList();
         GridView gridView = view.findViewById(R.id.gridView);
-        GridViewAdapter gridViewAdapter = new GridViewAdapter(getContext(), new ArrayListCategory().setArrayList());
+        GridViewAdapter gridViewAdapter = new GridViewAdapter(getContext(), listCategory);
         gridView.setAdapter(gridViewAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                replaceFragment(new AllItemsFragment(allItemsByCategories[i]));
+                replaceFragment(new AllItemsFragment(allItemsByCategories[i], listCategory.get(i).getCategoryName()));
                 bottomNavigation.show(-1, true);
             }
         });

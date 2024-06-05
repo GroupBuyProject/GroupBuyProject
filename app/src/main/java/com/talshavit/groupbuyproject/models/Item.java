@@ -8,7 +8,7 @@ public class Item {
     private String img;
     private String company;
     private Category category;
-    private int count;
+    private double count;
 
     public Item() {
     }
@@ -77,11 +77,11 @@ public class Item {
         return this;
     }
 
-    public int getCount() {
+    public double getCount() {
         return count;
     }
 
-    public Item setCount(int count) {
+    public Item setCount(double count) {
         this.count = count;
         return this;
     }
