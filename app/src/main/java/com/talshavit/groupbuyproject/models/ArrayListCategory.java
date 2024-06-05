@@ -1,5 +1,7 @@
 package com.talshavit.groupbuyproject.models;
 
+import com.talshavit.groupbuyproject.R;
+
 import java.util.ArrayList;
 
 public class ArrayListCategory {
@@ -7,16 +9,16 @@ public class ArrayListCategory {
     public ArrayList<CategoriesModel> setArrayList(){
         ArrayList<CategoriesModel> arrayList = new ArrayList<>();
 
-        arrayList.add(new CategoriesModel("פירות וירקות"));
-        arrayList.add(new CategoriesModel("מוצרי חלב וביצים"));
-        arrayList.add(new CategoriesModel("בשר עוף ודגים"));
-        arrayList.add(new CategoriesModel("לחמים"));
-        arrayList.add(new CategoriesModel("משקאות, יין אלכוהול וטבק"));
-        arrayList.add(new CategoriesModel("סלטים ונקניקים"));
-        arrayList.add(new CategoriesModel("מוצרי אפיה ושימורים"));
-        arrayList.add(new CategoriesModel("חטיפים, דגני בוקר, עוגות ועוגיות"));
-        arrayList.add(new CategoriesModel("פיצוחים, תבלינים ופירות יבשים"));
-        arrayList.add(new CategoriesModel("מוצרי ניקיון וחד פעמי"));
+        arrayList.add(new CategoriesModel("פירות וירקות", "https://cdn.leonardo.ai/users/e1804e9b-fce8-4de9-8eb3-9d9df05fd280/generations/925b8d02-9fe1-4dc0-873b-80961f84d4c0/Default_fruit_and_vegetables_background_for_market_app_0.jpg"));
+        arrayList.add(new CategoriesModel("מוצרי חלב וביצים", "https://cdn.leonardo.ai/users/e1804e9b-fce8-4de9-8eb3-9d9df05fd280/generations/49570747-e13a-4ff2-ab80-3d2a362fe820/Default_bottle_milks_and_eggs_background_for_market_app_3.jpg"));
+        arrayList.add(new CategoriesModel("בשר עוף ודגים", "https://cdn.leonardo.ai/users/e1804e9b-fce8-4de9-8eb3-9d9df05fd280/generations/d6be715a-908b-4ab3-b1d7-3378c8ad93e0/Default_Meat_Poultry_And_Fish_background_for_market_app_1.jpg"));
+        arrayList.add(new CategoriesModel("לחמים", "https://cdn.leonardo.ai/users/e1804e9b-fce8-4de9-8eb3-9d9df05fd280/generations/cb8240ae-cf72-4eec-a577-e7569821250a/Default_breads_background_for_market_app_3.jpg"));
+        arrayList.add(new CategoriesModel("משקאות, יין אלכוהול וטבק","https://cdn.leonardo.ai/users/e1804e9b-fce8-4de9-8eb3-9d9df05fd280/generations/66c72a28-33a5-4f22-a2ab-9c215472195f/Default_Drinks_Wine_Alcohol_And_Tobacco_background_for_market_3.jpg"));
+        arrayList.add(new CategoriesModel("סלטים ונקניקים",""));
+        arrayList.add(new CategoriesModel("מוצרי אפיה ושימורים","https://cdn.leonardo.ai/users/e1804e9b-fce8-4de9-8eb3-9d9df05fd280/generations/769f1731-de8c-4bb0-9a74-7b2c638f3df3/Default_Baking_Products_And_Canned_Goods_background_for_market_2.jpg"));
+        arrayList.add(new CategoriesModel("חטיפים, דגני בוקר, עוגות ועוגיות","https://cdn.leonardo.ai/users/e1804e9b-fce8-4de9-8eb3-9d9df05fd280/generations/987c9ca5-5d6e-4820-a15f-3b732df5241c/Default_Snacks_Cereals_Cakes_And_Cookies_draw_background_for_m_1.jpg"));
+        arrayList.add(new CategoriesModel("פיצוחים, תבלינים ופירות יבשים",""));
+        arrayList.add(new CategoriesModel("מוצרי ניקיון וחד פעמי",""));
 
         return arrayList;
     }

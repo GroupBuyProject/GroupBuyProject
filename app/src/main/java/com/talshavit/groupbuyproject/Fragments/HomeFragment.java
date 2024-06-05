@@ -126,7 +126,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                replaceFragment(new AllItemsFragment(allItemsByCategories[i], listCategory.get(i).getCategoryName()));
+                replaceFragment(new AllItemsFragment(allItemsByCategories[i], listCategory.get(i).getCategoryName(), listCategory.get(i).getImg()));
                 bottomNavigation.show(-1, true);
             }
         });

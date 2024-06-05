@@ -1,15 +1,19 @@
 package com.talshavit.groupbuyproject.Helpers;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.talshavit.groupbuyproject.GlobalResources;
+import com.talshavit.groupbuyproject.MainActivity;
 import com.talshavit.groupbuyproject.models.Category;
 import com.talshavit.groupbuyproject.models.Item;
 import com.talshavit.groupbuyproject.R;
@@ -96,6 +100,14 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
                 }
             }
         });
+
+    }
+
+    private void animateToCart(View imageView) {
+        imageView.animate().setDuration(1000)
+                .rotationYBy(360f)
+                .start();
+
     }
 
     private void changeToInt(MyViewHolderItems holder, int position) {
@@ -108,6 +120,7 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
                 GlobalResources.cart.items.set(position, allItems.get(position));
             }
             holder.addItemButton.setText("עדכון");
+            animateToCart(holder.img);
         }
     }
 
@@ -121,6 +134,7 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
                 GlobalResources.cart.items.set(position, allItems.get(position));
             }
             holder.addItemButton.setText("עדכון");
+            animateToCart(holder.img);
         }
     }
 

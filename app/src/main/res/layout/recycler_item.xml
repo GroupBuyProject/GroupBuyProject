@@ -5,11 +5,11 @@
     android:layout_height="200dp"
     android:layout_margin="10dp">
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:elevation="10dp"
-        app:cardCornerRadius="10dp">
+        app:cardCornerRadius="14dp"
+        app:cardElevation="0dp">
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/xButton"
@@ -178,6 +178,6 @@
             </LinearLayout>
 
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
 </FrameLayout>

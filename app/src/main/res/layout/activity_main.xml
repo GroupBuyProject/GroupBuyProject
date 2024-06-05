@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:background="@color/white"
+            android:background="@color/lightGreen"
             android:elevation="8dp"
             app:titleTextColor="@android:color/white"></androidx.appcompat.widget.Toolbar>
 
@@ -37,7 +37,7 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/bottomNavigation"
             android:layout_below="@+id/circular_icon"
-            android:layout_marginTop="60dp"/>
+            android:layout_marginTop="57dp"/>
 
 
     </FrameLayout>

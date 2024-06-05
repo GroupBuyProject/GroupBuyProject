@@ -13,6 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
+import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.talshavit.groupbuyproject.Helpers.ItemsAdapterView;
 import com.talshavit.groupbuyproject.models.Category;
 import com.talshavit.groupbuyproject.models.Item;
@@ -26,16 +29,20 @@ public class AllItemsFragment extends Fragment {
     private ItemsAdapterView itemsAdapterView;
     private RecyclerView recyclerViewItem;
 
+    private ShapeableImageView imgBackGround;
     private AppCompatTextView title;
-
     private String categoryName;
+
+    private String img;
+
 
     public AllItemsFragment() {
     }
 
-    public AllItemsFragment(ArrayList<Item> allItemsByCategories, String categoryName) {
+    public AllItemsFragment(ArrayList<Item> allItemsByCategories, String categoryName, String img) {
         this.allItemsByCategories = allItemsByCategories;
         this.categoryName = categoryName;
+        this.img = img;
     }
 
     @Override
@@ -57,12 +64,14 @@ public class AllItemsFragment extends Fragment {
     }
 
     private void initView() {
+        Glide.with(getContext()).load(img).into(imgBackGround);
         initAdapter(recyclerViewItem, itemsAdapterView);
         title.setText(categoryName);
     }
 
     private void findViews(View view) {
         recyclerViewItem = view.findViewById(R.id.recyclerView);
+        imgBackGround = view.findViewById(R.id.imgBackGround);
         itemsAdapterView = new ItemsAdapterView(getContext(), allItemsByCategories, "AllItemsFragment");
         title = view.findViewById(R.id.title);
     }
