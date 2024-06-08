@@ -13,7 +13,7 @@ import com.talshavit.groupbuyproject.R;
 
 public class MyViewHolderItems extends RecyclerView.ViewHolder{
 
-    AppCompatTextView itemName, market, company, unit, count;
+    AppCompatTextView itemName, weight, company, unit, count, price;
     ShapeableImageView img;
     MaterialButton addItemButton;
     AppCompatImageButton minus, plus, comment, xButton;
@@ -26,10 +26,11 @@ public class MyViewHolderItems extends RecyclerView.ViewHolder{
 
     private void findViews(View itemView) {
         itemName = itemView.findViewById(R.id.itemName);
-        market = itemView.findViewById(R.id.market);
+        weight = itemView.findViewById(R.id.weight);
         company = itemView.findViewById(R.id.company);
         unit = itemView.findViewById(R.id.unit);
         count = itemView.findViewById(R.id.count);
+        price = itemView.findViewById(R.id.price);
         img = itemView.findViewById(R.id.img);
         addItemButton = itemView.findViewById(R.id.addItemButton);
         minus = itemView.findViewById(R.id.minus);

@@ -47,6 +47,8 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
         isFruitAndVeg = checkCategory(holder, position);
         holder.itemName.setText(allItems.get(position).getName());
         holder.company.setText(allItems.get(position).getCompany());
+        holder.weight.setText(allItems.get(position).getWeight());
+        holder.price.setText(allItems.get(position).getPrice());
         if (isFruitAndVeg)
             holder.count.setText(String.valueOf(allItems.get(position).getCount()));
         else

@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,23 +90,32 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
             if(items.get(i).getCategory().equals(Category.Bread)){
                 allItemsByCategories[3].add(items.get(i));
             }
-            if(items.get(i).getCategory().equals(Category.DrinksWineAlcoholAndTobacco)){
+            if(items.get(i).getCategory().equals(Category.WineAlcoholAndTobacco)){
                 allItemsByCategories[4].add(items.get(i));
             }
-            if(items.get(i).getCategory().equals(Category.SaladsAndDeli)){
+            if(items.get(i).getCategory().equals(Category.Drinks)){
                 allItemsByCategories[5].add(items.get(i));
             }
-            if(items.get(i).getCategory().equals(Category.BakingProductsAndCannedGoods)){
+            if(items.get(i).getCategory().equals(Category.SaladsAndDeli)){
                 allItemsByCategories[6].add(items.get(i));
             }
-            if(items.get(i).getCategory().equals(Category.SnacksCerealsCakesAndCookies)){
+            if(items.get(i).getCategory().equals(Category.BakingProductsAndCannedGoods)){
                 allItemsByCategories[7].add(items.get(i));
             }
-            if(items.get(i).getCategory().equals(Category.NutsSpicesAndDriedFruits)){
+            if(items.get(i).getCategory().equals(Category.SnacksCakesAndCookies)){
                 allItemsByCategories[8].add(items.get(i));
             }
-            if(items.get(i).getCategory().equals(Category.CleaningProductsAndDisposables)){
+            if(items.get(i).getCategory().equals(Category.Cereal)){
                 allItemsByCategories[9].add(items.get(i));
+            }
+            if(items.get(i).getCategory().equals(Category.NutsSpicesAndDriedFruits)){
+                allItemsByCategories[10].add(items.get(i));
+            }
+            if(items.get(i).getCategory().equals(Category.CleaningProductsAndDisposables)){
+                allItemsByCategories[11].add(items.get(i));
+            }
+            if(items.get(i).getCategory().equals(Category.PharmacyAndBabyProducts)){
+                allItemsByCategories[12].add(items.get(i));
             }
         }
     }

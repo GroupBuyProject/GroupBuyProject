@@ -16,11 +16,11 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="start"
-            android:src="@drawable/ic_x_button"
-            android:background="@color/white"
-            android:visibility="gone"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
-            android:layout_marginStart="5dp"/>
+            android:background="@color/white"
+            android:src="@drawable/ic_x_button"
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,8 +37,8 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="3"
                     android:layout_marginTop="10dp"
+                    android:layout_weight="3"
                     android:orientation="vertical">
 
 
@@ -46,7 +46,10 @@
                         android:id="@+id/itemName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:autoSizeMaxTextSize="32sp"
+                        android:autoSizeTextType="uniform"
                         android:gravity="center_horizontal"
+                        android:maxLines="1"
                         android:text="עגבניה"
                         android:textColor="@color/black"
                         android:textSize="20dp"
@@ -55,31 +58,62 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/market"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="ספק1"
-                            android:layout_marginEnd="10dp"
-                            android:textColor="@color/black" />
-
-                        <View
-                            android:layout_width="1dp"
-                            android:layout_height="match_parent"
-                            android:background="@color/darkGray"/>
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/company"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="תוצרת ישראל"
                             android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:text=""
+                            android:textColor="@color/black" />
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/darkGray" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/weight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:text=""
                             android:textColor="@color/black" />
 
 
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="45dp"
+                            android:layout_marginTop="35dp"
+                            android:layout_marginEnd="8dp"
+                            android:fontFamily="@font/rubik"
+                            android:text="ש''\ח"
+                            android:textColor="@color/black"
+                            android:textSize="20sp" />
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="35dp"
+                            android:fontFamily="@font/rubik"
+                            android:text=""
+                            android:textColor="@color/black"
+                            android:textSize="20sp" />
 
                     </LinearLayout>
 
@@ -89,8 +123,7 @@
                     android:id="@+id/img"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:src="@drawable/tomatoes" />
+                    android:layout_weight="1" />
 
             </LinearLayout>
 
@@ -156,7 +189,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <androidx.appcompat.widget.AppCompatImageButton
-                   android:id="@+id/plus"
+                    android:id="@+id/plus"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:layout_gravity="center_vertical"

@@ -6,6 +6,8 @@ public class Item {
     private String name;
     private String price;
     private String img;
+
+    private String weight;
     private String company;
     private Category category;
     private double count;
@@ -13,11 +15,12 @@ public class Item {
     public Item() {
     }
 
-    public Item(String id, String name, String price, String img, String company, Category category) {
+    public Item(String id, String name, String price, String img, String weight, String company, Category category) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.img = img;
+        this.weight = weight;
         this.company = company;
         this.category = category;
         this.count = 0;
@@ -56,6 +59,15 @@ public class Item {
 
     public Item setImg(String img) {
         this.img = img;
+        return this;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public Item setWeight(String weight) {
+        this.weight = weight;
         return this;
     }
 
