@@ -10,7 +10,8 @@
         android:id="@+id/imgBackGround"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/title"

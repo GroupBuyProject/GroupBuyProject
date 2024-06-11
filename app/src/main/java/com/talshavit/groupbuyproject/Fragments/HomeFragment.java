@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
+import com.talshavit.groupbuyproject.GlobalResources;
 import com.talshavit.groupbuyproject.Helpers.ApiService;
 import com.talshavit.groupbuyproject.models.Category;
 import com.talshavit.groupbuyproject.Helpers.GridViewAdapter;
@@ -34,8 +35,6 @@ import retrofit2.Response;
 
 public class HomeFragment extends Fragment implements AdapterView.OnItemClickListener {
 
-   private ApiService apiService;
-   private List<Item> items;
     private MeowBottomNavigation bottomNavigation;
     private ArrayList<Item>[] allItemsByCategories;
 
@@ -49,73 +48,55 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        items = new ArrayList<>();
-        apiService = RetrofitClient.getRetrofitInstance().create(ApiService.class);
-        getAllMarkets(apiService);
+        filterListByCategory();
     }
 
-    private void getAllMarkets(ApiService apiService) {
-        apiService.getAllItems().enqueue(new Callback<List<Item>>() {
-            @Override
-            public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
-                if (response.isSuccessful()) {
-                    items = response.body();
-                    filterListByCategory(items);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Item>> call, Throwable t) {
-            }
-        });
-    }
-
-    private void filterListByCategory(List<Item> items) {
+    private void filterListByCategory() {
+        ArrayList<Item> newItem = GlobalResources.items;
         int size = Category.values().length;
         allItemsByCategories = new ArrayList[size];
         for(int i=0; i<allItemsByCategories.length; i++){
             allItemsByCategories[i] = new ArrayList<>();
         }
-        for(int i=0; i<items.size(); i++){
-            if(items.get(i).getCategory().equals(Category.FruitsAndVegetables)){
-                allItemsByCategories[0].add(items.get(i));
+        for(int i=0; i<newItem.size(); i++){
+            if(newItem.get(i).getCategory().equals(Category.FruitsAndVegetables)){
+                allItemsByCategories[0].add(newItem.get(i));
             }
-            if(items.get(i).getCategory().equals(Category.DairyAndEggs)){
-                allItemsByCategories[1].add(items.get(i));
+            if(newItem.get(i).getCategory().equals(Category.DairyAndEggs)){
+                allItemsByCategories[1].add(newItem.get(i));
             }
-            if(items.get(i).getCategory().equals(Category.MeatPoultryAndFish)){
-                allItemsByCategories[2].add(items.get(i));
+            if(newItem.get(i).getCategory().equals(Category.MeatPoultryAndFish)){
+                allItemsByCategories[2].add(newItem.get(i));
             }
-            if(items.get(i).getCategory().equals(Category.Bread)){
-                allItemsByCategories[3].add(items.get(i));
+            if(newItem.get(i).getCategory().equals(Category.Bread)){
+                allItemsByCategories[3].add(newItem.get(i));
             }
-            if(items.get(i).getCategory().equals(Category.WineAlcoholAndTobacco)){
-                allItemsByCategories[4].add(items.get(i));
+            if(newItem.get(i).getCategory().equals(Category.WineAlcoholAndTobacco)){
+                allItemsByCategories[4].add(newItem.get(i));
             }
-            if(items.get(i).getCategory().equals(Category.Drinks)){
-                allItemsByCategories[5].add(items.get(i));
+            if(newItem.get(i).getCategory().equals(Category.Drinks)){
+                allItemsByCategories[5].add(newItem.get(i));
             }
-            if(items.get(i).getCategory().equals(Category.SaladsAndDeli)){
-                allItemsByCategories[6].add(items.get(i));
+            if(newItem.get(i).getCategory().equals(Category.SaladsAndDeli)){
+                allItemsByCategories[6].add(newItem.get(i));
             }
-            if(items.get(i).getCategory().equals(Category.BakingProductsAndCannedGoods)){
-                allItemsByCategories[7].add(items.get(i));
+            if(newItem.get(i).getCategory().equals(Category.BakingProductsAndCannedGoods)){
+                allItemsByCategories[7].add(newItem.get(i));
             }
-            if(items.get(i).getCategory().equals(Category.SnacksCakesAndCookies)){
-                allItemsByCategories[8].add(items.get(i));
+            if(newItem.get(i).getCategory().equals(Category.SnacksCakesAndCookies)){
+                allItemsByCategories[8].add(newItem.get(i));
             }
-            if(items.get(i).getCategory().equals(Category.Cereal)){
-                allItemsByCategories[9].add(items.get(i));
+            if(newItem.get(i).getCategory().equals(Category.Cereal)){
+                allItemsByCategories[9].add(newItem.get(i));
             }
-            if(items.get(i).getCategory().equals(Category.NutsSpicesAndDriedFruits)){
-                allItemsByCategories[10].add(items.get(i));
+            if(newItem.get(i).getCategory().equals(Category.NutsSpicesAndDriedFruits)){
+                allItemsByCategories[10].add(newItem.get(i));
             }
-            if(items.get(i).getCategory().equals(Category.CleaningProductsAndDisposables)){
-                allItemsByCategories[11].add(items.get(i));
+            if(newItem.get(i).getCategory().equals(Category.CleaningProductsAndDisposables)){
+                allItemsByCategories[11].add(newItem.get(i));
             }
-            if(items.get(i).getCategory().equals(Category.PharmacyAndBabyProducts)){
-                allItemsByCategories[12].add(items.get(i));
+            if(newItem.get(i).getCategory().equals(Category.PharmacyAndBabyProducts)){
+                allItemsByCategories[12].add(newItem.get(i));
             }
         }
     }

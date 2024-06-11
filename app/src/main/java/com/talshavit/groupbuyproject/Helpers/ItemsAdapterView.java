@@ -23,6 +23,8 @@ import java.util.ArrayList;
 public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
 
     private ArrayList<Item> allItems;
+    private ArrayList<Item> allItemsFull;
+
     private Context context;
     private String type;
 
@@ -32,6 +34,7 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
     public ItemsAdapterView(Context context, ArrayList<Item> allItems, String type) {
         this.context = context;
         this.allItems = allItems;
+        this.allItemsFull = new ArrayList<>(allItems);
         this.type = type;
     }
 
@@ -183,5 +186,18 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
     @Override
     public int getItemCount() {
         return allItems.size();
+    }
+
+    public void filterByItemAndCompany(String textItem, String textCompany) {
+        ArrayList<Item> filteredList = new ArrayList<>();
+        for (Item item : allItemsFull) {
+            if (item.getName().contains(textItem) &&
+                    item.getCompany().contains(textCompany)) {
+                filteredList.add(item);
+            }
+        }
+        allItems.clear();
+        allItems.addAll(filteredList);
+        notifyDataSetChanged();
     }
 }
