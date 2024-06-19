@@ -24,12 +24,12 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
 
     private ArrayList<Item> allItems;
     private ArrayList<Item> allItemsFull;
-
     private Context context;
     private String type;
-
     private boolean isFruitAndVeg = false;
 
+    public ItemsAdapterView() {
+    }
 
     public ItemsAdapterView(Context context, ArrayList<Item> allItems, String type) {
         this.context = context;
@@ -199,5 +199,6 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
         allItems.clear();
         allItems.addAll(filteredList);
         notifyDataSetChanged();
+        GlobalResources.items = allItemsFull;
     }
 }

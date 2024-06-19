@@ -1,22 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.CartFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".Fragments.CartFragment">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/txt"
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imgBackGround"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="@color/lightGreen"
-        android:text="Cart"
-        android:paddingTop="20dp"
+        android:scaleType="centerCrop" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:autoSizeMaxTextSize="32sp"
+        android:autoSizeTextType="uniform"
+        android:background="#59FFFFFF"
+        android:fontFamily="@font/rubik"
         android:gravity="center"
-        android:textSize="48sp"/>
+        android:maxLines="1"
+        android:paddingTop="20dp"
+        android:text="עגלת קניות"
+        android:textColor="@color/black"
+        android:textStyle="bold" />
 
-    <include layout="@layout/fragment_all_items"
-        android:id="@+id/layout"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title"
+        android:orientation="vertical">
 
-</LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.9"
+            android:paddingTop="10dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/checkout"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button_background"
+            android:layout_marginBottom="70dp"
+            android:text="מעבר לתשלום"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -3,10 +3,15 @@ package com.talshavit.groupbuyproject;
 import android.util.Log;
 import android.view.View;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.talshavit.groupbuyproject.Helpers.ApiService;
 import com.talshavit.groupbuyproject.Helpers.RetrofitClient;
 import com.talshavit.groupbuyproject.models.Cart;
 import com.talshavit.groupbuyproject.models.Item;
+import com.talshavit.groupbuyproject.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +24,8 @@ import retrofit2.Response;
 public class GlobalResources {
     public static Cart cart = new Cart();
     public static ArrayList<Item> items;
+
+    public static User user = new User();
 
 
     public static void initItems() {
@@ -42,5 +49,13 @@ public class GlobalResources {
             }
         });
     }
+
+    public static void replaceFragment(FragmentManager fragmentManager, Fragment fragment) {
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
 
 }

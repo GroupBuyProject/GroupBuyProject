@@ -117,19 +117,12 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                replaceFragment(new AllItemsFragment(allItemsByCategories[i], listCategory.get(i).getCategoryName(), listCategory.get(i).getImg()));
+                GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(),new AllItemsFragment(allItemsByCategories[i], listCategory.get(i).getCategoryName(), listCategory.get(i).getImg()));
                 bottomNavigation.show(-1, true);
             }
         });
     }
 
-    private void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.frame_layout, fragment, null)
-                .setReorderingAllowed(true).addToBackStack(null)
-                .commit();
-    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long l) {

@@ -4,10 +4,12 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,8 @@ public class CartFragment extends Fragment {
     private ItemsAdapterView itemsAdapterView;
     private RecyclerView recyclerViewItem;
 
+    private AppCompatButton checkout;
+
 
     public CartFragment() {
         this.cart = GlobalResources.cart;
@@ -41,7 +45,7 @@ public class CartFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_all_items, container, false);
+        return inflater.inflate(R.layout.fragment_cart, container, false);
     }
 
     @Override
@@ -53,11 +57,31 @@ public class CartFragment extends Fragment {
 
     private void initView() {
         initAdapter(recyclerViewItem, itemsAdapterView);
+        onCheckOut();
+    }
+
+    private void onCheckOut() {
+        checkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                double price = calcPrice();
+                GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(),new CheckoutFragment(price));
+            }
+        });
+    }
+
+    private double calcPrice() {
+        double price = 0;
+        for(int i=0; i<cart.getItems().size(); i++){
+            price += Double.parseDouble(cart.getItems().get(i).getPrice()) * cart.getItems().get(i).getCount();
+        }
+        return price;
     }
 
     private void findViews(View view) {
         recyclerViewItem = view.findViewById(R.id.recyclerView);
         itemsAdapterView = new ItemsAdapterView(getContext(), cart.items, "CartFragment");
+        checkout = view.findViewById(R.id.checkout);
     }
 
 
