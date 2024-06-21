@@ -24,7 +24,6 @@ import retrofit2.Response;
 public class GlobalResources {
     public static Cart cart = new Cart();
     public static ArrayList<Item> items;
-
     public static User user = new User();
 
 

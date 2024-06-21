@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,16 +13,23 @@ import android.view.ViewGroup;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.talshavit.groupbuyproject.GlobalResources;
+import com.talshavit.groupbuyproject.Helpers.ItemsAdapterView;
 import com.talshavit.groupbuyproject.MainActivity;
 import com.talshavit.groupbuyproject.R;
 import com.talshavit.groupbuyproject.models.Cart;
-import com.talshavit.groupbuyproject.models.History;
+import com.talshavit.groupbuyproject.models.Order;
+
+import java.time.LocalDate;
 
 public class CheckoutFragment extends Fragment {
 
-    private TextInputEditText etCardNumber,etExpiryDate,etCVV;
+    private TextInputEditText etCardNumber, etExpiryDate, etCVV;
     private MaterialButton btnPay;
+
+    private ItemsAdapterView itemsAdapterView;
+
     private double price;
+
     public CheckoutFragment(double price) {
         this.price = price;
     }
@@ -41,6 +47,7 @@ public class CheckoutFragment extends Fragment {
     }
 
     private void initViews() {
+        itemsAdapterView = new ItemsAdapterView(getContext(), GlobalResources.items, "");
         onPayBtn();
     }
 
@@ -48,10 +55,11 @@ public class CheckoutFragment extends Fragment {
         btnPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                History history = new History(GlobalResources.cart,price);
-                GlobalResources.user.addHistory(history);
+                Order order = new Order(GlobalResources.cart, price);
+                GlobalResources.user.addHistory(order);
                 MainActivity.isPaid = true;
                 GlobalResources.cart = new Cart();
+                itemsAdapterView.changeCount();
             }
         });
     }

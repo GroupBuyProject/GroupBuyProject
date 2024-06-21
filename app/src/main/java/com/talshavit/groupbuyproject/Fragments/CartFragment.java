@@ -21,6 +21,7 @@ import com.talshavit.groupbuyproject.R;
 import com.talshavit.groupbuyproject.models.Cart;
 import com.talshavit.groupbuyproject.models.Category;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class CartFragment extends Fragment {
@@ -65,14 +66,14 @@ public class CartFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 double price = calcPrice();
-                GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(),new CheckoutFragment(price));
+                GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(), new CheckoutFragment(price));
             }
         });
     }
 
     private double calcPrice() {
-        double price = 0;
-        for(int i=0; i<cart.getItems().size(); i++){
+        double price = 0.0;
+        for (int i = 0; i < cart.getItems().size(); i++) {
             price += Double.parseDouble(cart.getItems().get(i).getPrice()) * cart.getItems().get(i).getCount();
         }
         return price;

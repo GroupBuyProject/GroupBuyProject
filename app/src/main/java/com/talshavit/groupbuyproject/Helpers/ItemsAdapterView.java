@@ -105,14 +105,12 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
                 }
             }
         });
-
     }
 
     private void animateToCart(View imageView) {
         imageView.animate().setDuration(1000)
                 .rotationYBy(360f)
                 .start();
-
     }
 
     private void changeToInt(MyViewHolderItems holder, int position) {
@@ -200,5 +198,13 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
         allItems.addAll(filteredList);
         notifyDataSetChanged();
         GlobalResources.items = allItemsFull;
+    }
+
+    public void changeCount(){
+        for(int i=0; i<allItems.size(); i++){
+            if(allItems.get(i).getCount()!=0){
+                allItems.get(i).setCount(0);
+            }
+        }
     }
 }

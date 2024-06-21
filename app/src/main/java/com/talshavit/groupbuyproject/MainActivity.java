@@ -18,6 +18,7 @@ import android.widget.EditText;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.talshavit.groupbuyproject.Fragments.CartFragment;
+import com.talshavit.groupbuyproject.Fragments.HistoryFragment;
 import com.talshavit.groupbuyproject.Fragments.HomeFragment;
 import com.talshavit.groupbuyproject.Fragments.SearchFragment;
 import com.talshavit.groupbuyproject.Helpers.ApiService;
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
                         GlobalResources.replaceFragment(getSupportFragmentManager(),homeFragment);
                         break;
                     case 2:
+                        GlobalResources.replaceFragment(getSupportFragmentManager(), new HistoryFragment());
                         break;
                     case 3:
                         if(isPaid){
