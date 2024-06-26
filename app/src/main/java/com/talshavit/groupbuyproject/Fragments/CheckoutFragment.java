@@ -1,5 +1,6 @@
 package com.talshavit.groupbuyproject.Fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,9 +10,12 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
 import com.talshavit.groupbuyproject.GlobalResources;
 import com.talshavit.groupbuyproject.Helpers.ItemsAdapterView;
 import com.talshavit.groupbuyproject.MainActivity;
@@ -19,14 +23,20 @@ import com.talshavit.groupbuyproject.R;
 import com.talshavit.groupbuyproject.models.Cart;
 import com.talshavit.groupbuyproject.models.Order;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class CheckoutFragment extends Fragment {
 
-    private TextInputEditText etCardNumber, etExpiryDate, etCVV;
+    //private TextInputEditText etCardNumber, etExpiryDate, etCVV;
     private MaterialButton btnPay;
 
+    private EditText etCardNumber, etID, etCVV;
+    private Spinner monthSpinner, yearSpinner;
     private ItemsAdapterView itemsAdapterView;
+
+    private List<String> months, years;
 
     private double price;
 
@@ -48,7 +58,80 @@ public class CheckoutFragment extends Fragment {
 
     private void initViews() {
         itemsAdapterView = new ItemsAdapterView(getContext(), GlobalResources.items, "");
+        initMonths();
+        initYear();
+        initSpinnerMonth();
+        initSpinnerYear();
         onPayBtn();
+    }
+
+    private void initYear() {
+        years = new ArrayList<>();
+        years.add("שנה");
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        for (int i = currentYear; i <= currentYear + 20; i++) {
+            years.add(String.valueOf(i));
+        }
+    }
+
+    private void initMonths() {
+        months = new ArrayList<>();
+        months.add("חודש");
+        for (int i = 1; i <= 12; i++) {
+            months.add(String.format("%02d", i));
+        }
+    }
+
+    private void initSpinnerMonth() {
+        ArrayAdapter<String> monthAdapter = new ArrayAdapter<String>(getContext(), R.layout.spinner_item, months) {
+
+
+            @Override
+            public boolean isEnabled(int position) {
+                return position != 0; //enable all, except the first variable
+            }
+
+            @Override
+            public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView textView = (TextView) view;
+                if (position == 0) {
+                    textView.setTextColor(Color.GRAY);
+                } else {
+                    textView.setTextColor(Color.BLACK);
+                }
+                return view;
+            }
+        };
+
+        monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        monthSpinner.setAdapter(monthAdapter);
+
+    }
+
+    private void initSpinnerYear() {
+        ArrayAdapter<String> yearAdapter = new ArrayAdapter<String>(getContext(), R.layout.spinner_item, years) {
+
+            @Override
+            public boolean isEnabled(int position) {
+                return position != 0; //enable all, except the first variable
+            }
+
+            @Override
+            public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView textView = (TextView) view;
+                if (position == 0) {
+                    textView.setTextColor(Color.GRAY);
+                } else {
+                    textView.setTextColor(Color.BLACK);
+                }
+                return view;
+            }
+        };
+
+        yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        yearSpinner.setAdapter(yearAdapter);
     }
 
     private void onPayBtn() {
@@ -65,6 +148,11 @@ public class CheckoutFragment extends Fragment {
     }
 
     private void findViews(View view) {
+        etCardNumber = view.findViewById(R.id.etCardNumber);
+        etID = view.findViewById(R.id.etID);
+        etCVV = view.findViewById(R.id.etCVV);
+        monthSpinner = view.findViewById(R.id.monthSpinner);
+        yearSpinner = view.findViewById(R.id.year);
         btnPay = view.findViewById(R.id.btnPay);
     }
 

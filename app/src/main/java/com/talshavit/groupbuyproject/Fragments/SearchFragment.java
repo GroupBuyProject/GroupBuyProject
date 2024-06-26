@@ -16,17 +16,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.talshavit.groupbuyproject.GlobalResources;
-import com.talshavit.groupbuyproject.Helpers.ApiService;
 import com.talshavit.groupbuyproject.Helpers.ItemsAdapterView;
 import com.talshavit.groupbuyproject.R;
-import com.talshavit.groupbuyproject.models.Item;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class SearchFragment extends Fragment {
 

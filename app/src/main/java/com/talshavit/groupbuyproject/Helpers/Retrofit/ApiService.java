@@ -1,4 +1,4 @@
-package com.talshavit.groupbuyproject.Helpers;
+package com.talshavit.groupbuyproject.Helpers.Retrofit;
 
 import com.talshavit.groupbuyproject.models.Item;
 

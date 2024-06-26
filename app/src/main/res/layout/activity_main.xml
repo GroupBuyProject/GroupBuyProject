@@ -20,16 +20,20 @@
             android:elevation="8dp"
             app:titleTextColor="@android:color/white"></androidx.appcompat.widget.Toolbar>
 
-        <ImageView
-            android:id="@+id/circular_icon"
+
+        <androidx.cardview.widget.CardView
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
             android:background="@drawable/circle_background"
-            android:elevation="8dp"
-            android:scaleType="centerCrop"
-            android:layout_gravity="center_horizontal"/>
+            app:cardCornerRadius="50dp"
+            app:cardElevation="8dp">
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/groupbuy" />
+        </androidx.cardview.widget.CardView>
 
         <FrameLayout
             android:id="@+id/frame_layout"
@@ -37,8 +41,7 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/bottomNavigation"
             android:layout_below="@+id/circular_icon"
-            android:layout_marginTop="57dp"/>
-
+            android:layout_marginTop="57dp" />
 
     </FrameLayout>
 

@@ -1,4 +1,4 @@
-package com.talshavit.groupbuyproject.Helpers;
+package com.talshavit.groupbuyproject.Helpers.Retrofit;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

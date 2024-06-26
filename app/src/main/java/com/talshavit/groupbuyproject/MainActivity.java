@@ -1,38 +1,18 @@
 package com.talshavit.groupbuyproject;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Dialog;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Window;
-import android.widget.EditText;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.talshavit.groupbuyproject.Fragments.CartFragment;
 import com.talshavit.groupbuyproject.Fragments.HistoryFragment;
 import com.talshavit.groupbuyproject.Fragments.HomeFragment;
 import com.talshavit.groupbuyproject.Fragments.SearchFragment;
-import com.talshavit.groupbuyproject.Helpers.ApiService;
-import com.talshavit.groupbuyproject.Helpers.ItemsAdapterView;
-import com.talshavit.groupbuyproject.Helpers.RetrofitClient;
-import com.talshavit.groupbuyproject.models.Item;
-import com.talshavit.groupbuyproject.models.User;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -49,15 +29,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        bottomNavigation = findViewById(R.id.bottomNavigation);
-        homeFragment = new HomeFragment(bottomNavigation);
-        cartFragment = new CartFragment();
-        searchFragment = new SearchFragment();
+        findviews();
+        initViews();
 
         GlobalResources.initItems();
+
         initBottomNav();
         checkIfNavNull();
+        onNavigationBar();
+    }
 
+    private void onNavigationBar() {
         bottomNavigation.setOnClickMenuListener(new MeowBottomNavigation.ClickListener() {
             @Override
             public void onClickItem(MeowBottomNavigation.Model item) {
@@ -87,6 +69,16 @@ public class MainActivity extends AppCompatActivity {
             public void onShowItem(MeowBottomNavigation.Model item) {
             }
         });
+    }
+
+    private void initViews() {
+        homeFragment = new HomeFragment(bottomNavigation);
+        cartFragment = new CartFragment();
+        searchFragment = new SearchFragment();
+    }
+
+    private void findviews() {
+        bottomNavigation = findViewById(R.id.bottomNavigation);
     }
 
     private void checkIfNavNull() {

@@ -1,19 +1,15 @@
 package com.talshavit.groupbuyproject.Helpers;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.talshavit.groupbuyproject.GlobalResources;
-import com.talshavit.groupbuyproject.MainActivity;
 import com.talshavit.groupbuyproject.models.Category;
 import com.talshavit.groupbuyproject.models.Item;
 import com.talshavit.groupbuyproject.R;
@@ -83,8 +79,7 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
             holder.xButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    GlobalResources.cart.items.remove(position);
-                    notifyDataSetChanged();
+                    removeFromCart(position);
                 }
             });
         } else
@@ -98,6 +93,20 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
         holder.addItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (holder.addItemButton.getText().equals("עדכון")) {
+                    if (holder.count.getText().equals("0") || holder.count.getText().equals("0.0")) {
+                        if (!GlobalResources.cart.items.isEmpty()) {
+                            removeFromCart(position);
+                            if (GlobalResources.items.contains(GlobalResources.items.get(position))) {
+                                if (isFruitAndVeg)
+                                    GlobalResources.items.get(position).setCount(0.0);
+                                else
+                                    GlobalResources.items.get(position).setCount(0);
+                                holder.addItemButton.setText("הוספה");
+                            }
+                        }
+                    }
+                }
                 if (isFruitAndVeg) {
                     changeToDouble(holder, position);
                 } else {
@@ -105,6 +114,18 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
                 }
             }
         });
+    }
+
+    private void removeFromCart(int position) {
+        if (GlobalResources.items.contains(GlobalResources.cart.items.get(position))) {
+            int idx = GlobalResources.items.indexOf(GlobalResources.cart.items.get(position));
+            if (isFruitAndVeg)
+                GlobalResources.items.get(idx).setCount(0.0);
+            else
+                GlobalResources.items.get(idx).setCount(0);
+            GlobalResources.cart.items.remove(position);
+            notifyDataSetChanged();
+        }
     }
 
     private void animateToCart(View imageView) {
@@ -150,6 +171,8 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
                     if (currentCount != 0.0) {
                         currentCount -= 0.5;
                         holder.count.setText(String.valueOf(currentCount));
+                    } else {
+                        holder.count.setText(String.valueOf(currentCount));
                     }
                 } else {
                     double currentCount = Double.parseDouble(holder.count.getText().toString());
@@ -157,6 +180,8 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
                         currentCount -= 1.0;
                         int res = (int) currentCount;
                         holder.count.setText(String.valueOf(res));
+                    } else {
+                        holder.count.setText("0");
                     }
                 }
             }
@@ -200,9 +225,9 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
         GlobalResources.items = allItemsFull;
     }
 
-    public void changeCount(){
-        for(int i=0; i<allItems.size(); i++){
-            if(allItems.get(i).getCount()!=0){
+    public void changeCount() {
+        for (int i = 0; i < allItems.size(); i++) {
+            if (allItems.get(i).getCount() != 0) {
                 allItems.get(i).setCount(0);
             }
         }

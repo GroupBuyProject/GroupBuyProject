@@ -1,21 +1,17 @@
 package com.talshavit.groupbuyproject;
 
-import android.util.Log;
-import android.view.View;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.talshavit.groupbuyproject.Helpers.ApiService;
-import com.talshavit.groupbuyproject.Helpers.RetrofitClient;
+import com.talshavit.groupbuyproject.Helpers.Retrofit.ApiService;
+import com.talshavit.groupbuyproject.Helpers.Retrofit.RetrofitClient;
 import com.talshavit.groupbuyproject.models.Cart;
 import com.talshavit.groupbuyproject.models.Item;
 import com.talshavit.groupbuyproject.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;

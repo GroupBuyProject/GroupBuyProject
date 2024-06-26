@@ -13,13 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.talshavit.groupbuyproject.GlobalResources;
-import com.talshavit.groupbuyproject.Helpers.OrderAdapter;
+import com.talshavit.groupbuyproject.Helpers.History.HistoryAdapter;
 import com.talshavit.groupbuyproject.R;
 
 public class HistoryFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private OrderAdapter orderAdapter;
+    private HistoryAdapter orderAdapter;
 
     public HistoryFragment() {
     }
@@ -37,7 +37,7 @@ public class HistoryFragment extends Fragment {
     }
 
     private void initViews() {
-        orderAdapter = new OrderAdapter(GlobalResources.user.getHistories());
+        orderAdapter = new HistoryAdapter(requireActivity().getSupportFragmentManager(), GlobalResources.user.getHistories());
         initAdapter(recyclerView, orderAdapter);
     }
 
