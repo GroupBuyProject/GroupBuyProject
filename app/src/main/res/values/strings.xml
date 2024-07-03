@@ -3,6 +3,8 @@
     <string name="addItem">הוספה</string>
     <string name="unit">יח\'</string>
     <string name="unitFruit">ק"\ג</string>
+    <string name="my_map_api_key">AIzaSyBF6AgBzDBDCb3EPrxuAWE6tFwn5N8Uwjs</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

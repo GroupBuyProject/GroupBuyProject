@@ -6,7 +6,6 @@ public class Item {
     private String name;
     private String price;
     private String img;
-
     private String weight;
     private String company;
     private Category category;

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.DetailsUserForOrderFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/pickUp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_margin="16dp">
+
+        <TextView
+            android:id="@+id/addressSearch"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/border_with_label"
+            android:drawableStart="@drawable/ic_arrow"
+            android:gravity="center"
+            android:hint="בחר כתובת"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="16dp"
+            android:layout_height="0dp" />
+
+        <TextView
+            android:id="@+id/pickUpCitySearch"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/border_with_label"
+            android:drawableStart="@drawable/ic_arrow"
+            android:gravity="center"
+            android:hint="בחר עיר"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/pickUp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/map"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:text="" />
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_above="@id/addNewPoint"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/addNewPoint"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="70dp"
+        android:clickable="true"
+        android:text="לבקשת הוספת מיקום נוסף"
+        android:textColor="#1047B8" />
+
+</RelativeLayout>

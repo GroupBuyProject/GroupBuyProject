@@ -66,7 +66,8 @@ public class CartFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 double price = calcPrice();
-                GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(), new CheckoutFragment(price));
+                GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(), new DetailsUserForOrderFragment());
+                //GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(), new CheckoutFragment(price));
             }
         });
     }

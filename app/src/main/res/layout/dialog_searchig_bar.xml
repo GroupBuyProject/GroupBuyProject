@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="15dp"
+    android:gravity="center"
+    android:background="@color/white">
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="חפש עיר"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="@color/black"/>
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"/>
+
+    <EditText
+        android:id="@+id/searchBar_TXT_serch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="חפש..."
+        android:textStyle="bold"
+        android:padding="12dp"
+        android:singleLine="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:textColorHint="@color/black"
+        android:textColor="@color/black"
+        android:background="@drawable/edit_text_bg"
+        />
+
+    <ListView
+        android:id="@+id/searchBar_LISTV_listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+</LinearLayout>
