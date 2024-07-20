@@ -3,6 +3,7 @@ package com.talshavit.groupbuyproject.Helpers;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import com.talshavit.groupbuyproject.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Locale;
 
 public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
 
@@ -33,14 +35,18 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
     private ArrayList<Item> allItemsFull;
     private Context context;
     private String type;
-    private boolean isFruitAndVeg = false;
+    // private boolean isFruitAndVeg = false;
     private LinearLayout lastVisibleControls = null, linearLayout;
     private ImageView imageView;
     private TextView textView, red_text, count_text, dont_show_text;
-    private AppCompatImageButton minus, plus;
-    private AppCompatTextView count;
+    private AppCompatImageButton minus, plus, exit_button;
+    private AppCompatTextView countInDialog;
     private GridLayout.LayoutParams params;
-    private int category ;
+
+    private GridLayout gridLayout;
+    private MaterialButton confirm_button;
+    private int category;
+    private Item itemToRemove;
 
     public ItemsAdapterView() {
     }
@@ -62,12 +68,12 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolderItems holder, int position) {
-        isFruitAndVeg = checkCategory(holder, position);
+        //isFruitAndVeg = checkCategory(holder, position);
         holder.itemName.setText(allItems.get(position).getName());
         holder.company.setText(allItems.get(position).getCompany());
         holder.weight.setText(allItems.get(position).getWeight());
         holder.price.setText(allItems.get(position).getPrice());
-        if (isFruitAndVeg)
+        if (allItems.get(position).getCategory().equals(Category.FruitsAndVegetables))
             holder.count.setText(String.valueOf(allItems.get(position).getCount()));
         else
             holder.count.setText(String.valueOf((int) allItems.get(position).getCount()));
@@ -77,8 +83,8 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
         if (sum != 0.0) {
             holder.addItemButton.setText("עדכון");
         }
-        onMinusButton(holder.minus, holder.count, isFruitAndVeg, allItems.get(position));
-        onPlusButton(holder.plus, holder.count, isFruitAndVeg, allItems.get(position));
+        onMinusButton(holder.minus, holder.count, allItems.get(position).getCategory().equals(Category.FruitsAndVegetables));
+        onPlusButton(holder.plus, holder.count, allItems.get(position).getCategory().equals(Category.FruitsAndVegetables));
         onAddItemButton(holder, position);
         onXbutton(holder, position);
         checkCategory(holder, position);
@@ -100,7 +106,6 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
                 public void onClick(View view) {
                     Item itemToRemove = GlobalResources.cart.getItems().get(position);
                     removeFromCart(itemToRemove);
-                    //removeFromCart(position);
                 }
             });
         } else
@@ -114,26 +119,31 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
         holder.addItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (allItems.get(position).getCategory().equals(Category.FruitsAndVegetables)) {
+                    changeToDouble(holder, position);
+                } else {
+                    Log.d("lala", allItems.get(position).getName());
+                    changeToInt(holder, position);
+                }
                 if (holder.addItemButton.getText().equals("עדכון")) {
-                    if (count.getText().equals("0") || count.getText().equals("0.0")) {
+                    if (holder.count.getText().equals("0") || holder.count.getText().equals("0.0")) {
                         if (!GlobalResources.cart.items.isEmpty()) {
-                            Item itemToRemove = GlobalResources.allItemsByCategories[category].get(position);
-                            removeFromCart(itemToRemove);
-                            //removeFromCart(position);
                             if (GlobalResources.items.contains(GlobalResources.items.get(position))) {
-                                if (isFruitAndVeg)
+                                if (allItems.get(position).getCategory().equals(Category.FruitsAndVegetables))
                                     GlobalResources.items.get(position).setCount(0.0);
                                 else
                                     GlobalResources.items.get(position).setCount(0);
                                 holder.addItemButton.setText("הוספה");
                             }
+                            if (type.equals("CartFragment")) {
+                                itemToRemove = GlobalResources.cart.getItems().get(position);
+                                removeFromCart(itemToRemove);
+                            } else {
+                                itemToRemove = GlobalResources.allItemsByCategories[category].get(position);
+                                removeFromCart(itemToRemove);
+                            }
                         }
                     }
-                }
-                if (isFruitAndVeg) {
-                    changeToDouble(holder, position);
-                } else {
-                    changeToInt(holder, position);
                 }
                 checkIfCloseToLimit();
             }
@@ -172,7 +182,7 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
     private void initDialog(double count) {
         if (count > 0.0) {
             red_text.setText("אתה מתקרב לסכום המוגבל");
-            String formattedCount = String.format("%.2f", this.count);
+            String formattedCount = String.format("%.2f", count);
             count_text.setText("נותר לך עוד " + formattedCount + " ש''ח");
         } else {
             dont_show_text.setPaintFlags(dont_show_text.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -199,7 +209,7 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
 
         for (Item item : GlobalResources.items) {
             if (item.getId().equals(itemToRemove.getId())) {
-                if (isFruitAndVeg) {
+                if (item.getCategory().equals(Category.FruitsAndVegetables)) {
                     item.setCount(0.0);
                 } else {
                     item.setCount(0);
@@ -270,12 +280,38 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_pop_up_completion_order);
 
-        GridLayout gridLayout = dialog.findViewById(R.id.gridLayout);
-        MaterialButton confirm_button = dialog.findViewById(R.id.confirm_button);
+        findViewsCompletion(dialog);
 
         ArrayList<Item> relatedItems = getRandomRelatedItems(currentItem.getRelatedItems());
         addItemsToGridLayout(gridLayout, relatedItems);
 
+        onConfirmButton(relatedItems, dialog);
+        onExitButton(dialog);
+
+        dialog.setCancelable(false);
+        showDialog(dialog);
+
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_background);
+    }
+
+    private void showDialog(Dialog dialog) {
+        GlobalResources.countForShowingDialogCompletion += 1;
+        if (GlobalResources.countForShowingDialogCompletion == 5) {
+            dialog.show();
+            GlobalResources.countForShowingDialogCompletion = 0;
+        }
+    }
+
+    private void onExitButton(Dialog dialog) {
+        exit_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+    private void onConfirmButton(ArrayList<Item> relatedItems, Dialog dialog) {
         confirm_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -285,9 +321,12 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
                 dialog.dismiss();
             }
         });
+    }
 
-        dialog.show();
-        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_background);
+    private void findViewsCompletion(Dialog dialog) {
+        gridLayout = dialog.findViewById(R.id.gridLayout);
+        confirm_button = dialog.findViewById(R.id.confirm_button);
+        exit_button = dialog.findViewById(R.id.exit_button);
     }
 
     private ArrayList<Item> getRandomRelatedItems(ArrayList<Integer> relatedItemIds) {
@@ -316,19 +355,22 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
             textView.setText(item.getName());
             Glide.with(context).load(item.getImg()).into(imageView);
 
-            isFruitAndVeg = item.getCategory().equals(Category.FruitsAndVegetables);
-            if (isFruitAndVeg) {
-                count.setText(String.valueOf(item.getCount()));
-            } else {
-                int integer = (int) item.getCount();
-                count.setText(String.valueOf(integer));
-            }
-
+            setCountText(item);
             initGridAdapter(itemView, gridLayout, i);
 
-            onImageClick(imageView, linearLayout, count);
-            onMinusButton(minus, count, isFruitAndVeg, item);
-            onPlusButton(plus, count, isFruitAndVeg, item);
+            onImageClick(imageView, linearLayout, countInDialog);
+            onMinusClick2(countInDialog, item.getCategory().equals(Category.FruitsAndVegetables), item);
+            onPlusClick2(countInDialog, item.getCategory().equals(Category.FruitsAndVegetables), item);
+        }
+    }
+
+    private void setCountText(Item item) {
+        Boolean isBool = item.getCategory().equals(Category.FruitsAndVegetables);
+        if (isBool) {
+            countInDialog.setText(String.valueOf(item.getCount()));
+        } else {
+            int integer = (int) item.getCount();
+            countInDialog.setText(String.valueOf(integer));
         }
     }
 
@@ -338,7 +380,7 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
         linearLayout = itemView.findViewById(R.id.add_item_controls);
         minus = itemView.findViewById(R.id.minus);
         plus = itemView.findViewById(R.id.plus);
-        count = itemView.findViewById(R.id.count);
+        countInDialog = itemView.findViewById(R.id.count);
     }
 
     private void initGridAdapter(View itemView, GridLayout gridLayout, int i) {
@@ -364,15 +406,14 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
         });
     }
 
-    private void onMinusClick(AppCompatTextView countTextView, boolean isFruitAndVeg, Item item) {
+    private void onMinusClick(AppCompatTextView countTextView, boolean isFruitAndVeg) {
         double currentCount = Double.parseDouble(countTextView.getText().toString());
         if (isFruitAndVeg) {
             if (currentCount != 0.0) {
                 currentCount -= 0.5;
-                countTextView.setText(String.valueOf(currentCount));
-            } else {
-                countTextView.setText(String.valueOf(currentCount));
+
             }
+            countTextView.setText(String.valueOf(currentCount));
         } else {
             if (currentCount != 0.0) {
                 currentCount -= 1.0;
@@ -382,19 +423,43 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
                 countTextView.setText("0");
             }
         }
-        item.setCount(currentCount);
     }
 
-    private void onMinusButton(AppCompatImageButton minusButton, AppCompatTextView countTextView, boolean isFruitAndVeg, Item item) {
+    private void onMinusClick2(AppCompatTextView countTextView, boolean isFruitAndVeg, Item item) {
+        minus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                double currentCount = Double.parseDouble(countTextView.getText().toString());
+                if (isFruitAndVeg) {
+                    if (currentCount != 0.0) {
+                        currentCount -= 0.5;
+                    }
+                    countTextView.setText(String.valueOf(currentCount));
+                } else {
+                    if (currentCount != 0.0) {
+                        currentCount -= 1.0;
+                        int res = (int) currentCount;
+                        countTextView.setText(String.valueOf(res));
+                    } else {
+                        countTextView.setText("0");
+                    }
+                }
+                item.setCount(currentCount);
+            }
+        });
+
+    }
+
+    private void onMinusButton(AppCompatImageButton minusButton, AppCompatTextView countTextView, boolean isFruitAndVeg) {
         minusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onMinusClick(countTextView, isFruitAndVeg, item);
+                onMinusClick(countTextView, isFruitAndVeg);
             }
         });
     }
 
-    private void onPlusClick(AppCompatTextView countTextView, boolean isFruitAndVeg, Item item) {
+    private void onPlusClick(AppCompatTextView countTextView, boolean isFruitAndVeg) {
         double currentCount = Double.parseDouble(countTextView.getText().toString());
         if (isFruitAndVeg) {
             currentCount += 0.5;
@@ -404,15 +469,33 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
             int res = (int) currentCount;
             countTextView.setText(String.valueOf(res));
         }
-        item.setCount(currentCount);
+    }
+
+    private void onPlusClick2(AppCompatTextView countTextView, boolean isFruitAndVeg, Item item) {
+        plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                double currentCount = Double.parseDouble(countTextView.getText().toString());
+                Boolean isBool = item.getCategory().equals(Category.FruitsAndVegetables);
+                if (isBool) {
+                    currentCount += 0.5;
+                    countTextView.setText(String.valueOf(currentCount));
+                } else {
+                    currentCount += 1.0;
+                    int res = (int) currentCount;
+                    countTextView.setText(String.valueOf(res));
+                }
+                item.setCount(currentCount);
+            }
+        });
     }
 
 
-    private void onPlusButton(AppCompatImageButton plusButton, AppCompatTextView countTextView, boolean isFruitAndVeg, Item item) {
+    private void onPlusButton(AppCompatImageButton plusButton, AppCompatTextView countTextView, boolean isFruitAndVeg) {
         plusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onPlusClick(countTextView, isFruitAndVeg, item);
+                onPlusClick(countTextView, isFruitAndVeg);
             }
         });
     }
@@ -421,7 +504,7 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
         boolean found = false;
         for (Item cartItem : GlobalResources.cart.items) {
             if (cartItem.getId().equals(item.getId())) {
-                cartItem.setCount(cartItem.getCount() + countValue);
+                cartItem.setCount(countValue);
                 found = true;
                 break;
             }

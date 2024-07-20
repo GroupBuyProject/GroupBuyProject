@@ -9,14 +9,9 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -25,13 +20,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.talshavit.groupbuyproject.MainActivity;
 import com.talshavit.groupbuyproject.R;
 import com.talshavit.groupbuyproject.models.User;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 
 public class SignUpFragment extends Fragment {
 
@@ -43,7 +41,7 @@ public class SignUpFragment extends Fragment {
     private String email, password;
     private FirebaseAuth firebaseAuth;
 
-   // private FirebaseAuth firebaseAuth;
+    // private FirebaseAuth firebaseAuth;
 
 
     public SignUpFragment() {

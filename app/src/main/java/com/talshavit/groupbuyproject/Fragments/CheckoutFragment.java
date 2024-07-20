@@ -147,8 +147,6 @@ public class CheckoutFragment extends Fragment {
             public void onClick(View view) {
                 Order order = new Order(GlobalResources.cart, price);
                 GlobalResources.user.addHistory(order);
-                Log.d("lala",GlobalResources.user.getHistories().get(0).getCart().getItems().get(0).getCount() + "");
-
                 MainActivity.isPaid = true;
                 GlobalResources.cart = new Cart();
                 itemsAdapterView.changeCount();

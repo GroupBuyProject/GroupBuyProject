@@ -88,7 +88,12 @@ public class DetailsUserForOrderFragment extends Fragment implements OnMapReadyC
     }
 
     private void onConfirmButton() {
-        GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(),new CheckoutFragment(price));
+        confirmLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(), new CheckoutFragment(price));
+            }
+        });
     }
 
     private void initViews() {

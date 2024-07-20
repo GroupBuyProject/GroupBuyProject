@@ -28,7 +28,6 @@ import java.util.ArrayList;
 public class HomeFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     private MeowBottomNavigation bottomNavigation;
-    //private ArrayList<Item>[] allItemsByCategories;
 
     public HomeFragment() {
     }
@@ -47,47 +46,47 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         ArrayList<Item> newItem = GlobalResources.items;
         int size = Category.values().length;
         GlobalResources.allItemsByCategories = new ArrayList[size];
-        for(int i=0; i<GlobalResources.allItemsByCategories.length; i++){
+        for (int i = 0; i < GlobalResources.allItemsByCategories.length; i++) {
             GlobalResources.allItemsByCategories[i] = new ArrayList<>();
         }
-        for(int i=0; i<newItem.size(); i++){
-            if(newItem.get(i).getCategory().equals(Category.FruitsAndVegetables)){
+        for (int i = 0; i < newItem.size(); i++) {
+            if (newItem.get(i).getCategory().equals(Category.FruitsAndVegetables)) {
                 GlobalResources.allItemsByCategories[0].add(newItem.get(i));
             }
-            if(newItem.get(i).getCategory().equals(Category.DairyAndEggs)){
+            if (newItem.get(i).getCategory().equals(Category.DairyAndEggs)) {
                 GlobalResources.allItemsByCategories[1].add(newItem.get(i));
             }
-            if(newItem.get(i).getCategory().equals(Category.MeatPoultryAndFish)){
+            if (newItem.get(i).getCategory().equals(Category.MeatPoultryAndFish)) {
                 GlobalResources.allItemsByCategories[2].add(newItem.get(i));
             }
-            if(newItem.get(i).getCategory().equals(Category.Bread)){
+            if (newItem.get(i).getCategory().equals(Category.Bread)) {
                 GlobalResources.allItemsByCategories[3].add(newItem.get(i));
             }
-            if(newItem.get(i).getCategory().equals(Category.WineAlcoholAndTobacco)){
+            if (newItem.get(i).getCategory().equals(Category.WineAlcoholAndTobacco)) {
                 GlobalResources.allItemsByCategories[4].add(newItem.get(i));
             }
-            if(newItem.get(i).getCategory().equals(Category.Drinks)){
+            if (newItem.get(i).getCategory().equals(Category.Drinks)) {
                 GlobalResources.allItemsByCategories[5].add(newItem.get(i));
             }
-            if(newItem.get(i).getCategory().equals(Category.SaladsAndDeli)){
+            if (newItem.get(i).getCategory().equals(Category.SaladsAndDeli)) {
                 GlobalResources.allItemsByCategories[6].add(newItem.get(i));
             }
-            if(newItem.get(i).getCategory().equals(Category.BakingProductsAndCannedGoods)){
+            if (newItem.get(i).getCategory().equals(Category.BakingProductsAndCannedGoods)) {
                 GlobalResources.allItemsByCategories[7].add(newItem.get(i));
             }
-            if(newItem.get(i).getCategory().equals(Category.SnacksCakesAndCookies)){
+            if (newItem.get(i).getCategory().equals(Category.SnacksCakesAndCookies)) {
                 GlobalResources.allItemsByCategories[8].add(newItem.get(i));
             }
-            if(newItem.get(i).getCategory().equals(Category.Cereal)){
+            if (newItem.get(i).getCategory().equals(Category.Cereal)) {
                 GlobalResources.allItemsByCategories[9].add(newItem.get(i));
             }
-            if(newItem.get(i).getCategory().equals(Category.NutsSpicesAndDriedFruits)){
+            if (newItem.get(i).getCategory().equals(Category.NutsSpicesAndDriedFruits)) {
                 GlobalResources.allItemsByCategories[10].add(newItem.get(i));
             }
-            if(newItem.get(i).getCategory().equals(Category.CleaningProductsAndDisposables)){
+            if (newItem.get(i).getCategory().equals(Category.CleaningProductsAndDisposables)) {
                 GlobalResources.allItemsByCategories[11].add(newItem.get(i));
             }
-            if(newItem.get(i).getCategory().equals(Category.PharmacyAndBabyProducts)){
+            if (newItem.get(i).getCategory().equals(Category.PharmacyAndBabyProducts)) {
                 GlobalResources.allItemsByCategories[12].add(newItem.get(i));
             }
         }
@@ -109,7 +108,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(),new AllItemsFragment(GlobalResources.allItemsByCategories[i], listCategory.get(i).getCategoryName(), listCategory.get(i).getImg(),i));
+                GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(), new AllItemsFragment(GlobalResources.allItemsByCategories[i], listCategory.get(i).getCategoryName(), listCategory.get(i).getImg(), i));
                 bottomNavigation.show(-1, true);
             }
         });

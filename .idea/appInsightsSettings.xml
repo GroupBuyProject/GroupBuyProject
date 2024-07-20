@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.talshavit.groupbuyproject" />
+                  <option name="mobileSdkAppId" value="1:133942113250:android:45decda982a57bb065ffbb" />
+                  <option name="projectId" value="groupbyproject" />
+                  <option name="projectNumber" value="133942113250" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

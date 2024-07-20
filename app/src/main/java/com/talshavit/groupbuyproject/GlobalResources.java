@@ -1,7 +1,5 @@
 package com.talshavit.groupbuyproject;
 
-import android.util.Log;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -31,9 +29,10 @@ public class GlobalResources {
     public static double limitPercent;
     public static double orderPrice = 0.0;
     public static int countForShowingDialog = 0;
+    public static int countForShowingDialogCompletion = 0;
     public static ArrayList<Item>[] allItemsByCategories;
 
-    public static void initCities(){
+    public static void initCities() {
         City city1 = new City("תל אביב", new LatLng(32.0853, 34.7818));
         city1.points.put("תל אביב אוניברסיטה", new LatLng(32.1093, 34.8554));
         city1.points.put("דיזינגוף סנטר", new LatLng(32.0753, 34.7747));
@@ -85,14 +84,11 @@ public class GlobalResources {
         fragmentTransaction.commit();
     }
 
-    public static void setLimitAmount(int amount){
+    public static void setLimitAmount(int amount) {
         limitAmount = amount;
     }
 
-    public static void setUser(User userObject){
+    public static void setUser(User userObject) {
         user = userObject;
     }
-
-
-
 }
