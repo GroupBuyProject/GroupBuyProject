@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,14 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.talshavit.groupbuyproject.GlobalResources;
 import com.talshavit.groupbuyproject.Helpers.ItemsAdapterView;
 import com.talshavit.groupbuyproject.MainActivity;
@@ -57,7 +64,7 @@ public class CheckoutFragment extends Fragment {
     }
 
     private void initViews() {
-        itemsAdapterView = new ItemsAdapterView(getContext(), GlobalResources.items, "");
+        itemsAdapterView = new ItemsAdapterView(getContext(), GlobalResources.items, "", -1);
         initMonths();
         initYear();
         initSpinnerMonth();
@@ -140,11 +147,29 @@ public class CheckoutFragment extends Fragment {
             public void onClick(View view) {
                 Order order = new Order(GlobalResources.cart, price);
                 GlobalResources.user.addHistory(order);
+                Log.d("lala",GlobalResources.user.getHistories().get(0).getCart().getItems().get(0).getCount() + "");
+
                 MainActivity.isPaid = true;
                 GlobalResources.cart = new Cart();
                 itemsAdapterView.changeCount();
+
+                String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("Users").child(userID);
+
+
+                userReference.child("histories").setValue(GlobalResources.user.getHistories()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(view.getContext(), "Order saved successfully", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(view.getContext(), "Failed to save order: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         });
+
     }
 
     private void findViews(View view) {

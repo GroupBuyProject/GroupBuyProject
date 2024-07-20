@@ -13,6 +13,9 @@ public class User {
         this.histories = new ArrayList<>();
     }
 
+    public User(String name) {
+        this.name = name;    }
+
     public User(String name, ArrayList<Order> histories) {
         this.name = name;
         this.histories = histories;

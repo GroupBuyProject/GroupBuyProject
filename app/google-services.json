@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "133942113250",
+    "project_id": "groupbyproject",
+    "storage_bucket": "groupbyproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:133942113250:android:45decda982a57bb065ffbb",
+        "android_client_info": {
+          "package_name": "com.talshavit.groupbuyproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0p7gX0Nd8JA1n0YigRZco_UOnaZXalj0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

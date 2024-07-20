@@ -40,15 +40,17 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
     private AppCompatImageButton minus, plus;
     private AppCompatTextView count;
     private GridLayout.LayoutParams params;
+    private int category ;
 
     public ItemsAdapterView() {
     }
 
-    public ItemsAdapterView(Context context, ArrayList<Item> allItems, String type) {
+    public ItemsAdapterView(Context context, ArrayList<Item> allItems, String type, int category) {
         this.context = context;
         this.allItems = allItems;
         this.allItemsFull = new ArrayList<>(allItems);
         this.type = type;
+        this.category = category;
     }
 
     @NonNull
@@ -96,7 +98,9 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
             holder.xButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    removeFromCart(position);
+                    Item itemToRemove = GlobalResources.cart.getItems().get(position);
+                    removeFromCart(itemToRemove);
+                    //removeFromCart(position);
                 }
             });
         } else
@@ -113,7 +117,9 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
                 if (holder.addItemButton.getText().equals("עדכון")) {
                     if (count.getText().equals("0") || count.getText().equals("0.0")) {
                         if (!GlobalResources.cart.items.isEmpty()) {
-                            removeFromCart(position);
+                            Item itemToRemove = GlobalResources.allItemsByCategories[category].get(position);
+                            removeFromCart(itemToRemove);
+                            //removeFromCart(position);
                             if (GlobalResources.items.contains(GlobalResources.items.get(position))) {
                                 if (isFruitAndVeg)
                                     GlobalResources.items.get(position).setCount(0.0);
@@ -186,16 +192,23 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
         dont_show_text = dialogView.findViewById(R.id.dont_show_text);
     }
 
-    private void removeFromCart(int position) {
-        if (GlobalResources.items.contains(GlobalResources.cart.items.get(position))) {
-            int idx = GlobalResources.items.indexOf(GlobalResources.cart.items.get(position));
-            if (isFruitAndVeg)
-                GlobalResources.items.get(idx).setCount(0.0);
-            else
-                GlobalResources.items.get(idx).setCount(0);
-            GlobalResources.cart.items.remove(position);
-            notifyDataSetChanged();
+    private void removeFromCart(Item itemToRemove) {
+        if (GlobalResources.cart.getItems().contains(itemToRemove)) {
+            GlobalResources.cart.getItems().remove(itemToRemove);
         }
+
+        for (Item item : GlobalResources.items) {
+            if (item.getId().equals(itemToRemove.getId())) {
+                if (isFruitAndVeg) {
+                    item.setCount(0.0);
+                } else {
+                    item.setCount(0);
+                }
+                break;
+            }
+        }
+
+        notifyDataSetChanged();
     }
 
     private void animateToCart(View imageView) {
@@ -225,7 +238,6 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
             holder.addItemButton.setText("עדכון");
             dialogCompletionOrder(allItems.get(position));
             animateToCart(holder.img);
-            // notifyDataSetChanged();
         }
     }
 
@@ -250,7 +262,6 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
             holder.addItemButton.setText("עדכון");
             dialogCompletionOrder(allItems.get(position));
             animateToCart(holder.img);
-            // notifyDataSetChanged();
         }
     }
 

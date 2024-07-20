@@ -51,10 +51,13 @@ public class DetailsUserForOrderFragment extends Fragment implements OnMapReadyC
     private ArrayList<String> allCitiesName, allPointsName;
     private ArrayList<City> allCities;
     private Map<String, LatLng> citiesMap = new HashMap<>();
+    private androidx.appcompat.widget.AppCompatButton confirmLocation;
+    private double price;
     private static final String PHONE_NUMBER = "+9720544885004";
     private static final String MESSAGE = "שלום, אני מעוניין להוסיף מיקום חדש לאיסוף.";
 
-    public DetailsUserForOrderFragment() {
+    public DetailsUserForOrderFragment(double price) {
+        this.price = price;
     }
 
     @Override
@@ -81,6 +84,11 @@ public class DetailsUserForOrderFragment extends Fragment implements OnMapReadyC
         super.onViewCreated(view, savedInstanceState);
         findViews(view);
         initViews();
+        onConfirmButton();
+    }
+
+    private void onConfirmButton() {
+        GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(),new CheckoutFragment(price));
     }
 
     private void initViews() {
@@ -197,6 +205,7 @@ public class DetailsUserForOrderFragment extends Fragment implements OnMapReadyC
         addNewPoint = view.findViewById(R.id.addNewPoint);
         pickUpCitySearch = view.findViewById(R.id.pickUpCitySearch);
         addressSearch = view.findViewById(R.id.addressSearch);
+        confirmLocation = view.findViewById(R.id.confirmLocation);
     }
 
     @Override
