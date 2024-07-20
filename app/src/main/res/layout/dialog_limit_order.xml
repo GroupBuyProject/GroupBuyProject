@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <com.google.android.material.textview.MaterialTextView
+       android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="סכום להגבת קניה"
+        android:layout_margin="16dp"
+        android:textSize="18sp"
+        android:textColor="@color/black"/>
+
+
+    <com.google.android.material.textfield.TextInputEditText
+       android:layout_below="@id/text"
+        android:id="@+id/edit_text_input_amount"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:inputType="number"
+        android:gravity="center"
+        android:background="@drawable/dialog_input"
+        android:layout_marginTop="8dp"/>
+
+
+</LinearLayout>

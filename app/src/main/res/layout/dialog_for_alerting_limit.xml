@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/red_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="חרגת מהסכום המוגבל"
+        android:textSize="32sp"
+        android:gravity="center"
+        android:textColor="#F31B1B"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/count_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/red_text"
+        android:textSize="18sp"
+        android:gravity="center_horizontal"/>
+
+    <TextView
+        android:id="@+id/dont_show_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:layout_below="@id/red_text"
+        android:text="אל תציג הודעה זאת שוב"
+        android:visibility="gone"/>
+
+
+</RelativeLayout>

@@ -1,9 +1,14 @@
 package com.talshavit.groupbuyproject.Helpers;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Paint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -112,8 +117,58 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
                 } else {
                     changeToInt(holder, position);
                 }
+
+                checkIfCloseToLimit();
             }
         });
+    }
+
+    private void checkIfCloseToLimit() {
+        if (GlobalResources.limitAmount > 0) {
+            GlobalResources.orderPrice = 0;
+            double temporaryAmount = GlobalResources.limitAmount;
+            for (int i = 0; i < GlobalResources.cart.items.size(); i++) {
+                GlobalResources.orderPrice += Double.parseDouble(GlobalResources.cart.items.get(i).getPrice()) * GlobalResources.cart.items.get(i).getCount();
+                if((temporaryAmount - GlobalResources.orderPrice) <= GlobalResources.limitPercent && (temporaryAmount - GlobalResources.orderPrice) > 0){
+                    openDialog( temporaryAmount - GlobalResources.orderPrice);
+                }
+                if((temporaryAmount - GlobalResources.orderPrice) <= 0){
+                    openDialog( 0.0);
+                }
+                Log.d("lala", temporaryAmount - GlobalResources.orderPrice+"");
+            }
+        }
+    }
+
+    private void openDialog(double count) {
+        Dialog dialog = new Dialog(context);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View dialogView = inflater.inflate(R.layout.dialog_for_alerting_limit, null);
+        dialog.setContentView(dialogView);
+
+        TextView red_text = dialogView.findViewById(R.id.red_text);
+        TextView count_text = dialogView.findViewById(R.id.count_text);
+        TextView dont_show_text = dialogView.findViewById(R.id.dont_show_text);
+
+
+        if(count>0.0){
+            red_text.setText("אתה מתקרב לסכום המוגבל");
+            String formattedCount = String.format("%.2f", count);
+            count_text.setText("נותר לך עוד "+formattedCount+" ש''ח");
+        }
+        else{
+            dont_show_text.setPaintFlags(dont_show_text.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            dont_show_text.setVisibility(View.VISIBLE);
+            dont_show_text.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    
+                }
+            });
+        }
+
+        dialog.show();
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_background);
     }
 
     private void removeFromCart(int position) {

@@ -25,6 +25,10 @@ public class GlobalResources {
     public static User user = new User();
     public static ArrayList<City> allCities = new ArrayList<>();
 
+    public static int limitAmount = 0;
+    public static double limitPercent;
+    public static double orderPrice = 0.0;
+
     public static void initCities(){
         City city1 = new City("תל אביב", new LatLng(32.0853, 34.7818));
         city1.points.put("תל אביב אוניברסיטה", new LatLng(32.1093, 34.8554));
@@ -76,6 +80,11 @@ public class GlobalResources {
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
+
+    public static void setLimitAmount(int amount){
+        limitAmount = amount;
+    }
+
 
 
 }
