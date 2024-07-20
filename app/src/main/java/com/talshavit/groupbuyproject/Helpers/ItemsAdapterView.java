@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.talshavit.groupbuyproject.GlobalResources;
+import com.talshavit.groupbuyproject.models.Cart;
 import com.talshavit.groupbuyproject.models.Category;
 import com.talshavit.groupbuyproject.models.Item;
 import com.talshavit.groupbuyproject.R;
@@ -99,6 +100,7 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
             @Override
             public void onClick(View view) {
                 if (holder.addItemButton.getText().equals("עדכון")) {
+                    Log.d("lala", position+"");
                     if (holder.count.getText().equals("0") || holder.count.getText().equals("0.0")) {
                         if (!GlobalResources.cart.items.isEmpty()) {
                             removeFromCart(position);
@@ -132,10 +134,10 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
                 if((temporaryAmount - GlobalResources.orderPrice) <= GlobalResources.limitPercent && (temporaryAmount - GlobalResources.orderPrice) > 0){
                     openDialog( temporaryAmount - GlobalResources.orderPrice);
                 }
-                if((temporaryAmount - GlobalResources.orderPrice) <= 0){
+                if((temporaryAmount - GlobalResources.orderPrice) <= 0  && GlobalResources.countForShowingDialog == 0){
                     openDialog( 0.0);
                 }
-                Log.d("lala", temporaryAmount - GlobalResources.orderPrice+"");
+                //Log.d("lala", temporaryAmount - GlobalResources.orderPrice+"");
             }
         }
     }
@@ -162,7 +164,7 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
             dont_show_text.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    
+                        GlobalResources.countForShowingDialog += 1;
                 }
             });
         }
@@ -192,29 +194,60 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
     private void changeToInt(MyViewHolderItems holder, int position) {
         int count = Integer.parseInt(holder.count.getText().toString());
         if (count > 0) {
-            allItems.get(position).setCount(count);
-            if (!GlobalResources.cart.items.contains(allItems.get(position))) {
+            boolean found = false;
+            for(Item item : GlobalResources.cart.items){
+               if(item.getId().equals(allItems.get(position).getId())){
+                   item.setCount(count);
+                   found = true;
+                   break;
+               }
+            }
+            if(!found){
+                allItems.get(position).setCount(count);
                 GlobalResources.cart.items.add(allItems.get(position));
-            } else {
-                GlobalResources.cart.items.set(position, allItems.get(position));
             }
             holder.addItemButton.setText("עדכון");
             animateToCart(holder.img);
+//            allItems.get(position).setCount(count);
+//            if (!GlobalResources.cart.items.contains(allItems.get(position))) {
+//                GlobalResources.cart.items.add(allItems.get(position));
+//            } else {
+//                GlobalResources.cart.items.set(position, allItems.get(position));
+//            }
+//            holder.addItemButton.setText("עדכון");
+//            animateToCart(holder.img);
         }
     }
 
     private void changeToDouble(MyViewHolderItems holder, int position) {
         double count = Double.parseDouble(holder.count.getText().toString());
         if (count > 0) {
-            allItems.get(position).setCount(count);
-            if (!GlobalResources.cart.items.contains(allItems.get(position))) {
+            boolean found = false;
+            for (Item item : GlobalResources.cart.items) {
+                if (item.getId().equals(allItems.get(position).getId())) {
+                    item.setCount(count);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                allItems.get(position).setCount(count);
                 GlobalResources.cart.items.add(allItems.get(position));
-            } else {
-                GlobalResources.cart.items.set(position, allItems.get(position));
             }
             holder.addItemButton.setText("עדכון");
             animateToCart(holder.img);
         }
+//        double count = Double.parseDouble(holder.count.getText().toString());
+//        if (count > 0) {
+//            allItems.get(position).setCount(count);
+//            if (!GlobalResources.cart.items.contains(allItems.get(position))) {
+//                GlobalResources.cart.items.add(allItems.get(position));
+//            } else {
+//                GlobalResources.cart.items.set(position, allItems.get(position));
+//            }
+//            holder.addItemButton.setText("עדכון");
+//            animateToCart(holder.img);
+//        }
     }
 
     private void onMinusButton(MyViewHolderItems holder, int position) {
