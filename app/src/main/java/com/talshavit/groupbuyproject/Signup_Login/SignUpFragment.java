@@ -13,6 +13,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,18 +27,21 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.talshavit.groupbuyproject.MainActivity;
 import com.talshavit.groupbuyproject.R;
+import com.talshavit.groupbuyproject.models.User;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 public class SignUpFragment extends Fragment {
 
     private EditText emailSignUp, passwordSignup, confirmSignup;
-    private Button signupButton;
+    private androidx.appcompat.widget.AppCompatButton signupButton;
 
     private TextView privacypolicytXT, termTxt;
 
     private String email, password;
+    private FirebaseAuth firebaseAuth;
 
    // private FirebaseAuth firebaseAuth;
 
@@ -59,7 +68,8 @@ public class SignUpFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //firebaseAuth = FirebaseAuth.getInstance();
+
+        firebaseAuth = FirebaseAuth.getInstance();
 
         findViews(view);
         initViews();
@@ -151,18 +161,26 @@ public class SignUpFragment extends Fragment {
     }
 
     private void createUser() {
-        /*firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(userID).child("paymentForAds");
-                    databaseReference.setValue(false);
-                    openMainActivity();
-                } else
-                    Toast.makeText(getContext(), "failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });*/
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(userID);
+                            User user = new User(email);
+
+                            databaseReference.setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        openMainActivity();
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
     }
 
     private void findViews(View view) {

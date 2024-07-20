@@ -28,6 +28,7 @@ public class GlobalResources {
     public static double limitPercent;
     public static double orderPrice = 0.0;
     public static int countForShowingDialog = 0;
+    public static ArrayList<Item>[] allItemsByCategories;
 
     public static void initCities(){
         City city1 = new City("תל אביב", new LatLng(32.0853, 34.7818));
@@ -83,6 +84,10 @@ public class GlobalResources {
 
     public static void setLimitAmount(int amount){
         limitAmount = amount;
+    }
+
+    public static void setUser(User userObject){
+        user = userObject;
     }
 
 

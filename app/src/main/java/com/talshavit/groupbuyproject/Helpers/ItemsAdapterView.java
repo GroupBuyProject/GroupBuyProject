@@ -29,15 +29,17 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
     private Context context;
     private String type;
     private boolean isFruitAndVeg = false;
+    private int category ;
 
     public ItemsAdapterView() {
     }
 
-    public ItemsAdapterView(Context context, ArrayList<Item> allItems, String type) {
+    public ItemsAdapterView(Context context, ArrayList<Item> allItems, String type, int category) {
         this.context = context;
         this.allItems = allItems;
         this.allItemsFull = new ArrayList<>(allItems);
         this.type = type;
+        this.category = category;
     }
 
     @NonNull
@@ -85,7 +87,9 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
             holder.xButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    removeFromCart(position);
+                    Item itemToRemove = GlobalResources.cart.getItems().get(position);
+                    removeFromCart(itemToRemove);
+                    //removeFromCart(position);
                 }
             });
         } else
@@ -100,10 +104,11 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
             @Override
             public void onClick(View view) {
                 if (holder.addItemButton.getText().equals("עדכון")) {
-                    Log.d("lala", position+"");
                     if (holder.count.getText().equals("0") || holder.count.getText().equals("0.0")) {
                         if (!GlobalResources.cart.items.isEmpty()) {
-                            removeFromCart(position);
+                            Item itemToRemove = GlobalResources.allItemsByCategories[category].get(position);
+                            removeFromCart(itemToRemove);
+                            //removeFromCart(position);
                             if (GlobalResources.items.contains(GlobalResources.items.get(position))) {
                                 if (isFruitAndVeg)
                                     GlobalResources.items.get(position).setCount(0.0);
@@ -137,7 +142,6 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
                 if((temporaryAmount - GlobalResources.orderPrice) <= 0  && GlobalResources.countForShowingDialog == 0){
                     openDialog( 0.0);
                 }
-                //Log.d("lala", temporaryAmount - GlobalResources.orderPrice+"");
             }
         }
     }
@@ -173,16 +177,23 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_background);
     }
 
-    private void removeFromCart(int position) {
-        if (GlobalResources.items.contains(GlobalResources.cart.items.get(position))) {
-            int idx = GlobalResources.items.indexOf(GlobalResources.cart.items.get(position));
-            if (isFruitAndVeg)
-                GlobalResources.items.get(idx).setCount(0.0);
-            else
-                GlobalResources.items.get(idx).setCount(0);
-            GlobalResources.cart.items.remove(position);
-            notifyDataSetChanged();
+    private void removeFromCart(Item itemToRemove) {
+        if (GlobalResources.cart.getItems().contains(itemToRemove)) {
+            GlobalResources.cart.getItems().remove(itemToRemove);
         }
+
+        for (Item item : GlobalResources.items) {
+            if (item.getId().equals(itemToRemove.getId())) {
+                if (isFruitAndVeg) {
+                    item.setCount(0.0);
+                } else {
+                    item.setCount(0);
+                }
+                break;
+            }
+        }
+
+        notifyDataSetChanged();
     }
 
     private void animateToCart(View imageView) {

@@ -66,7 +66,7 @@ public class CartFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 double price = calcPrice();
-                GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(), new DetailsUserForOrderFragment());
+                GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(), new DetailsUserForOrderFragment(price));
                 //GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(), new CheckoutFragment(price));
             }
         });
@@ -82,7 +82,7 @@ public class CartFragment extends Fragment {
 
     private void findViews(View view) {
         recyclerViewItem = view.findViewById(R.id.recyclerView);
-        itemsAdapterView = new ItemsAdapterView(getContext(), cart.items, "CartFragment");
+        itemsAdapterView = new ItemsAdapterView(getContext(), cart.items, "CartFragment", -1);
         checkout = view.findViewById(R.id.checkout);
     }
 

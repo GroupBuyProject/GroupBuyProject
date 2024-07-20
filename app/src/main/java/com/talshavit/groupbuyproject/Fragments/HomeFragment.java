@@ -28,7 +28,7 @@ import java.util.ArrayList;
 public class HomeFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     private MeowBottomNavigation bottomNavigation;
-    private ArrayList<Item>[] allItemsByCategories;
+    //private ArrayList<Item>[] allItemsByCategories;
 
     public HomeFragment() {
     }
@@ -46,49 +46,49 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     private void filterListByCategory() {
         ArrayList<Item> newItem = GlobalResources.items;
         int size = Category.values().length;
-        allItemsByCategories = new ArrayList[size];
-        for(int i=0; i<allItemsByCategories.length; i++){
-            allItemsByCategories[i] = new ArrayList<>();
+        GlobalResources.allItemsByCategories = new ArrayList[size];
+        for(int i=0; i<GlobalResources.allItemsByCategories.length; i++){
+            GlobalResources.allItemsByCategories[i] = new ArrayList<>();
         }
         for(int i=0; i<newItem.size(); i++){
             if(newItem.get(i).getCategory().equals(Category.FruitsAndVegetables)){
-                allItemsByCategories[0].add(newItem.get(i));
+                GlobalResources.allItemsByCategories[0].add(newItem.get(i));
             }
             if(newItem.get(i).getCategory().equals(Category.DairyAndEggs)){
-                allItemsByCategories[1].add(newItem.get(i));
+                GlobalResources.allItemsByCategories[1].add(newItem.get(i));
             }
             if(newItem.get(i).getCategory().equals(Category.MeatPoultryAndFish)){
-                allItemsByCategories[2].add(newItem.get(i));
+                GlobalResources.allItemsByCategories[2].add(newItem.get(i));
             }
             if(newItem.get(i).getCategory().equals(Category.Bread)){
-                allItemsByCategories[3].add(newItem.get(i));
+                GlobalResources.allItemsByCategories[3].add(newItem.get(i));
             }
             if(newItem.get(i).getCategory().equals(Category.WineAlcoholAndTobacco)){
-                allItemsByCategories[4].add(newItem.get(i));
+                GlobalResources.allItemsByCategories[4].add(newItem.get(i));
             }
             if(newItem.get(i).getCategory().equals(Category.Drinks)){
-                allItemsByCategories[5].add(newItem.get(i));
+                GlobalResources.allItemsByCategories[5].add(newItem.get(i));
             }
             if(newItem.get(i).getCategory().equals(Category.SaladsAndDeli)){
-                allItemsByCategories[6].add(newItem.get(i));
+                GlobalResources.allItemsByCategories[6].add(newItem.get(i));
             }
             if(newItem.get(i).getCategory().equals(Category.BakingProductsAndCannedGoods)){
-                allItemsByCategories[7].add(newItem.get(i));
+                GlobalResources.allItemsByCategories[7].add(newItem.get(i));
             }
             if(newItem.get(i).getCategory().equals(Category.SnacksCakesAndCookies)){
-                allItemsByCategories[8].add(newItem.get(i));
+                GlobalResources.allItemsByCategories[8].add(newItem.get(i));
             }
             if(newItem.get(i).getCategory().equals(Category.Cereal)){
-                allItemsByCategories[9].add(newItem.get(i));
+                GlobalResources.allItemsByCategories[9].add(newItem.get(i));
             }
             if(newItem.get(i).getCategory().equals(Category.NutsSpicesAndDriedFruits)){
-                allItemsByCategories[10].add(newItem.get(i));
+                GlobalResources.allItemsByCategories[10].add(newItem.get(i));
             }
             if(newItem.get(i).getCategory().equals(Category.CleaningProductsAndDisposables)){
-                allItemsByCategories[11].add(newItem.get(i));
+                GlobalResources.allItemsByCategories[11].add(newItem.get(i));
             }
             if(newItem.get(i).getCategory().equals(Category.PharmacyAndBabyProducts)){
-                allItemsByCategories[12].add(newItem.get(i));
+                GlobalResources.allItemsByCategories[12].add(newItem.get(i));
             }
         }
     }
@@ -109,7 +109,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(),new AllItemsFragment(allItemsByCategories[i], listCategory.get(i).getCategoryName(), listCategory.get(i).getImg()));
+                GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(),new AllItemsFragment(GlobalResources.allItemsByCategories[i], listCategory.get(i).getCategoryName(), listCategory.get(i).getImg(),i));
                 bottomNavigation.show(-1, true);
             }
         });

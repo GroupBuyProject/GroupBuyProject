@@ -35,7 +35,7 @@ public class SearchFragment extends Fragment {
     }
 
     private void initViews(View view) {
-        itemsAdapterView = new ItemsAdapterView(getContext(), GlobalResources.items, "");
+        itemsAdapterView = new ItemsAdapterView(getContext(), GlobalResources.items, "", -1);
         editTxtSearchByItem = view.findViewById(R.id.editTxtSearchByItem);
         editTxtSearchByCompany = view.findViewById(R.id.editTxtSearchByCompany);
         recyclerViewItem = view.findViewById(R.id.recyclerView);

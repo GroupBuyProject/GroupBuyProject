@@ -34,15 +34,17 @@ public class AllItemsFragment extends Fragment {
     private String categoryName;
 
     private String img;
+    private int category;
 
 
     public AllItemsFragment() {
     }
 
-    public AllItemsFragment(ArrayList<Item> allItemsByCategories, String categoryName, String img) {
+    public AllItemsFragment(ArrayList<Item> allItemsByCategories, String categoryName, String img, int category) {
         this.allItemsByCategories = allItemsByCategories;
         this.categoryName = categoryName;
         this.img = img;
+        this.category = category;
     }
 
     @Override
@@ -72,7 +74,7 @@ public class AllItemsFragment extends Fragment {
     private void findViews(View view) {
         recyclerViewItem = view.findViewById(R.id.recyclerView);
         imgBackGround = view.findViewById(R.id.imgBackGround);
-        itemsAdapterView = new ItemsAdapterView(getContext(), allItemsByCategories, "AllItemsFragment");
+        itemsAdapterView = new ItemsAdapterView(getContext(), allItemsByCategories, "AllItemsFragment",category);
         title = view.findViewById(R.id.title);
     }
 
