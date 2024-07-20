@@ -11,5 +11,6 @@
     <color name="lightGray">#F3EEEE</color>
     <color name="darkGray">#575454</color>
     <color name="darkGreen">#578E5A</color>
+    <color name="semiTransparant">#94FFFFFF</color>
 
 </resources>

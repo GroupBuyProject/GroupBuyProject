@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">GroupBuyProject</string>
     <string name="addItem">הוספה</string>
+    <string name="confirm">אישור</string>
     <string name="unit">יח\'</string>
     <string name="unitFruit">ק"\ג</string>
     <string name="my_map_api_key">AIzaSyBF6AgBzDBDCb3EPrxuAWE6tFwn5N8Uwjs</string>

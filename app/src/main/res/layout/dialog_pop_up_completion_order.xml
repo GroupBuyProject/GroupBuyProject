@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="18dp"
+        android:gravity="center_horizontal"
+        android:text="האם תרצה להוסיף את המוצרים הבאים להשלמת קניה?"
+        android:textColor="@color/black"
+        android:textSize="28sp" />
+
+    <GridLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text"
+        android:alignmentMode="alignMargins"
+        android:columnCount="3"
+        android:padding="10dp"
+        android:rowCount="2"
+        android:useDefaultMargins="true" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/confirm_button"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:backgroundTint="@color/lightGreen"
+        android:gravity="center"
+        android:text="@string/confirm"
+        android:textColor="@color/darkGray"
+        app:cornerRadius="14dp"
+        app:strokeColor="@color/darkGray"
+        app:strokeWidth="1dp"
+        android:layout_below="@id/gridLayout"
+        android:layout_centerHorizontal="true"
+        />
+
+</RelativeLayout>

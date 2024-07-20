@@ -1,6 +1,8 @@
 package com.talshavit.groupbuyproject.models;
 
 
+import java.util.ArrayList;
+
 public class Item {
     private String id;
     private String name;
@@ -9,12 +11,13 @@ public class Item {
     private String weight;
     private String company;
     private Category category;
+    private ArrayList<Integer> relatedItems;
     private double count;
 
     public Item() {
     }
 
-    public Item(String id, String name, String price, String img, String weight, String company, Category category) {
+    public Item(String id, String name, String price, String img, String weight, String company, Category category, ArrayList<Integer> relatedItems) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -22,6 +25,7 @@ public class Item {
         this.weight = weight;
         this.company = company;
         this.category = category;
+        this.relatedItems = relatedItems;
         this.count = 0;
     }
 
@@ -94,6 +98,15 @@ public class Item {
 
     public Item setCount(double count) {
         this.count = count;
+        return this;
+    }
+
+    public ArrayList<Integer> getRelatedItems() {
+        return relatedItems;
+    }
+
+    public Item setRelatedItems(ArrayList<Integer> relatedItems) {
+        this.relatedItems = relatedItems;
         return this;
     }
 }
