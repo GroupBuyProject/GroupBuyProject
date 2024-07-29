@@ -9,20 +9,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
-import com.talshavit.groupbuyproject.GlobalResources;
+import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.Helpers.ItemsAdapterView;
 import com.talshavit.groupbuyproject.R;
 import com.talshavit.groupbuyproject.models.Cart;
-import com.talshavit.groupbuyproject.models.Category;
-
-import java.text.DecimalFormat;
-import java.util.ArrayList;
 
 public class CartFragment extends Fragment {
 
@@ -66,7 +61,10 @@ public class CartFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 double price = calcPrice();
-                GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(), new DetailsUserForOrderFragment(price));
+                if (cart.getItems().size() != 0)
+                    GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(), new MapFragment(price));
+                else
+                    Toast.makeText(getContext(), "איו פירטים בעגלה", Toast.LENGTH_SHORT).show();
             }
         });
     }

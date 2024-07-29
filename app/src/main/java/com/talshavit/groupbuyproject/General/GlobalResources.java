@@ -1,4 +1,4 @@
-package com.talshavit.groupbuyproject;
+package com.talshavit.groupbuyproject.General;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.gms.maps.model.LatLng;
 import com.talshavit.groupbuyproject.Helpers.Retrofit.ApiService;
 import com.talshavit.groupbuyproject.Helpers.Retrofit.RetrofitClient;
+import com.talshavit.groupbuyproject.R;
 import com.talshavit.groupbuyproject.models.Cart;
 import com.talshavit.groupbuyproject.models.City;
 import com.talshavit.groupbuyproject.models.Item;
@@ -34,7 +35,7 @@ public class GlobalResources {
 
     public static void initCities() {
         City city1 = new City("תל אביב", new LatLng(32.0853, 34.7818));
-        city1.points.put("תל אביב אוניברסיטה", new LatLng(32.1093, 34.8554));
+        city1.points.put("אוניברסיטת תל אביב", new LatLng(32.1093, 34.8554));
         city1.points.put("דיזינגוף סנטר", new LatLng(32.0753, 34.7747));
 
         City city2 = new City("ירושלים", new LatLng(31.7683, 35.2137));

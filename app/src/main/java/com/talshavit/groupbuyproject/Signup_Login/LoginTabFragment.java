@@ -7,9 +7,7 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,17 +18,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.talshavit.groupbuyproject.GlobalResources;
+import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.MainActivity;
 import com.talshavit.groupbuyproject.R;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.AuthResult;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.talshavit.groupbuyproject.models.Order;
 import com.talshavit.groupbuyproject.models.User;
+
+import java.util.ArrayList;
 
 
 public class LoginTabFragment extends Fragment {
@@ -39,6 +38,8 @@ public class LoginTabFragment extends Fragment {
     private androidx.appcompat.widget.AppCompatButton loginButton;
 
     private FirebaseAuth firebaseAuth;
+    private String userID;
+    private DatabaseReference databaseReference;
 
     public LoginTabFragment() {
         // Required empty public constructor
@@ -77,11 +78,12 @@ public class LoginTabFragment extends Fragment {
                 String email = emailLogin.getText().toString().trim();
                 String password = passwordLogin.getText().toString().trim();
 
-                if(email.isEmpty()){
-                    emailLogin.setError("You must fill email!");
-                } if(password.isEmpty()){
-                    passwordLogin.setError("You must fill password!");
-                }else if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches() && !password.isEmpty()){
+                if (email.isEmpty()) {
+                    emailLogin.setError("חובה למלא מייל!");
+                }
+                if (password.isEmpty()) {
+                    passwordLogin.setError("חובה למלא סיסמא!");
+                } else if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches() && !password.isEmpty()) {
                     firebaseAuth.signInWithEmailAndPassword(email, password)
                             .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                                 @Override
@@ -91,20 +93,20 @@ public class LoginTabFragment extends Fragment {
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    emailLogin.setError("Incorrect email or password");
-                                    passwordLogin.setError("Incorrect email or password");
+                                    emailLogin.setError("מייל או סיסמא שגויים!");
+                                    passwordLogin.setError("מייל או סיסמא שגויים!");
                                 }
                             });
-                    }
-                else{
+                } else {
                     emailLogin.setError("Please enter valid email");
                 }
             }
         });
     }
+
     private void loadUserData() {
-        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(userID);
+        userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(userID);
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -112,6 +114,7 @@ public class LoginTabFragment extends Fragment {
                 User user = dataSnapshot.getValue(User.class);
                 if (user != null) {
                     Log.d("LoginTabFragment", "User data loaded: " + user.getName());
+                    loadHistoriesFromDatabase();
                     openMainActivity(user);
                 } else {
                     Log.d("LoginTabFragment", "User data is null");
@@ -125,6 +128,24 @@ public class LoginTabFragment extends Fragment {
         });
     }
 
+    private void loadHistoriesFromDatabase() {
+        databaseReference.child("HistoriesList").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
+                    Order order = itemSnapshot.getValue(Order.class);
+                    if (order != null) {
+                        GlobalResources.user.addHistory(order);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+    }
 
 
     private void findViews(View view) {

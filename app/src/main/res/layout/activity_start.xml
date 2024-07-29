@@ -64,7 +64,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="סופר GroupBy"
+        android:text="GroupBuy"
+        android:textStyle="bold"
         android:textColor="@color/white"
         android:textSize="30dp"
         android:gravity="center"

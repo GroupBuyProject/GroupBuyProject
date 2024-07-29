@@ -23,8 +23,8 @@ public class StartActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        tableLayout.addTab(tableLayout.newTab().setText("LOGIN"));
-        tableLayout.addTab(tableLayout.newTab().setText("SIGNUP"));
+        tableLayout.addTab(tableLayout.newTab().setText("התחברות"));
+        tableLayout.addTab(tableLayout.newTab().setText("הרשמה"));
         tableLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         MyPageAdapter adapter = new MyPageAdapter(getSupportFragmentManager(), tableLayout.getTabCount());

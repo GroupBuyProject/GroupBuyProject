@@ -8,17 +8,26 @@ import java.util.Comparator;
 public class User {
     private String name;
     private ArrayList<Order> histories;
+    private ArrayList<Payment> payments;
 
     public User() {
         this.histories = new ArrayList<>();
+        this.payments = new ArrayList<>();
     }
 
     public User(String name) {
-        this.name = name;    }
+        this.name = name;
+    }
 
     public User(String name, ArrayList<Order> histories) {
         this.name = name;
         this.histories = histories;
+    }
+
+    public User(String name, ArrayList<Order> histories, ArrayList<Payment> payments) {
+        this.name = name;
+        this.histories = histories;
+        this.payments = payments;
     }
 
     public String getName() {
@@ -39,6 +48,15 @@ public class User {
         return this;
     }
 
+    public ArrayList<Payment> getPayments() {
+        return payments;
+    }
+
+    public User setPayments(ArrayList<Payment> payments) {
+        this.payments = payments;
+        return this;
+    }
+
     public void addHistory(Order history) {
         histories.add(history);
 
@@ -52,6 +70,10 @@ public class User {
                 return dateComparison;
             }
         });
+    }
+
+    public void addPayment(Payment payment){
+        payments.add(payment);
     }
 }
 

@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.talshavit.groupbuyproject.Fragments.OrderFragment;
-import com.talshavit.groupbuyproject.GlobalResources;
+import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.R;
 import com.talshavit.groupbuyproject.models.Order;
 

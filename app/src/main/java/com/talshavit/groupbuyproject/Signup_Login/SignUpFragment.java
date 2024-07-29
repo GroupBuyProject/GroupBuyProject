@@ -33,12 +33,12 @@ import java.io.InputStream;
 
 public class SignUpFragment extends Fragment {
 
-    private EditText emailSignUp, passwordSignup, confirmSignup;
+    private EditText nameEditText, emailSignUp, passwordSignup, confirmSignup;
     private androidx.appcompat.widget.AppCompatButton signupButton;
 
     private TextView privacypolicytXT, termTxt;
 
-    private String email, password;
+    private String name, email, password;
     private FirebaseAuth firebaseAuth;
 
     // private FirebaseAuth firebaseAuth;
@@ -122,33 +122,38 @@ public class SignUpFragment extends Fragment {
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                name = nameEditText.getText().toString().trim();
                 email = emailSignUp.getText().toString().trim();
                 password = passwordSignup.getText().toString().trim();
                 String confirmPassword = confirmSignup.getText().toString().trim();
                 boolean isValid = true;
 
+                if (name.isEmpty()) {
+                    nameEditText.setError("חובה למלא שם!");
+                    isValid = false;
+                }
                 if (email.isEmpty()) {
-                    emailSignUp.setError("Email can not be empty!");
+                    emailSignUp.setError("חובה למלא מייל!");
                     isValid = false;
                 } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    emailSignUp.setError("The email address is badly formatted");
+                    emailSignUp.setError("כתובת המייל לא בפורמט תקין!");
                     isValid = false;
                 }
                 if (password.isEmpty()) {
-                    passwordSignup.setError("Password can not be empty!");
+                    passwordSignup.setError("חובה למלא סיסמא!");
                     isValid = false;
                 } else if (password.length() < 6) {
-                    passwordSignup.setError("Password should be at least 6 characters");
+                    passwordSignup.setError("סיסמא חייבת להכיל לפחות 6 תווים!");
                     isValid = false;
                 }
                 if (confirmPassword.isEmpty()) {
-                    confirmSignup.setError("Password can not be empty!");
+                    confirmSignup.setError("יש למלא אימות סיסמא!");
                     isValid = false;
                 } else if (confirmPassword.length() < 6) {
-                    confirmSignup.setError("Password should be at least 6 characters");
+                    confirmSignup.setError("סיסמא חייבת להכיל לפחות 6 תווים!");
                     isValid = false;
                 } else if (!password.equals(confirmPassword)) {
-                    confirmSignup.setError("Password and confirmPassword are not match");
+                    confirmSignup.setError("סיסמאות לא זהות!");
                     isValid = false;
                 }
                 if (isValid) {
@@ -166,7 +171,7 @@ public class SignUpFragment extends Fragment {
                         if (task.isSuccessful()) {
                             String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
                             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(userID);
-                            User user = new User(email);
+                            User user = new User(name);
 
                             databaseReference.setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
@@ -182,6 +187,7 @@ public class SignUpFragment extends Fragment {
     }
 
     private void findViews(View view) {
+        nameEditText = view.findViewById(R.id.nameEditText);
         signupButton = view.findViewById(R.id.signupButton);
         emailSignUp = view.findViewById(R.id.emailSignUp);
         passwordSignup = view.findViewById(R.id.passwordSignup);

@@ -3,7 +3,6 @@ package com.talshavit.groupbuyproject.Helpers;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,14 +19,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
-import com.talshavit.groupbuyproject.GlobalResources;
+import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.models.Category;
 import com.talshavit.groupbuyproject.models.Item;
 import com.talshavit.groupbuyproject.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Locale;
 
 public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
 
@@ -122,7 +120,6 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
                 if (allItems.get(position).getCategory().equals(Category.FruitsAndVegetables)) {
                     changeToDouble(holder, position);
                 } else {
-                    Log.d("lala", allItems.get(position).getName());
                     changeToInt(holder, position);
                 }
                 if (holder.addItemButton.getText().equals("עדכון")) {

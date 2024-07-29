@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
-import com.talshavit.groupbuyproject.GlobalResources;
+import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.models.Category;
 import com.talshavit.groupbuyproject.Helpers.GridViewAdapter;
 import com.talshavit.groupbuyproject.models.Item;

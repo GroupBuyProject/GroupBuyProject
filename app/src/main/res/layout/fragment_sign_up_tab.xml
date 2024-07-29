@@ -7,58 +7,130 @@
     android:orientation="vertical"
     tools:context=".Signup_Login.LoginTabFragment">
 
-
-    <EditText
-        android:id="@+id/emailSignUp"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="20dp"
-        android:background="@drawable/edit_text_background"
-        android:drawableLeft="@drawable/baseline_person_24"
-        android:drawablePadding="8dp"
-        android:hint="Email"
-        android:paddingLeft="20dp"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:background="@drawable/shape_edit_text"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="5dp">
 
+        <EditText
+            android:id="@+id/nameEditText"
+            style="@style/edit_txt_no_hint_line"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:hint="שם"
+            android:inputType="textPersonName"
+            android:maxLength="19"
+            android:textAlignment="viewEnd" />
 
-    <EditText
-        android:id="@+id/passwordSignup"
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/user" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="20dp"
-        android:background="@drawable/edit_text_background"
-        android:drawableLeft="@drawable/baseline_lock_24"
-        android:drawablePadding="8dp"
-        android:hint="Password"
-        android:paddingLeft="20dp"
-        android:password="true"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:background="@drawable/shape_edit_text"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="5dp">
 
-    <EditText
-        android:id="@+id/confirmSignup"
+        <EditText
+            android:id="@+id/emailSignUp"
+            style="@style/edit_txt_no_hint_line"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:hint="מייל"
+            android:inputType="textEmailAddress"
+            android:maxLength="19"
+            android:textAlignment="viewEnd" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/email" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="20dp"
-        android:background="@drawable/edit_text_background"
-        android:drawableLeft="@drawable/baseline_question_mark_24"
-        android:drawablePadding="8dp"
-        android:hint="Confirm Password"
-        android:paddingLeft="20dp"
-        android:password="true"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:background="@drawable/shape_edit_text"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <EditText
+            android:id="@+id/passwordSignup"
+            style="@style/edit_txt_no_hint_line"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:hint="סיסמא"
+            android:inputType="textPassword"
+            android:maxLength="19"
+            android:textAlignment="viewEnd" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/lock2" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/shape_edit_text"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <EditText
+            android:id="@+id/confirmSignup"
+            style="@style/edit_txt_no_hint_line"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:hint="אימות סיסמא"
+            android:inputType="textPassword"
+            android:maxLength="19"
+            android:textAlignment="viewEnd" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/lockcheck" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:orientation="vertical">
 
         <TextView
@@ -68,7 +140,7 @@
             android:layout_marginEnd="25dp"
             android:clickable="true"
             android:gravity="center"
-            android:text="By tapping Sign Up, you agree to our Term. Learn how we process your data in our "
+            android:text="בלחיצה על 'הרשמה' את/ה מסכימ/ה לתנאים שלנו"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -86,15 +158,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                android:text="Privacy Policy "
-                android:textColor="@color/purple_700"
+                android:text="מדיניות הפרטיות"
+                android:textColor="@color/darkGreen"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="and "
+                android:text=" ו"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -104,8 +176,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                android:text="Terms&amp;Coditions"
-                android:textColor="@color/purple_700"
+                android:text="תנאים"
+                android:textColor="@color/darkGreen"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -115,14 +187,12 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/signupButton"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
+        android:layout_width="120dp"
+        android:layout_height="37dp"
         android:layout_gravity="center"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/add_button"
-        android:text="SIGNUP"
-        android:backgroundTint="@color/lightGreen"
-        android:textColor="@color/white"
-        android:textStyle="bold" />
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="70dp"
+        android:background="@drawable/button_background"
+        android:text="הרשמה" />
 
 </LinearLayout>

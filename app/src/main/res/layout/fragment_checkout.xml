@@ -4,232 +4,198 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="48dp"
-    android:layout_marginEnd="16dp"
     android:orientation="vertical"
     tools:context=".Fragments.CheckoutFragment">
 
-    <com.google.android.material.textview.MaterialTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/paymentTitle"
-        style="@style/Widget.MaterialComponents.TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="24dp"
-        android:text="תשלום"
-        android:textColor="@color/darkGreen"
-        android:textSize="24sp"
-        android:textStyle="bold" />
-
-    <!--    <com.google.android.material.textfield.TextInputLayout-->
-    <!--        android:id="@+id/tilCardNumber"-->
-    <!--        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginBottom="16dp"-->
-    <!--        android:hint="מספר כרטיס"-->
-    <!--        app:boxBackgroundColor="@android:color/white"-->
-    <!--        app:boxCornerRadiusBottomEnd="8dp"-->
-    <!--        app:boxCornerRadiusBottomStart="8dp"-->
-    <!--        app:boxCornerRadiusTopEnd="8dp"-->
-    <!--        app:boxCornerRadiusTopStart="8dp"-->
-    <!--        app:boxStrokeColor="@color/black">-->
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/shape_edit_text"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="5dp">
-
-        <EditText
-            android:id="@+id/etCardNumber"
-            style="@style/edit_txt_no_hint_line"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="1"
-            android:hint="מספר כרטיס"
-            android:inputType="number" />
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/credit" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/shape_edit_text"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="5dp">
-
-        <EditText
-            android:id="@+id/etID"
-            style="@style/edit_txt_no_hint_line"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="1"
-            android:hint="תעודת זהות"
-            android:inputType="number" />
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/id" />
-
-    </LinearLayout>
-
-
-    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_marginTop="20dp"
+        android:autoSizeMaxTextSize="32sp"
+        android:autoSizeTextType="uniform"
+        android:background="@color/darkGreen"
+        android:fontFamily="@font/rubik"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:maxLines="1"
+        android:paddingTop="20dp"
+        android:text="תשלום"
+        android:textColor="@color/black"
+        android:textStyle="bold" />
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/interrogation" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:orientation="vertical">
+
+
         <LinearLayout
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:background="@drawable/shape_edit_text"
             android:gravity="center"
             android:orientation="horizontal"
             android:padding="5dp">
 
             <EditText
-                android:id="@+id/etCVV"
+                android:id="@+id/etCardNumber"
                 style="@style/edit_txt_no_hint_line"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
-                android:gravity="end|center_vertical"
-                android:hint="CVV"
-                android:inputType="number" />
+                android:hint="מספר כרטיס"
+                android:inputType="number"
+                android:maxLength="19"/>
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/credit" />
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/shape_edit_text"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="5dp">
 
-        <View
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"/>
+            <EditText
+                android:id="@+id/etID"
+                style="@style/edit_txt_no_hint_line"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:hint="תעודת זהות"
+                android:inputType="number"
+                android:maxLength="9"/>
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/id" />
+
+        </LinearLayout>
 
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="תוקף כרטיס" />
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_edit_text"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="5dp">
 
-                <Spinner
-                    android:id="@+id/monthSpinner"
+                <EditText
+                    android:id="@+id/cvv"
+                    style="@style/edit_txt_no_hint_line"
                     android:layout_width="0dp"
-                    android:layout_height="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="10dp"
                     android:layout_weight="1"
-                    android:textAlignment="center"/>
+                    android:hint="CVV"
+                    android:inputType="number"
+                    android:maxLength="3" />
 
-                <Spinner
-                    android:id="@+id/year"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:textAlignment="center" />
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/question" />
+
             </LinearLayout>
 
-        </LinearLayout>
+            <View
+                android:layout_width="10dp"
+                android:layout_height="0dp" />
 
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="תוקף כרטיס" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:orientation="horizontal">
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textInputLayoutMonth"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:hint="חודש"
+                        android:textColorHint="@color/black">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/month"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:gravity="start|center_vertical"
+                            android:inputType="none"
+                            android:text="" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <View
+                        android:layout_width="10dp"
+                        android:layout_height="0dp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textInputLayoutYear"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:hint="שנה"
+                        android:textColorHint="@color/black">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/year"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:gravity="start|center_vertical"
+                            android:inputType="none"
+                            android:text="" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
 
-    <com.google.android.material.button.MaterialButton
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnPay"
-        style="@style/Widget.MaterialComponents.Button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="120dp"
+        android:layout_height="37dp"
         android:layout_gravity="center"
-        android:backgroundTint="@color/white"
-        android:padding="16dp"
-        android:text="תשלום"
-        android:textColor="@color/darkGreen"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:strokeColor="@color/darkGreen"
-        app:strokeWidth="2dp" />
-
-
-    <!--    <com.google.android.material.textfield.TextInputEditText-->
-    <!--        android:id="@+id/etCardNumber"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:inputType="number"-->
-    <!--        android:padding="12dp" />-->
-    <!--</com.google.android.material.textfield.TextInputLayout>-->
-
-    <!--<com.google.android.material.textfield.TextInputLayout-->
-    <!--style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"-->
-    <!--android:hint="תוקף"-->
-    <!--android:id="@+id/tilExpiryDate"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginBottom="16dp"-->
-    <!--android:layout_width="match_parent"-->
-    <!--app:boxBackgroundColor="@android:color/white"-->
-    <!--app:boxCornerRadiusBottomEnd="8dp"-->
-    <!--app:boxCornerRadiusBottomStart="8dp"-->
-    <!--app:boxCornerRadiusTopEnd="8dp"-->
-    <!--app:boxCornerRadiusTopStart="8dp"-->
-    <!--app:boxStrokeColor="@color/black">-->
-
-    <!--<com.google.android.material.textfield.TextInputEditText-->
-    <!--    android:id="@+id/etExpiryDate"-->
-    <!--    android:inputType="number"-->
-    <!--    android:layout_height="wrap_content"-->
-    <!--    android:layout_width="match_parent"-->
-    <!--    android:padding="12dp" />-->
-    <!--</com.google.android.material.textfield.TextInputLayout>-->
-
-    <!--<com.google.android.material.textfield.TextInputLayout-->
-    <!--style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"-->
-    <!--android:hint="CVV"-->
-    <!--android:id="@+id/tilCVV"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginBottom="24dp"-->
-    <!--android:layout_width="match_parent"-->
-    <!--app:boxBackgroundColor="@android:color/white"-->
-    <!--app:boxCornerRadiusBottomEnd="8dp"-->
-    <!--app:boxCornerRadiusBottomStart="8dp"-->
-    <!--app:boxCornerRadiusTopEnd="8dp"-->
-    <!--app:boxCornerRadiusTopStart="8dp"-->
-    <!--app:boxStrokeColor="@color/black">-->
-
-    <!--<com.google.android.material.textfield.TextInputEditText-->
-    <!--    android:gravity="end"-->
-    <!--    android:id="@+id/etCVV"-->
-    <!--    android:inputType="number"-->
-    <!--    android:layout_height="wrap_content"-->
-    <!--    android:layout_width="match_parent"-->
-    <!--    android:padding="12dp" />-->
-    <!--</com.google.android.material.textfield.TextInputLayout>-->
-
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="70dp"
+        android:background="@drawable/button_background"
+        android:text="תשלום" />
 
 </LinearLayout>

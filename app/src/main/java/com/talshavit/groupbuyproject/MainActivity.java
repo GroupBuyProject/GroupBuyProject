@@ -5,25 +5,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.talshavit.groupbuyproject.Fragments.CartFragment;
 import com.talshavit.groupbuyproject.Fragments.HistoryFragment;
 import com.talshavit.groupbuyproject.Fragments.HomeFragment;
 import com.talshavit.groupbuyproject.Fragments.SearchFragment;
+import com.talshavit.groupbuyproject.General.GlobalResources;
+
+import java.util.Calendar;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -36,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private TextView user_name, time_of_the_day;
+    private ShapeableImageView imageTime;
 //    private View headerView;
 
 
@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
                         GlobalResources.replaceFragment(getSupportFragmentManager(), cartFragment);
                         break;
                     case 4:
+                        searchFragment = new SearchFragment();
                         GlobalResources.replaceFragment(getSupportFragmentManager(), searchFragment);
                         break;
                 }
@@ -98,6 +99,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onNavigation() {
+        checkCurrentTime();
+        user_name.setText("שלום " + GlobalResources.user.getName());
+
         navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.nav_deals:
@@ -107,6 +111,31 @@ public class MainActivity extends AppCompatActivity {
             drawerLayout.closeDrawer(GravityCompat.END);
             return true;
         });
+    }
+
+    private void checkCurrentTime() {
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+
+        if (hour >= 5 && hour < 12) {
+            time_of_the_day.setText("בוקר טוב");
+            imageTime.setImageResource(R.drawable.morning);
+        }
+        if (hour >= 12 && hour < 16) {
+            time_of_the_day.setText("צהריים טובים");
+            imageTime.setImageResource(R.drawable.noon);
+        }
+        if (hour >= 16 && hour < 19) {
+            time_of_the_day.setText("אחר הצהריים טובים");
+            imageTime.setImageResource(R.drawable.afternoon);
+        }
+        if (hour >= 19 && hour < 21) {
+            time_of_the_day.setText("ערב טוב");
+            imageTime.setImageResource(R.drawable.evening);
+        } else {
+            time_of_the_day.setText("לילה טוב");
+            imageTime.setImageResource(R.drawable.night);
+        }
     }
 
     private void openDialog() {
@@ -164,6 +193,7 @@ public class MainActivity extends AppCompatActivity {
         View headerView = navigationView.getHeaderView(0);
         user_name = headerView.findViewById(R.id.user_name);
         time_of_the_day = headerView.findViewById(R.id.time_of_the_day);
+        imageTime = headerView.findViewById(R.id.imageTime);
     }
 
     private void checkIfNavNull() {
