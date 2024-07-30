@@ -12,16 +12,19 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -46,11 +49,14 @@ public class CheckoutFragment extends Fragment {
 
     private EditText etCardNumber, etID, etCVV;
     private AutoCompleteTextView month, year;
-    private TextInputLayout textInputLayoutMonth, textInputLayoutYear;
+
+    private TextView cvv_explanation;
     private ItemsAdapterView itemsAdapterView;
 
     private String[] monthsArray, yearsArray;
     private String chosenMonth, chosenYear, cardNumberText;
+    private ShapeableImageView cvv_explain_button;
+    private View.OnFocusChangeListener focusChangeListener;
 
     private double price;
     private boolean isSaveInfoPayment = true;
@@ -69,6 +75,8 @@ public class CheckoutFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         findViews(view);
+
+        changeCvvEplainVisibility(view);
         initViews();
     }
 
@@ -79,7 +87,53 @@ public class CheckoutFragment extends Fragment {
         initYear();
         onMonthClick();
         onYearClick();
+        onCvvExplain();
         onPayBtn();
+    }
+
+    private void onCvvExplain() {
+        cvv_explain_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cvv_explanation.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    private void changeCvvEplainVisibility(View view) {
+        onScreen(view);
+        onElement(view);
+        setChanges();
+    }
+
+    private void setChanges() {
+        etCardNumber.setOnFocusChangeListener(focusChangeListener);
+        etID.setOnFocusChangeListener(focusChangeListener);
+        month.setOnFocusChangeListener(focusChangeListener);
+        year.setOnFocusChangeListener(focusChangeListener);
+    }
+
+    private void onElement(View view) {
+        focusChangeListener = new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus && cvv_explanation.getVisibility() == View.VISIBLE) {
+                    cvv_explanation.setVisibility(View.INVISIBLE);
+                }
+            }
+        };
+    }
+
+    private void onScreen(View view) {
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (cvv_explanation.getVisibility() == View.VISIBLE) {
+                    cvv_explanation.setVisibility(View.INVISIBLE);
+                }
+                return false;
+            }
+        });
     }
 
     private void onYearClick() {
@@ -87,6 +141,7 @@ public class CheckoutFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 chosenYear = yearsArray[i];
+                cvv_explain_button.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -96,6 +151,7 @@ public class CheckoutFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 chosenMonth = monthsArray[i];
+                cvv_explain_button.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -108,6 +164,7 @@ public class CheckoutFragment extends Fragment {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                cvv_explain_button.setVisibility(View.INVISIBLE);
                 if (count > after) {
                     isDeleting = true;
                     deleteIndex = start;
@@ -161,7 +218,7 @@ public class CheckoutFragment extends Fragment {
             yearsList.add(String.valueOf(i));
         }
         yearsArray = yearsList.toArray(new String[0]);
-        initSpinnerAdapter(year, yearsArray, textInputLayoutMonth);
+        initSpinnerAdapter(year, yearsArray);
     }
 
     private void initMonths() {
@@ -170,10 +227,10 @@ public class CheckoutFragment extends Fragment {
             monthsArray[i - 1] = String.valueOf(i);
         }
 
-        initSpinnerAdapter(month, monthsArray, textInputLayoutMonth);
+        initSpinnerAdapter(month, monthsArray);
     }
 
-    private void initSpinnerAdapter(AutoCompleteTextView autoCompleteTextView, String[] items, TextInputLayout textInputLayout) {
+    private void initSpinnerAdapter(AutoCompleteTextView autoCompleteTextView, String[] items) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), R.layout.dropdown_item, items);
         autoCompleteTextView.setAdapter(adapter);
     }
@@ -259,7 +316,8 @@ public class CheckoutFragment extends Fragment {
         month = view.findViewById(R.id.month);
         year = view.findViewById(R.id.year);
         btnPay = view.findViewById(R.id.btnPay);
-        textInputLayoutMonth = view.findViewById(R.id.textInputLayoutMonth);
+        cvv_explanation = view.findViewById(R.id.cvv_explanation);
+        cvv_explain_button = view.findViewById(R.id.cvv_explain_button);
     }
 
     @Override

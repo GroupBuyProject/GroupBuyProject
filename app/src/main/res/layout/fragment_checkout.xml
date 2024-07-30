@@ -46,7 +46,7 @@
                 android:layout_weight="1"
                 android:hint="מספר כרטיס"
                 android:inputType="number"
-                android:maxLength="19"/>
+                android:maxLength="19" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="30dp"
@@ -73,7 +73,7 @@
                 android:layout_weight="1"
                 android:hint="תעודת זהות"
                 android:inputType="number"
-                android:maxLength="9"/>
+                android:maxLength="9" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="30dp"
@@ -85,107 +85,107 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="match_parent"
             android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="תוקף כרטיס" />
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:background="@drawable/shape_edit_text"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="5dp">
-
-                <EditText
-                    android:id="@+id/cvv"
-                    style="@style/edit_txt_no_hint_line"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="10dp"
-                    android:layout_weight="1"
-                    android:hint="CVV"
-                    android:inputType="number"
-                    android:maxLength="3" />
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/question" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="10dp"
-                android:layout_height="0dp" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="תוקף כרטיס" />
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="55dp"
-                    android:orientation="horizontal">
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="7dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_edit_text"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
 
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textInputLayoutMonth"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    <EditText
+                        android:id="@+id/cvv"
+                        style="@style/edit_txt_no_hint_line"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_marginEnd="10dp"
                         android:layout_weight="1"
-                        android:hint="חודש"
-                        android:textColorHint="@color/black">
+                        android:hint="CVV"
+                        android:inputType="number"
+                        android:maxLength="3" />
 
-                        <AutoCompleteTextView
-                            android:id="@+id/month"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:gravity="start|center_vertical"
-                            android:inputType="none"
-                            android:text="" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <View
-                        android:layout_width="10dp"
-                        android:layout_height="0dp" />
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textInputLayoutYear"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:hint="שנה"
-                        android:textColorHint="@color/black">
-
-                        <AutoCompleteTextView
-                            android:id="@+id/year"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:gravity="start|center_vertical"
-                            android:inputType="none"
-                            android:text="" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/cvv_explain_button"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/question" />
 
                 </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
 
+                <View
+                    android:layout_width="10dp"
+                    android:layout_height="0dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:hint="חודש"
+                    android:textColorHint="@color/black">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/month"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="start|center_vertical"
+                        android:inputType="none"
+                        android:text="" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <View
+                    android:layout_width="10dp"
+                    android:layout_height="0dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:hint="שנה"
+                    android:textColorHint="@color/black">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/year"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="start|center_vertical"
+                        android:inputType="none"
+                        android:text="" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/cvv_explanation"
+                android:layout_width="115dp"
+                android:layout_height="wrap_content"
+                android:text="קוד בן 3 ספרות הנמצא בגב הכרטיס שלך"
+                android:textAlignment="viewStart"
+                android:textSize="12sp"
+                android:visibility="invisible" />
+
+        </LinearLayout>
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton

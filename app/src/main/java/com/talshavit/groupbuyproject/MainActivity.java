@@ -23,6 +23,7 @@ import com.talshavit.groupbuyproject.Fragments.SearchFragment;
 import com.talshavit.groupbuyproject.General.GlobalResources;
 
 import java.util.Calendar;
+import java.util.TimeZone;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -114,22 +115,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkCurrentTime() {
-        Calendar calendar = Calendar.getInstance();
+        TimeZone timeZone = TimeZone.getTimeZone("Asia/Jerusalem");
+        Calendar calendar = Calendar.getInstance(timeZone);
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
 
+        initTimeInNav(hour);
+    }
+
+    private void initTimeInNav(int hour) {
         if (hour >= 5 && hour < 12) {
             time_of_the_day.setText("בוקר טוב");
             imageTime.setImageResource(R.drawable.morning);
         }
-        if (hour >= 12 && hour < 16) {
+        else if (hour >= 12 && hour < 16) {
             time_of_the_day.setText("צהריים טובים");
             imageTime.setImageResource(R.drawable.noon);
         }
-        if (hour >= 16 && hour < 19) {
+        else if (hour >= 16 && hour < 19) {
             time_of_the_day.setText("אחר הצהריים טובים");
             imageTime.setImageResource(R.drawable.afternoon);
         }
-        if (hour >= 19 && hour < 21) {
+        else if (hour >= 19 && hour < 21) {
             time_of_the_day.setText("ערב טוב");
             imageTime.setImageResource(R.drawable.evening);
         } else {

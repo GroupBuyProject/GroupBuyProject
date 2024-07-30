@@ -3,6 +3,7 @@ package com.talshavit.groupbuyproject.Helpers;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,7 +16,7 @@ public class MyViewHolderItems extends RecyclerView.ViewHolder{
 
     AppCompatTextView itemName, weight, company, unit, count, price;
     ShapeableImageView img;
-    MaterialButton addItemButton;
+    AppCompatButton addItemButton;
     AppCompatImageButton minus, plus, comment, xButton;
 
 

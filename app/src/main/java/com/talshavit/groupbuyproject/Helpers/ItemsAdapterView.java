@@ -3,6 +3,7 @@ package com.talshavit.groupbuyproject.Helpers;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,6 +87,16 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
         onAddItemButton(holder, position);
         onXbutton(holder, position);
         checkCategory(holder, position);
+        onCommentButton(holder, position);
+    }
+
+    private void onCommentButton(MyViewHolderItems holder, int position) {
+        holder.comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("lala", "llllll");
+            }
+        });
     }
 
     private boolean checkCategory(MyViewHolderItems holder, int position) {
