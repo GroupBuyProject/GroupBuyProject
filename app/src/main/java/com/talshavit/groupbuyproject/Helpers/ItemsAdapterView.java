@@ -1,5 +1,6 @@
 package com.talshavit.groupbuyproject.Helpers;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Paint;
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.models.Category;
 import com.talshavit.groupbuyproject.models.Item;
@@ -71,7 +73,7 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
         holder.itemName.setText(allItems.get(position).getName());
         holder.company.setText(allItems.get(position).getCompany());
         holder.weight.setText(allItems.get(position).getWeight());
-        holder.price.setText(allItems.get(position).getPrice());
+        holder.price.setText("₪ "+allItems.get(position).getPrice());
         if (allItems.get(position).getCategory().equals(Category.FruitsAndVegetables))
             holder.count.setText(String.valueOf(allItems.get(position).getCount()));
         else
@@ -94,7 +96,32 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
         holder.comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("lala", "llllll");
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                LayoutInflater inflater = LayoutInflater.from(context);
+                View dialogView = inflater.inflate(R.layout.dialog_add_comment, null);
+                builder.setView(dialogView);
+                builder.setCancelable(false);
+
+                TextInputEditText inputComments = dialogView.findViewById(R.id.edit_text_comments);
+                if (type.equals("AllItemsFragment"))
+                    inputComments.setText(GlobalResources.allItemsByCategories[category].get(position).getComment());
+                else
+                    inputComments.setText(GlobalResources.cart.items.get(position).getComment());
+
+                builder.setTitle("")
+                        .setPositiveButton("אישור", (dialog, id) -> {
+                            String comments = inputComments.getText().toString();
+                            if (type.equals("AllItemsFragment"))
+                                GlobalResources.allItemsByCategories[category].get(position).setComment(comments);
+                            else
+                                GlobalResources.cart.items.get(position).setComment(comments);
+                        })
+                        .setNegativeButton("ביטול", (dialog, id) -> dialog.cancel());
+
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+                alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_background);
             }
         });
     }

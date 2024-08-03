@@ -9,11 +9,13 @@ public class Order {
     private String date;
     private String time;
     private double price;
+    private Cart copiedCart;
 
     public Order() {
     }
 
-    public Order(Cart cart, double price) {
+    public Order(Cart copiedCart,Cart cart, double price) {
+        this.copiedCart = copiedCart;
         this.cart = cart;
         this.price = price;
         setDate();
@@ -59,6 +61,10 @@ public class Order {
     public Order setPrice(double price) {
         this.price = price;
         return this;
+    }
+
+    public Cart getCopiedCart() {
+        return copiedCart;
     }
 
     public String getTime() {

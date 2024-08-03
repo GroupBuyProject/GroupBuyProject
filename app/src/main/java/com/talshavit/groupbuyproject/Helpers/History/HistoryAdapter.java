@@ -11,9 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.talshavit.groupbuyproject.Fragments.OrderFragment;
 import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.R;
+import com.talshavit.groupbuyproject.models.Item;
 import com.talshavit.groupbuyproject.models.Order;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryViewHolder> {
 
@@ -43,6 +45,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryViewHolder> {
         holder.date.setText(orders.get(position).getDate());
         holder.time.setText(orders.get(position).getTime());
         onClick(holder, position);
+        onAddToCartButton(holder, position);
     }
 
     private void onClick(HistoryViewHolder holder, int position) {
@@ -50,6 +53,26 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryViewHolder> {
             @Override
             public void onClick(View view) {
                 GlobalResources.replaceFragment(fragmentManager, new OrderFragment(orders.get(position)));
+            }
+        });
+    }
+
+    private void onAddToCartButton(HistoryViewHolder holder, int position) {
+        holder.addToCartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GlobalResources.cart.setItems(orders.get(position).getCopiedCart().items);
+                for (int i = 0; i < orders.get(position).getCart().items.size(); i++) {
+                    int finalI = i;
+                    Optional<Item> isExist = GlobalResources.cart.items.stream()
+                            .filter(item -> orders.get(position).getCart().items.get(finalI).getId().equals(item.getId()))
+                            .findFirst();
+
+                    if (isExist.isPresent()) {
+                        Item item = isExist.get();
+                        item.setCount(orders.get(position).getCart().items.get(finalI).getCount());
+                    }
+                }
             }
         });
     }

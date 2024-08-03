@@ -7,20 +7,37 @@
     android:orientation="vertical"
     tools:context=".Fragments.MapFragment">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/title"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:autoSizeMaxTextSize="32sp"
-        android:autoSizeTextType="uniform"
-        android:background="@color/darkGreen"
-        android:fontFamily="@font/rubik"
-        android:gravity="center"
-        android:maxLines="1"
-        android:paddingTop="20dp"
-        android:text="בחירת מיקום לאיסוף המשלוח"
-        android:textColor="@color/black"
-        android:textStyle="bold" />
+        android:background="@color/darkGreen">
+
+        <ImageButton
+            android:id="@+id/mapBackButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="end"
+            android:layout_margin="8dp"
+            android:scaleType="fitCenter"
+            android:background="@android:color/transparent"
+            android:src="@drawable/arrow_small_right" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:autoSizeMaxTextSize="32sp"
+            android:autoSizeTextType="uniform"
+            android:fontFamily="@font/rubik"
+            android:gravity="center"
+            android:maxLines="1"
+            android:paddingTop="20dp"
+            android:text="בחירת מיקום לאיסוף המשלוח"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/linear"

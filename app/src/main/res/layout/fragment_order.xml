@@ -27,10 +27,22 @@
         android:textColor="@color/black"
         android:textStyle="bold" />
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title"
+        android:textSize="18sp"
+        android:textColor="@color/darkGreen"
+        android:textStyle="bold"
+        android:gravity="center_horizontal"
+        android:text="להצגת סטטוס הזמנה"
+        />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_below="@id/title"
+        android:layout_below="@id/textStatus"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

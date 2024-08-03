@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import com.talshavit.groupbuyproject.models.ArrayListCategory;
 import com.talshavit.groupbuyproject.models.CategoriesModel;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 
 public class HomeFragment extends Fragment implements AdapterView.OnItemClickListener {

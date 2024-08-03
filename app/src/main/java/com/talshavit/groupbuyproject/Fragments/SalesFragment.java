@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,20 +14,27 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.talshavit.groupbuyproject.General.GlobalResources;
-import com.talshavit.groupbuyproject.Helpers.History.HistoryAdapter;
+import com.talshavit.groupbuyproject.Helpers.ItemsAdapterView;
 import com.talshavit.groupbuyproject.R;
 
-public class HistoryFragment extends Fragment {
+public class SalesFragment extends Fragment {
 
-    private RecyclerView recyclerView;
-    private HistoryAdapter orderAdapter;
+    private ItemsAdapterView itemsAdapterView;
+    private RecyclerView recyclerViewSales;
 
-    public HistoryFragment() {
+    public SalesFragment() {
+        // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_sales, container, false);
     }
 
     @Override
@@ -39,18 +45,14 @@ public class HistoryFragment extends Fragment {
     }
 
     private void initViews() {
-        orderAdapter = new HistoryAdapter(requireActivity().getSupportFragmentManager(), GlobalResources.user.getHistories());
-        initAdapter(recyclerView, orderAdapter);
+        initAdapter(recyclerViewSales, itemsAdapterView);
+
     }
 
     private void findViews(View view) {
-        recyclerView = view.findViewById(R.id.recyclerView);
-    }
+        recyclerViewSales = view.findViewById(R.id.recyclerViewSales);
+        itemsAdapterView = new ItemsAdapterView(getContext(), GlobalResources.items, "AllItemsFragment", -1);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_history, container, false);
     }
 
     private void initAdapter(RecyclerView recyclerView, RecyclerView.Adapter myAdapter) {

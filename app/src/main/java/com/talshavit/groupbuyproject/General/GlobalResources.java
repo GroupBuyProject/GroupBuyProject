@@ -1,5 +1,7 @@
 package com.talshavit.groupbuyproject.General;
 
+import android.util.Log;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -92,4 +94,5 @@ public class GlobalResources {
     public static void setUser(User userObject) {
         user = userObject;
     }
+
 }

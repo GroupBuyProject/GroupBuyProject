@@ -9,6 +9,7 @@ public class User {
     private String name;
     private ArrayList<Order> histories;
     private ArrayList<Payment> payments;
+    private double virtualCurrencies = 0.0;
 
     public User() {
         this.histories = new ArrayList<>();
@@ -57,6 +58,15 @@ public class User {
         return this;
     }
 
+    public double getVirtualCurrencies() {
+        return virtualCurrencies;
+    }
+
+    public User setVirtualCurrencies(double virtualCurrencies) {
+        this.virtualCurrencies = virtualCurrencies;
+        return this;
+    }
+
     public void addHistory(Order history) {
         histories.add(history);
 
@@ -74,6 +84,10 @@ public class User {
 
     public void addPayment(Payment payment){
         payments.add(payment);
+    }
+
+    public void addVirtualCurrencies(double virtualCurrencies){
+        this.virtualCurrencies += virtualCurrencies;
     }
 }
 

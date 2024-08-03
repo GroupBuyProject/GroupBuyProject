@@ -14,6 +14,8 @@ public class Item {
     private ArrayList<Integer> relatedItems;
     private double count;
 
+    private String comment = "";
+
     public Item() {
     }
 
@@ -27,6 +29,18 @@ public class Item {
         this.category = category;
         this.relatedItems = relatedItems;
         this.count = 0;
+    }
+
+    public Item(Item item) {
+        this.id = item.id;
+        this.name = item.name;
+        this.price = item.price;
+        this.img = item.img;
+        this.weight = item.weight;
+        this.company = item.company;
+        this.category = item.category;
+        this.relatedItems = item.relatedItems;
+        this.count = item.count;
     }
 
     public String getId() {
@@ -107,6 +121,15 @@ public class Item {
 
     public Item setRelatedItems(ArrayList<Integer> relatedItems) {
         this.relatedItems = relatedItems;
+        return this;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public Item setComment(String comment) {
+        this.comment = comment;
         return this;
     }
 }

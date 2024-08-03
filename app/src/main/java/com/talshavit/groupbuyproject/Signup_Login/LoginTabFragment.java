@@ -156,7 +156,6 @@ public class LoginTabFragment extends Fragment {
 
     private void openMainActivity(User user) {
         GlobalResources.setUser(user);
-        Log.d("lala", GlobalResources.user.getName());
         Intent myIntent = new Intent(getContext(), MainActivity.class);
         startActivity(myIntent);
     }

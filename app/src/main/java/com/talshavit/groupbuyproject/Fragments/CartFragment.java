@@ -9,9 +9,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.talshavit.groupbuyproject.General.GlobalResources;
@@ -24,8 +26,10 @@ public class CartFragment extends Fragment {
     private Cart cart;
     private ItemsAdapterView itemsAdapterView;
     private RecyclerView recyclerViewItem;
-
     private AppCompatButton checkout;
+    private TextView totalAmount;
+
+    private RecyclerView.AdapterDataObserver dataObserver;
 
 
     public CartFragment() {
@@ -49,11 +53,13 @@ public class CartFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         findViews(view);
         initView();
+        registerDataObserver();
     }
 
     private void initView() {
         initAdapter(recyclerViewItem, itemsAdapterView);
         onCheckOut();
+        setTotalAmount();
     }
 
     private void onCheckOut() {
@@ -77,10 +83,39 @@ public class CartFragment extends Fragment {
         return price;
     }
 
+    private void setTotalAmount() {
+        totalAmount.setText("₪" + calcPrice());
+    }
+
+    private void registerDataObserver() {
+        dataObserver = new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                setTotalAmount();
+            }
+
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                setTotalAmount();
+            }
+
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                super.onItemRangeRemoved(positionStart, itemCount);
+                setTotalAmount();
+            }
+        };
+
+        itemsAdapterView.registerAdapterDataObserver(dataObserver);
+    }
+
     private void findViews(View view) {
         recyclerViewItem = view.findViewById(R.id.recyclerView);
         itemsAdapterView = new ItemsAdapterView(getContext(), cart.items, "CartFragment", -1);
         checkout = view.findViewById(R.id.checkout);
+        totalAmount = view.findViewById(R.id.totalAmount);
     }
 
 

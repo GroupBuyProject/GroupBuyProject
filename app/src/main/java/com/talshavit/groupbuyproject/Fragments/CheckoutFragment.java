@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +37,7 @@ import com.talshavit.groupbuyproject.Helpers.ItemsAdapterView;
 import com.talshavit.groupbuyproject.MainActivity;
 import com.talshavit.groupbuyproject.R;
 import com.talshavit.groupbuyproject.models.Cart;
+import com.talshavit.groupbuyproject.models.Item;
 import com.talshavit.groupbuyproject.models.Order;
 import com.talshavit.groupbuyproject.models.Payment;
 
@@ -44,20 +47,16 @@ import java.util.List;
 
 public class CheckoutFragment extends Fragment {
 
-    //private TextInputEditText etCardNumber, etExpiryDate, etCVV;
-    private AppCompatButton btnPay;
-
+    private AppCompatButton btnPay, btnPoints;
     private EditText etCardNumber, etID, etCVV;
+    private ImageButton checkoutBackButton;
     private AutoCompleteTextView month, year;
-
-    private TextView cvv_explanation;
+    private TextView cvv_explanation, points_question, totalPriceCheckout;
     private ItemsAdapterView itemsAdapterView;
-
     private String[] monthsArray, yearsArray;
     private String chosenMonth, chosenYear, cardNumberText;
     private ShapeableImageView cvv_explain_button;
     private View.OnFocusChangeListener focusChangeListener;
-
     private double price;
     private boolean isSaveInfoPayment = true;
 
@@ -89,6 +88,10 @@ public class CheckoutFragment extends Fragment {
         onYearClick();
         onCvvExplain();
         onPayBtn();
+        setPointsQuestion();
+        setTotalPrice();
+        onPointsBtn();
+        onCheckoutBackButton();
     }
 
     private void onCvvExplain() {
@@ -100,10 +103,57 @@ public class CheckoutFragment extends Fragment {
         });
     }
 
+    private void setPointsQuestion() {
+        double virtualCurrencies = GlobalResources.user.getVirtualCurrencies();
+        String formattedValue = String.format("%.2f", virtualCurrencies);
+        if (GlobalResources.user.getVirtualCurrencies() > 0.0) {
+            points_question.setText("יש ברשותך " + formattedValue + " נקודות. " + "האם תרצה לממש אותן?");
+            btnPoints.setVisibility(View.VISIBLE);
+        } else {
+            points_question.setText("");
+            btnPoints.setVisibility(View.GONE);
+        }
+    }
+
+    private void setTotalPrice() {
+        String currentPrice = String.format("%.2f", price);
+        totalPriceCheckout.setText("₪ " + currentPrice);
+    }
+
+    private void onPointsBtn() {
+        btnPoints.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (price < GlobalResources.user.getVirtualCurrencies()) {
+                    totalPriceCheckout.setText("₪ " + 0.0);
+                    GlobalResources.user.setVirtualCurrencies(GlobalResources.user.getVirtualCurrencies() - price);
+                    btnPay.setText("ביצוע הזמנה");
+                } else {
+                    double newPrice = price - GlobalResources.user.getVirtualCurrencies();
+                    String currentPrice = String.format("%.2f", newPrice);
+                    totalPriceCheckout.setText("₪ " + currentPrice);
+                    GlobalResources.user.setVirtualCurrencies(0.0);
+                    btnPay.setText("לתשלום");
+
+                }
+            }
+        });
+    }
+
     private void changeCvvEplainVisibility(View view) {
         onScreen(view);
         onElement(view);
         setChanges();
+    }
+
+    private void onCheckoutBackButton() {
+        checkoutBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                fragmentManager.popBackStack();
+            }
+        });
     }
 
     private void setChanges() {
@@ -255,6 +305,7 @@ public class CheckoutFragment extends Fragment {
                 }
                 if (isValid) {
                     addHistoryToFirebase(view);
+                    saveVirtualCurrencies();
                     if (isSaveInfoPayment) {
                         addPaymentToFirebase(view);
                     }
@@ -262,11 +313,16 @@ public class CheckoutFragment extends Fragment {
                 }
             }
         });
+    }
 
+    private void saveVirtualCurrencies() {
+        double virtualCurrencies = price * 0.1;
+        GlobalResources.user.addVirtualCurrencies(virtualCurrencies);
     }
 
     private void addHistoryToFirebase(View view) {
-        Order order = new Order(GlobalResources.cart, price);
+        Cart currentCart = duplicateCartItems();
+        Order order = new Order(GlobalResources.cart, currentCart, price);
         GlobalResources.user.addHistory(order);
         MainActivity.isPaid = true;
         GlobalResources.cart = new Cart();
@@ -283,6 +339,15 @@ public class CheckoutFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private Cart duplicateCartItems() {
+        Cart cart = new Cart();
+        for (int i = 0; i < GlobalResources.cart.getItems().size(); i++) {
+            Item copiedItem = new Item(GlobalResources.cart.items.get(i));
+            cart.items.add(copiedItem);
+        }
+        return cart;
     }
 
     public void addPaymentToFirebase(View view) {
@@ -318,6 +383,10 @@ public class CheckoutFragment extends Fragment {
         btnPay = view.findViewById(R.id.btnPay);
         cvv_explanation = view.findViewById(R.id.cvv_explanation);
         cvv_explain_button = view.findViewById(R.id.cvv_explain_button);
+        points_question = view.findViewById(R.id.points_question);
+        btnPoints = view.findViewById(R.id.btnPoints);
+        totalPriceCheckout = view.findViewById(R.id.totalPriceCheckout);
+        checkoutBackButton = view.findViewById(R.id.checkoutBackButton);
     }
 
     @Override

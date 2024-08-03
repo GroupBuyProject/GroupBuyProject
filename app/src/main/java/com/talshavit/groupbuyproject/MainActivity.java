@@ -19,9 +19,12 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.talshavit.groupbuyproject.Fragments.CartFragment;
 import com.talshavit.groupbuyproject.Fragments.HistoryFragment;
 import com.talshavit.groupbuyproject.Fragments.HomeFragment;
+import com.talshavit.groupbuyproject.Fragments.SalesFragment;
 import com.talshavit.groupbuyproject.Fragments.SearchFragment;
 import com.talshavit.groupbuyproject.General.GlobalResources;
+import com.talshavit.groupbuyproject.models.Item;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -48,10 +51,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        GlobalResources.initItems();
+
         findviews();
         initViews();
 
-        GlobalResources.initItems();
+        GlobalResources.replaceFragment(getSupportFragmentManager(), new SalesFragment());
 
         initBottomNav();
         checkIfNavNull();

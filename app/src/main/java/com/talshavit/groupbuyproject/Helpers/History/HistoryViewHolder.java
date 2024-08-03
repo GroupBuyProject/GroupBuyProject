@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,6 +14,7 @@ public class HistoryViewHolder extends RecyclerView.ViewHolder {
 
     public AppCompatTextView date, count, time;
     public FrameLayout layout;
+    public AppCompatImageButton addToCartButton;
 
     public HistoryViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -24,5 +26,6 @@ public class HistoryViewHolder extends RecyclerView.ViewHolder {
         count = itemView.findViewById(R.id.count);
         date = itemView.findViewById(R.id.date);
         time = itemView.findViewById(R.id.time);
+        addToCartButton = itemView.findViewById(R.id.addToCartButton);
     }
 }

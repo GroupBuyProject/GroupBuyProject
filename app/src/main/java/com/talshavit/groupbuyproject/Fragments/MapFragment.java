@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +45,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap myMap;
     private TextView pickUp, pickUpCitySearch, addressSearch;
+    private ImageButton mapBackButton;
     private Dialog dialog;
     private EditText searchBar_TXT_serch;
     private ListView searchBar_LISTV_listView;
@@ -105,6 +108,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         addNewPoint.setPaintFlags(addNewPoint.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         onAddNewPickUp();
         onSpinnerCity();
+        onMapBackButton();
     }
 
     private void initMapFragment() {
@@ -128,6 +132,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             public void onClick(View view) {
                 initDialog(allPointsName);
                 clickOnListViewPoint();
+            }
+        });
+    }
+
+    private void onMapBackButton() {
+        mapBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                fragmentManager.popBackStack();
             }
         });
     }
@@ -216,6 +230,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         pickUpCitySearch = view.findViewById(R.id.pickUpCitySearch);
         addressSearch = view.findViewById(R.id.addressSearch);
         confirmLocation = view.findViewById(R.id.confirmLocation);
+        mapBackButton = view.findViewById(R.id.mapBackButton);
     }
 
     @Override
