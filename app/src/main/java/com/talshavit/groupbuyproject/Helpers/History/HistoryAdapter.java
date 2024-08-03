@@ -1,5 +1,7 @@
 package com.talshavit.groupbuyproject.Helpers.History;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,6 +63,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryViewHolder> {
         holder.addToCartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                holder.cardView.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#BDEDBF")));
                 GlobalResources.cart.setItems(orders.get(position).getCopiedCart().items);
                 for (int i = 0; i < orders.get(position).getCart().items.size(); i++) {
                     int finalI = i;

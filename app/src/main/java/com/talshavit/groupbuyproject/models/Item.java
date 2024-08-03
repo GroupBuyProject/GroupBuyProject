@@ -7,6 +7,7 @@ public class Item {
     private String id;
     private String name;
     private String price;
+    private String sale;
     private String img;
     private String weight;
     private String company;
@@ -19,10 +20,11 @@ public class Item {
     public Item() {
     }
 
-    public Item(String id, String name, String price, String img, String weight, String company, Category category, ArrayList<Integer> relatedItems) {
+    public Item(String id, String name, String price, String sale, String img, String weight, String company, Category category, ArrayList<Integer> relatedItems) {
         this.id = id;
         this.name = name;
         this.price = price;
+        this.sale = sale;
         this.img = img;
         this.weight = weight;
         this.company = company;
@@ -35,6 +37,7 @@ public class Item {
         this.id = item.id;
         this.name = item.name;
         this.price = item.price;
+        this.sale = item.sale;
         this.img = item.img;
         this.weight = item.weight;
         this.company = item.company;
@@ -130,6 +133,15 @@ public class Item {
 
     public Item setComment(String comment) {
         this.comment = comment;
+        return this;
+    }
+
+    public String getSale() {
+        return sale;
+    }
+
+    public Item setSale(String sale) {
+        this.sale = sale;
         return this;
     }
 }

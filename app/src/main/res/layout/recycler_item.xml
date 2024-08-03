@@ -90,65 +90,30 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
                         android:orientation="vertical">
 
-                        <LinearLayout
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/sale"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:fontFamily="@font/rubik"
+                            android:text=""
+                            android:textColor="#EA2E2E"
+                            android:textSize="20sp"
+                            android:visibility="invisible" />
 
-<!--                            <androidx.appcompat.widget.AppCompatTextView-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:layout_marginStart="45dp"-->
-<!--                                android:layout_marginEnd="8dp"-->
-<!--                                android:fontFamily="@font/rubik"-->
-<!--                                android:text="ש''\ח"-->
-<!--                                android:textColor="#EA2E2E"-->
-<!--                                android:textSize="16sp" />-->
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/sale"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/rubik"
-                                android:text=""
-                                android:textColor="#EA2E2E"
-                                android:textSize="16sp" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/price"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:orientation="horizontal">
+                            android:fontFamily="@font/rubik"
+                            android:text=""
+                            android:textColor="@color/black"
+                            android:textSize="20sp" />
 
-
-<!--                            <androidx.appcompat.widget.AppCompatTextView-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:layout_marginStart="45dp"-->
-<!--                                android:layout_marginEnd="8dp"-->
-<!--                                android:fontFamily="@font/rubik"-->
-<!--                                android:text="ש''\ח"-->
-<!--                                android:textColor="@color/black"-->
-<!--                                android:textSize="20sp" />-->
-
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/price"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/rubik"
-                                android:text=""
-                                android:textColor="@color/black"
-                                android:textSize="20sp" />
-
-                        </LinearLayout>
 
                     </LinearLayout>
-
 
 
                 </LinearLayout>
@@ -176,8 +141,8 @@
                     android:layout_width="100dp"
                     android:layout_height="37dp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
                     android:layout_margin="5dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="70dp"
                     android:background="@drawable/button_background"
                     android:text="@string/addItem" />

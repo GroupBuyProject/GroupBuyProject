@@ -9,28 +9,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
-            android:id="@+id/start_frame"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="@color/backGroundGreen">
-
-            <androidx.appcompat.widget.AppCompatTextView
-
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="צהריים טובים, טל"
-                android:textSize="22sp"
-                android:textStyle="bold" />
-
-        </FrameLayout>
+            android:layout_height="100dp"
+            android:autoSizeMaxTextSize="32sp"
+            android:autoSizeTextType="uniform"
+            android:background="@color/darkGreen"
+            android:fontFamily="@font/rubik"
+            android:gravity="center"
+            android:maxLines="1"
+            android:paddingTop="20dp"
+            android:text="מבצעי הסופר"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/text"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:layout_below="@id/start_frame"
+            android:layout_below="@id/title"
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:text="עכשיו! מבצעים שווים במיוחד בשבילך"
@@ -42,7 +40,8 @@
             android:id="@+id/recyclerViewSales"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/text" />
+            android:layout_below="@id/text"
+            android:layout_marginBottom="50dp" />
 
     </RelativeLayout>
 

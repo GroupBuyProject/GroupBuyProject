@@ -8,11 +8,14 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.card.MaterialCardView;
 import com.talshavit.groupbuyproject.R;
 
 public class HistoryViewHolder extends RecyclerView.ViewHolder {
 
     public AppCompatTextView date, count, time;
+    public MaterialCardView cardView;
+
     public FrameLayout layout;
     public AppCompatImageButton addToCartButton;
 
@@ -27,5 +30,6 @@ public class HistoryViewHolder extends RecyclerView.ViewHolder {
         date = itemView.findViewById(R.id.date);
         time = itemView.findViewById(R.id.time);
         addToCartButton = itemView.findViewById(R.id.addToCartButton);
+        cardView = itemView.findViewById(R.id.cardView);
     }
 }

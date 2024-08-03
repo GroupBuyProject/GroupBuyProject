@@ -16,11 +16,15 @@ import android.view.ViewGroup;
 import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.Helpers.ItemsAdapterView;
 import com.talshavit.groupbuyproject.R;
+import com.talshavit.groupbuyproject.models.Item;
+
+import java.util.ArrayList;
 
 public class SalesFragment extends Fragment {
 
     private ItemsAdapterView itemsAdapterView;
     private RecyclerView recyclerViewSales;
+    private ArrayList<Item> saleItems;
 
     public SalesFragment() {
         // Required empty public constructor
@@ -45,14 +49,23 @@ public class SalesFragment extends Fragment {
     }
 
     private void initViews() {
+        initSaleArray();
+        itemsAdapterView = new ItemsAdapterView(getContext(), saleItems, "AllSalesItems", -1);
         initAdapter(recyclerViewSales, itemsAdapterView);
+    }
 
+    private void initSaleArray() {
+        saleItems = new ArrayList<>();
+        for (int i = 0; i < GlobalResources.items.size(); i++) {
+            Item item = GlobalResources.items.get(i);
+            if(Double.parseDouble(item.getSale()) > 0.0){
+                saleItems.add(item);
+            }
+        }
     }
 
     private void findViews(View view) {
         recyclerViewSales = view.findViewById(R.id.recyclerViewSales);
-        itemsAdapterView = new ItemsAdapterView(getContext(), GlobalResources.items, "AllItemsFragment", -1);
-
     }
 
     private void initAdapter(RecyclerView recyclerView, RecyclerView.Adapter myAdapter) {

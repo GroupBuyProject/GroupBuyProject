@@ -34,14 +34,14 @@ public class MainActivity extends AppCompatActivity {
     private MeowBottomNavigation bottomNavigation;
     private HomeFragment homeFragment;
     private CartFragment cartFragment;
+    private HistoryFragment historyFragment;
+    private SalesFragment salesFragment;
     private SearchFragment searchFragment;
     private ImageView menu;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private TextView user_name, time_of_the_day;
     private ShapeableImageView imageTime;
-//    private View headerView;
-
 
     public static boolean isPaid = false;
     private MeowBottomNavigation.ReselectListener reselectListener;
@@ -57,8 +57,6 @@ public class MainActivity extends AppCompatActivity {
         findviews();
         initViews();
 
-        GlobalResources.replaceFragment(getSupportFragmentManager(), new SalesFragment());
-
         initBottomNav();
         checkIfNavNull();
         onNavigationBar();
@@ -73,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                         GlobalResources.replaceFragment(getSupportFragmentManager(), homeFragment);
                         break;
                     case 2:
-                        GlobalResources.replaceFragment(getSupportFragmentManager(), new HistoryFragment());
+                        GlobalResources.replaceFragment(getSupportFragmentManager(), historyFragment);
                         break;
                     case 3:
                         if (isPaid) {
@@ -83,8 +81,10 @@ public class MainActivity extends AppCompatActivity {
                         GlobalResources.replaceFragment(getSupportFragmentManager(), cartFragment);
                         break;
                     case 4:
-                        searchFragment = new SearchFragment();
-                        GlobalResources.replaceFragment(getSupportFragmentManager(), searchFragment);
+                        GlobalResources.replaceFragment(getSupportFragmentManager(), salesFragment);
+                        break;
+                    case 5:
+                        GlobalResources.replaceFragment(getSupportFragmentManager(), new SearchFragment());
                         break;
                 }
             }
@@ -99,8 +99,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void initViews() {
         homeFragment = new HomeFragment(bottomNavigation);
+        historyFragment = new HistoryFragment();
+        salesFragment = new SalesFragment();
         cartFragment = new CartFragment();
-        searchFragment = new SearchFragment();
+        //searchFragment = new SearchFragment();
         onMenu();
         onNavigation();
     }
@@ -132,16 +134,13 @@ public class MainActivity extends AppCompatActivity {
         if (hour >= 5 && hour < 12) {
             time_of_the_day.setText("בוקר טוב");
             imageTime.setImageResource(R.drawable.morning);
-        }
-        else if (hour >= 12 && hour < 16) {
+        } else if (hour >= 12 && hour < 16) {
             time_of_the_day.setText("צהריים טובים");
             imageTime.setImageResource(R.drawable.noon);
-        }
-        else if (hour >= 16 && hour < 19) {
+        } else if (hour >= 16 && hour < 19) {
             time_of_the_day.setText("אחר הצהריים טובים");
             imageTime.setImageResource(R.drawable.afternoon);
-        }
-        else if (hour >= 19 && hour < 21) {
+        } else if (hour >= 19 && hour < 21) {
             time_of_the_day.setText("ערב טוב");
             imageTime.setImageResource(R.drawable.evening);
         } else {
@@ -220,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation.add(new MeowBottomNavigation.Model(1, R.drawable.home));
         bottomNavigation.add(new MeowBottomNavigation.Model(2, R.drawable.history));
         bottomNavigation.add(new MeowBottomNavigation.Model(3, R.drawable.cart));
-        bottomNavigation.add(new MeowBottomNavigation.Model(4, R.drawable.search));
+        bottomNavigation.add(new MeowBottomNavigation.Model(4, R.drawable.sale));
+        bottomNavigation.add(new MeowBottomNavigation.Model(5, R.drawable.search));
     }
 }

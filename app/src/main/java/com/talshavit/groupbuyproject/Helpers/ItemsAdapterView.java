@@ -74,6 +74,12 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
         holder.company.setText(allItems.get(position).getCompany());
         holder.weight.setText(allItems.get(position).getWeight());
         holder.price.setText("₪ "+allItems.get(position).getPrice());
+        if(Double.parseDouble(allItems.get(position).getSale())>0.0){
+            Log.d("lala", allItems.get(position).getSale()+" ");
+            holder.sale.setText("₪ "+allItems.get(position).getSale());
+            holder.sale.setVisibility(View.VISIBLE);
+            holder.price.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+        }
         if (allItems.get(position).getCategory().equals(Category.FruitsAndVegetables))
             holder.count.setText(String.valueOf(allItems.get(position).getCount()));
         else
