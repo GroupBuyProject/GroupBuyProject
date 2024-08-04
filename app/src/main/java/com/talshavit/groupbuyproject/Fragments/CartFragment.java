@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +22,6 @@ import com.talshavit.groupbuyproject.R;
 import com.talshavit.groupbuyproject.models.Cart;
 import com.talshavit.groupbuyproject.models.Item;
 
-import javax.security.auth.callback.Callback;
-
 public class CartFragment extends Fragment implements OnItemChangeListener {
 
     private Cart cart;
@@ -34,7 +31,7 @@ public class CartFragment extends Fragment implements OnItemChangeListener {
     private TextView totalAmount;
     private double totalPrice;
 
-    private RecyclerView.AdapterDataObserver dataObserver;
+    //private RecyclerView.AdapterDataObserver dataObserver;
 
 
     public CartFragment() {
@@ -69,25 +66,22 @@ public class CartFragment extends Fragment implements OnItemChangeListener {
     }
 
     private void onCheckOut() {
-        checkout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //double price = calcPrice();
-                if (cart.getItems().size() != 0)
-                    GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(), new MapFragment(totalPrice));
-                else
-                    Toast.makeText(getContext(), "איו פירטים בעגלה", Toast.LENGTH_SHORT).show();
-            }
+        checkout.setOnClickListener(view -> {
+            //double price = calcPrice();
+            if (!cart.getItems().isEmpty())
+                GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(), new MapFragment(totalPrice));
+            else
+                Toast.makeText(getContext(), "איו פירטים בעגלה", Toast.LENGTH_SHORT).show();
         });
     }
 
-    private double calcPrice() {
-        double price = 0.0;
-        for (int i = 0; i < cart.getItems().size(); i++) {
-            price += Double.parseDouble(cart.getItems().get(i).getPrice()) * cart.getItems().get(i).getCount();
-        }
-        return price;
-    }
+//    private double calcPrice() {
+//        double price = 0.0;
+//        for (int i = 0; i < cart.getItems().size(); i++) {
+//            price += Double.parseDouble(cart.getItems().get(i).getPrice()) * cart.getItems().get(i).getCount();
+//        }
+//        return price;
+//    }
 
 //    private void setTotalAmount() {
 //        totalAmount.setText("₪" + calcPrice());
