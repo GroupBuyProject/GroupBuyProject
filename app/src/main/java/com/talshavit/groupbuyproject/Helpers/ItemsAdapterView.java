@@ -421,8 +421,9 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
                 for (Item item : relatedItems) {
                     changeItemCount(item, item.getCount());
                 }
-                itemChangeListener.onItemQuantityChanged();
                 dialog.dismiss();
+                if(type.equals("CartFragment"))
+                    itemChangeListener.onItemQuantityChanged();
             }
         });
     }

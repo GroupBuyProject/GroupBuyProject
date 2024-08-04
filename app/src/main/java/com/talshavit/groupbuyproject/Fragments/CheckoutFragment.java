@@ -47,22 +47,25 @@ import java.util.List;
 
 public class CheckoutFragment extends Fragment {
 
-    private AppCompatButton btnPay, btnPoints;
+    private AppCompatButton btnPay, btnPoints, btnCancelPoints;
     private EditText etCardNumber, etID, etCVV;
     private ImageButton checkoutBackButton;
     private AutoCompleteTextView month, year;
     private TextView cvv_explanation, points_question, totalPriceCheckout;
     private ItemsAdapterView itemsAdapterView;
     private String[] monthsArray, yearsArray;
-    private String chosenMonth, chosenYear, cardNumberText;
+    private String chosenMonth, chosenYear, cardNumberText, userID;
     private ShapeableImageView cvv_explain_button;
     private View.OnFocusChangeListener focusChangeListener;
-    private double price;
-    private boolean isSaveInfoPayment = true;
+    private double price, virtualCurrencies, originalPrice;
+    private boolean isSaveInfoPayment = true, isUsedPoint = false;
+    private DatabaseReference userReference;
+
 
 
     public CheckoutFragment(double price) {
         this.price = price;
+        this.originalPrice = price;
     }
 
     @Override
@@ -74,12 +77,12 @@ public class CheckoutFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         findViews(view);
-
         changeCvvEplainVisibility(view);
         initViews();
     }
 
     private void initViews() {
+        initUserDataBase();
         itemsAdapterView = new ItemsAdapterView(getContext(), GlobalResources.items, "", -1);
         onCreditCard();
         initMonths();
@@ -91,7 +94,13 @@ public class CheckoutFragment extends Fragment {
         setPointsQuestion();
         setTotalPrice();
         onPointsBtn();
+        onCancelPoints();
         onCheckoutBackButton();
+    }
+
+    private void initUserDataBase() {
+        userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        userReference = FirebaseDatabase.getInstance().getReference("Users").child(userID);
     }
 
     private void onCvvExplain() {
@@ -108,10 +117,11 @@ public class CheckoutFragment extends Fragment {
         String formattedValue = String.format("%.2f", virtualCurrencies);
         if (GlobalResources.user.getVirtualCurrencies() > 0.0) {
             points_question.setText("יש ברשותך " + formattedValue + " נקודות. " + "האם תרצה לממש אותן?");
-            btnPoints.setVisibility(View.VISIBLE);
+            //btnPoints.setVisibility(View.VISIBLE);
         } else {
-            points_question.setText("");
-            btnPoints.setVisibility(View.GONE);
+            points_question.setText("יש ברשותך 0 נקודות");
+            btnPoints.setVisibility(View.INVISIBLE);
+            btnCancelPoints.setVisibility(View.GONE);
         }
     }
 
@@ -124,20 +134,40 @@ public class CheckoutFragment extends Fragment {
         btnPoints.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                isUsedPoint = true;
                 if (price < GlobalResources.user.getVirtualCurrencies()) {
+                    price = 0.0;
+                    virtualCurrencies = GlobalResources.user.getVirtualCurrencies() - price;
+                    String formattedValue = String.format("%.2f", virtualCurrencies);
                     totalPriceCheckout.setText("₪ " + 0.0);
-                    GlobalResources.user.setVirtualCurrencies(GlobalResources.user.getVirtualCurrencies() - price);
-                    btnPay.setText("ביצוע הזמנה");
+                    points_question.setText("יש ברשותך " + formattedValue + " נקודות. " + "האם תרצה לממש אותן?");
+                    btnPoints.setVisibility(View.VISIBLE);
                 } else {
-                    double newPrice = price - GlobalResources.user.getVirtualCurrencies();
-                    String currentPrice = String.format("%.2f", newPrice);
+                    virtualCurrencies = 0.0;
+                    price = price - GlobalResources.user.getVirtualCurrencies();
+                    String currentPrice = String.format("%.2f", price);
                     totalPriceCheckout.setText("₪ " + currentPrice);
-                    GlobalResources.user.setVirtualCurrencies(0.0);
-                    btnPay.setText("לתשלום");
-
+                    points_question.setText("יש ברשותך 0 נקודות");
                 }
             }
         });
+    }
+
+    private void onCancelPoints() {
+        btnCancelPoints.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isUsedPoint = false;
+                price = originalPrice;
+                String currentPrice = String.format("%.2f", price);
+                totalPriceCheckout.setText("₪ " + currentPrice);
+                double virtualCurrencies = GlobalResources.user.getVirtualCurrencies();
+                String formattedValue = String.format("%.2f", virtualCurrencies);
+                points_question.setText("יש ברשותך " + formattedValue + " נקודות. " + "האם תרצה לממש אותן?");
+            }
+        });
+
+
     }
 
     private void changeCvvEplainVisibility(View view) {
@@ -304,11 +334,18 @@ public class CheckoutFragment extends Fragment {
                     isValid = false;
                 }
                 if (isValid) {
+                    if (isUsedPoint) {
+                        if (price < GlobalResources.user.getVirtualCurrencies()) {
+                            GlobalResources.user.setVirtualCurrencies(virtualCurrencies);
+                        } else
+                            GlobalResources.user.setVirtualCurrencies(0.0);
+                    }
                     addHistoryToFirebase(view);
                     saveVirtualCurrencies();
                     if (isSaveInfoPayment) {
                         addPaymentToFirebase(view);
                     }
+                    addPointsToFirebase();
                     GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(), new AcceptedPayment());
                 }
             }
@@ -327,8 +364,6 @@ public class CheckoutFragment extends Fragment {
         MainActivity.isPaid = true;
         GlobalResources.cart = new Cart();
         itemsAdapterView.changeCount();
-        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("Users").child(userID);
 
         userReference.child("HistoriesList").setValue(GlobalResources.user.getHistories()).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -339,6 +374,10 @@ public class CheckoutFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void addPointsToFirebase() {
+
     }
 
     private Cart duplicateCartItems() {
@@ -358,9 +397,6 @@ public class CheckoutFragment extends Fragment {
         int cvv = Integer.parseInt(etCVV.getText().toString());
         Payment payment = new Payment(cardNumber, idNumber, year, month, cvv);
         GlobalResources.user.addPayment(payment);
-
-        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("Users").child(userID);
 
         userReference.child("PaymentsInfo").setValue(GlobalResources.user.getPayments()).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -385,6 +421,7 @@ public class CheckoutFragment extends Fragment {
         cvv_explain_button = view.findViewById(R.id.cvv_explain_button);
         points_question = view.findViewById(R.id.points_question);
         btnPoints = view.findViewById(R.id.btnPoints);
+        btnCancelPoints = view.findViewById(R.id.btnCancelPoints);
         totalPriceCheckout = view.findViewById(R.id.totalPriceCheckout);
         checkoutBackButton = view.findViewById(R.id.checkoutBackButton);
     }
