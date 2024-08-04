@@ -14,8 +14,8 @@ public class Item {
     private Category category;
     private ArrayList<Integer> relatedItems;
     private double count;
-
     private String comment = "";
+    private int remainingCharacters = 200;
 
     public Item() {
     }
@@ -44,6 +44,7 @@ public class Item {
         this.category = item.category;
         this.relatedItems = item.relatedItems;
         this.count = item.count;
+        this.remainingCharacters = item.remainingCharacters;
     }
 
     public String getId() {
@@ -142,6 +143,15 @@ public class Item {
 
     public Item setSale(String sale) {
         this.sale = sale;
+        return this;
+    }
+
+    public int getRemainingCharacters() {
+        return remainingCharacters;
+    }
+
+    public Item setRemainingCharacters(int remainingCharacters) {
+        this.remainingCharacters = remainingCharacters;
         return this;
     }
 }

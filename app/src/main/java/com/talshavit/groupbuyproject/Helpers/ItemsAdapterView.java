@@ -4,7 +4,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Paint;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textview.MaterialTextView;
 import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.models.Category;
 import com.talshavit.groupbuyproject.models.Item;
@@ -47,7 +49,12 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
     private GridLayout gridLayout;
     private MaterialButton confirm_button;
     private int category;
-    private Item itemToRemove;
+    private Item itemToRemove, currentItem;
+    private TextInputEditText inputComments;
+    private MaterialTextView remainingCharacters;
+
+    private AlertDialog.Builder builder;
+    private View dialogView;
 
     public ItemsAdapterView() {
     }
@@ -73,10 +80,9 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
         holder.itemName.setText(allItems.get(position).getName());
         holder.company.setText(allItems.get(position).getCompany());
         holder.weight.setText(allItems.get(position).getWeight());
-        holder.price.setText("₪ "+allItems.get(position).getPrice());
-        if(Double.parseDouble(allItems.get(position).getSale())>0.0){
-            Log.d("lala", allItems.get(position).getSale()+" ");
-            holder.sale.setText("₪ "+allItems.get(position).getSale());
+        holder.price.setText("₪ " + allItems.get(position).getPrice());
+        if (Double.parseDouble(allItems.get(position).getSale()) > 0.0) {
+            holder.sale.setText("₪ " + allItems.get(position).getSale());
             holder.sale.setVisibility(View.VISIBLE);
             holder.price.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         }
@@ -102,34 +108,74 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
         holder.comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                LayoutInflater inflater = LayoutInflater.from(context);
-                View dialogView = inflater.inflate(R.layout.dialog_add_comment, null);
-                builder.setView(dialogView);
-                builder.setCancelable(false);
+                initViewDialog();
+                dialogFindViews(dialogView);
 
-                TextInputEditText inputComments = dialogView.findViewById(R.id.edit_text_comments);
-                if (type.equals("AllItemsFragment"))
-                    inputComments.setText(GlobalResources.allItemsByCategories[category].get(position).getComment());
-                else
-                    inputComments.setText(GlobalResources.cart.items.get(position).getComment());
+                if (type.equals("AllItemsFragment")) {
+                    currentItem = GlobalResources.allItemsByCategories[category].get(position);
+                } else {
+                    currentItem = GlobalResources.cart.items.get(position);
+                }
 
-                builder.setTitle("")
-                        .setPositiveButton("אישור", (dialog, id) -> {
-                            String comments = inputComments.getText().toString();
-                            if (type.equals("AllItemsFragment"))
-                                GlobalResources.allItemsByCategories[category].get(position).setComment(comments);
-                            else
-                                GlobalResources.cart.items.get(position).setComment(comments);
-                        })
-                        .setNegativeButton("ביטול", (dialog, id) -> dialog.cancel());
-
-
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-                alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_background);
+                setComment();
+                commentTextWatcher();
+                setBuilder();
+                showDialog();
             }
         });
+    }
+
+    private void showDialog() {
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_background);
+    }
+
+    private void setBuilder() {
+        builder.setTitle("")
+                .setPositiveButton("אישור", (dialog, id) -> {
+                    String comments = inputComments.getText().toString();
+                    currentItem.setComment(comments);
+                })
+                .setNegativeButton("ביטול", (dialog, id) -> dialog.cancel());
+    }
+
+    private void commentTextWatcher() {
+        inputComments.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int remaining = 200 - s.length();
+                remainingCharacters.setText("נותרו לך " + remaining + " תווים");
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                int remaining = 200 - s.length();
+                currentItem.setRemainingCharacters(remaining);
+            }
+        });
+    }
+
+    private void setComment() {
+        inputComments.setText(currentItem.getComment());
+        remainingCharacters.setText("נותרו לך " + currentItem.getRemainingCharacters() + " תווים");
+    }
+
+    private void initViewDialog() {
+        builder = new AlertDialog.Builder(context);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        dialogView = inflater.inflate(R.layout.dialog_add_comment, null);
+        builder.setView(dialogView);
+        builder.setCancelable(false);
+    }
+
+    private void dialogFindViews(View dialogView) {
+        inputComments = dialogView.findViewById(R.id.edit_text_comments);
+        remainingCharacters = dialogView.findViewById(R.id.text_remaining_characters);
     }
 
     private boolean checkCategory(MyViewHolderItems holder, int position) {

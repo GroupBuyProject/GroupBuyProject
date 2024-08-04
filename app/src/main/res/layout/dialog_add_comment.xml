@@ -2,28 +2,43 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center"
+    android:orientation="vertical">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         android:gravity="center"
         android:text="הוסף הערות"
-        android:layout_margin="16dp"
-        android:textSize="18sp"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:textSize="18sp" />
 
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:layout_below="@id/text"
-        android:id="@+id/edit_text_comments"
+    <LinearLayout
         android:layout_width="250dp"
-        android:layout_height="50dp"
-        android:gravity="center"
-        android:background="@drawable/dialog_input"
-        android:layout_marginTop="8dp"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_text_comments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/shape_edit_text"
+            android:gravity="center"
+            android:minHeight="70dp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_remaining_characters"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="נותרו לך 200 תווים"
+            android:textColor="@color/textBlue"
+            android:gravity="end"/>
+
+
+    </LinearLayout>
 
 
 </LinearLayout>
