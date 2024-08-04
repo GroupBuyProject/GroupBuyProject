@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +57,7 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
 
     private AlertDialog.Builder builder;
     private View dialogView;
+    private OnItemChangeListener itemChangeListener;
 
     public ItemsAdapterView() {
     }
@@ -66,6 +68,15 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
         this.allItemsFull = new ArrayList<>(allItems);
         this.type = type;
         this.category = category;
+    }
+
+    public ItemsAdapterView(Context context, ArrayList<Item> allItems, String type, int category, OnItemChangeListener itemChangeListener) {
+        this.context = context;
+        this.allItems = allItems;
+        this.allItemsFull = new ArrayList<>(allItems);
+        this.type = type;
+        this.category = category;
+        this.itemChangeListener = itemChangeListener;
     }
 
     @NonNull
@@ -195,6 +206,7 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
                 public void onClick(View view) {
                     Item itemToRemove = GlobalResources.cart.getItems().get(position);
                     removeFromCart(itemToRemove);
+                    itemChangeListener.onItemQuantityChanged();
                 }
             });
         } else
@@ -232,6 +244,9 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
                             }
                         }
                     }
+                }
+                if(type.equals("CartFragment")){
+                    itemChangeListener.onItemQuantityChanged();
                 }
                 checkIfCloseToLimit();
             }
@@ -406,6 +421,7 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
                 for (Item item : relatedItems) {
                     changeItemCount(item, item.getCount());
                 }
+                itemChangeListener.onItemQuantityChanged();
                 dialog.dismiss();
             }
         });

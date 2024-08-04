@@ -18,10 +18,14 @@ import android.widget.Toast;
 
 import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.Helpers.ItemsAdapterView;
+import com.talshavit.groupbuyproject.Helpers.OnItemChangeListener;
 import com.talshavit.groupbuyproject.R;
 import com.talshavit.groupbuyproject.models.Cart;
+import com.talshavit.groupbuyproject.models.Item;
 
-public class CartFragment extends Fragment {
+import javax.security.auth.callback.Callback;
+
+public class CartFragment extends Fragment implements OnItemChangeListener{
 
     private Cart cart;
     private ItemsAdapterView itemsAdapterView;
@@ -53,7 +57,8 @@ public class CartFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         findViews(view);
         initView();
-        registerDataObserver();
+        updateTotalPrice();
+        //registerDataObserver();
     }
 
     private void initView() {
@@ -113,7 +118,7 @@ public class CartFragment extends Fragment {
 
     private void findViews(View view) {
         recyclerViewItem = view.findViewById(R.id.recyclerView);
-        itemsAdapterView = new ItemsAdapterView(getContext(), cart.items, "CartFragment", -1);
+        itemsAdapterView = new ItemsAdapterView(getContext(), cart.items, "CartFragment", -1, this);
         checkout = view.findViewById(R.id.checkout);
         totalAmount = view.findViewById(R.id.totalAmount);
     }
@@ -124,5 +129,18 @@ public class CartFragment extends Fragment {
         linearLayoutManager.setOrientation(linearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(myAdapter);
+    }
+
+    private void updateTotalPrice() {
+        double totalPrice = 0.0;
+        for (Item item : cart.getItems()) {
+            totalPrice += Double.parseDouble(item.getPrice()) * item.getCount();
+        }
+        totalAmount.setText(String.format("%.2f", totalPrice));
+    }
+
+    @Override
+    public void onItemQuantityChanged() {
+        updateTotalPrice();
     }
 }
