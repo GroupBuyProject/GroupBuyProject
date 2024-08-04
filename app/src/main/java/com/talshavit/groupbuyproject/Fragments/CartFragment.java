@@ -25,13 +25,14 @@ import com.talshavit.groupbuyproject.models.Item;
 
 import javax.security.auth.callback.Callback;
 
-public class CartFragment extends Fragment implements OnItemChangeListener{
+public class CartFragment extends Fragment implements OnItemChangeListener {
 
     private Cart cart;
     private ItemsAdapterView itemsAdapterView;
     private RecyclerView recyclerViewItem;
     private AppCompatButton checkout;
     private TextView totalAmount;
+    private double totalPrice;
 
     private RecyclerView.AdapterDataObserver dataObserver;
 
@@ -57,23 +58,23 @@ public class CartFragment extends Fragment implements OnItemChangeListener{
         super.onViewCreated(view, savedInstanceState);
         findViews(view);
         initView();
-        updateTotalPrice();
         //registerDataObserver();
     }
 
     private void initView() {
         initAdapter(recyclerViewItem, itemsAdapterView);
         onCheckOut();
-        setTotalAmount();
+        updateTotalPrice();
+        //setTotalAmount();
     }
 
     private void onCheckOut() {
         checkout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                double price = calcPrice();
+                //double price = calcPrice();
                 if (cart.getItems().size() != 0)
-                    GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(), new MapFragment(price));
+                    GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(), new MapFragment(totalPrice));
                 else
                     Toast.makeText(getContext(), "איו פירטים בעגלה", Toast.LENGTH_SHORT).show();
             }
@@ -88,33 +89,33 @@ public class CartFragment extends Fragment implements OnItemChangeListener{
         return price;
     }
 
-    private void setTotalAmount() {
-        totalAmount.setText("₪" + calcPrice());
-    }
+//    private void setTotalAmount() {
+//        totalAmount.setText("₪" + calcPrice());
+//    }
 
-    private void registerDataObserver() {
-        dataObserver = new RecyclerView.AdapterDataObserver() {
-            @Override
-            public void onChanged() {
-                super.onChanged();
-                setTotalAmount();
-            }
-
-            @Override
-            public void onItemRangeInserted(int positionStart, int itemCount) {
-                super.onItemRangeInserted(positionStart, itemCount);
-                setTotalAmount();
-            }
-
-            @Override
-            public void onItemRangeRemoved(int positionStart, int itemCount) {
-                super.onItemRangeRemoved(positionStart, itemCount);
-                setTotalAmount();
-            }
-        };
-
-        itemsAdapterView.registerAdapterDataObserver(dataObserver);
-    }
+//    private void registerDataObserver() {
+//        dataObserver = new RecyclerView.AdapterDataObserver() {
+//            @Override
+//            public void onChanged() {
+//                super.onChanged();
+//                setTotalAmount();
+//            }
+//
+//            @Override
+//            public void onItemRangeInserted(int positionStart, int itemCount) {
+//                super.onItemRangeInserted(positionStart, itemCount);
+//                setTotalAmount();
+//            }
+//
+//            @Override
+//            public void onItemRangeRemoved(int positionStart, int itemCount) {
+//                super.onItemRangeRemoved(positionStart, itemCount);
+//                setTotalAmount();
+//            }
+//        };
+//
+//        itemsAdapterView.registerAdapterDataObserver(dataObserver);
+//    }
 
     private void findViews(View view) {
         recyclerViewItem = view.findViewById(R.id.recyclerView);
@@ -122,7 +123,6 @@ public class CartFragment extends Fragment implements OnItemChangeListener{
         checkout = view.findViewById(R.id.checkout);
         totalAmount = view.findViewById(R.id.totalAmount);
     }
-
 
     private void initAdapter(RecyclerView recyclerView, RecyclerView.Adapter myAdapter) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -132,11 +132,15 @@ public class CartFragment extends Fragment implements OnItemChangeListener{
     }
 
     private void updateTotalPrice() {
-        double totalPrice = 0.0;
+        totalPrice = 0.0;
         for (Item item : cart.getItems()) {
-            totalPrice += Double.parseDouble(item.getPrice()) * item.getCount();
+            if (Double.parseDouble(item.getSale()) > 0.0)
+                totalPrice += Double.parseDouble(item.getSale()) * item.getCount();
+            else
+                totalPrice += Double.parseDouble(item.getPrice()) * item.getCount();
         }
-        totalAmount.setText(String.format("%.2f", totalPrice));
+        String total = String.format("%.2f", totalPrice);
+        totalAmount.setText("₪" + total);
     }
 
     @Override
