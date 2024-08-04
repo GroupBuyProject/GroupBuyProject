@@ -29,8 +29,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.talshavit.groupbuyproject.models.Order;
 import com.talshavit.groupbuyproject.models.User;
 
-import java.util.ArrayList;
-
 
 public class LoginTabFragment extends Fragment {
 
@@ -115,6 +113,7 @@ public class LoginTabFragment extends Fragment {
                 if (user != null) {
                     Log.d("LoginTabFragment", "User data loaded: " + user.getName());
                     loadHistoriesFromDatabase();
+                    loadVirtualPointsFromDatabase(user);
                     openMainActivity(user);
                 } else {
                     Log.d("LoginTabFragment", "User data is null");
@@ -137,6 +136,23 @@ public class LoginTabFragment extends Fragment {
                     if (order != null) {
                         GlobalResources.user.addHistory(order);
                     }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+    }
+
+    private void loadVirtualPointsFromDatabase(User user) {
+        databaseReference.child("VirtualPoints").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Double virtualCurrencies = snapshot.getValue(Double.class);
+                if (virtualCurrencies != null) {
+                    user.setVirtualCurrencies(virtualCurrencies);
                 }
             }
 

@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.Helpers.SpecificOrderFromHistory.SpecificOrderFromHistoryAdapter;
@@ -26,6 +28,8 @@ public class OrderFragment extends Fragment {
     private RecyclerView recyclerView;
     private SpecificOrderFromHistoryAdapter itemInHistoryAdapter;
     private AppCompatTextView textStatus;
+    private ImageButton backButton;
+
     public OrderFragment() {
     }
 
@@ -44,6 +48,7 @@ public class OrderFragment extends Fragment {
         itemInHistoryAdapter = new SpecificOrderFromHistoryAdapter(getContext(), order.getCart().items);
         initAdapter(recyclerView, itemInHistoryAdapter);
         onStatusText();
+        onBackButton();
     }
 
     private void initAdapter(RecyclerView recyclerView, RecyclerView.Adapter myAdapter) {
@@ -62,9 +67,20 @@ public class OrderFragment extends Fragment {
         });
     }
 
+    private void onBackButton() {
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                fragmentManager.popBackStack();
+            }
+        });
+    }
+
     private void findViews(View view) {
         recyclerView = view.findViewById(R.id.recyclerView);
         textStatus = view.findViewById(R.id.textStatus);
+        backButton = view.findViewById(R.id.backButton);
     }
 
     @Override

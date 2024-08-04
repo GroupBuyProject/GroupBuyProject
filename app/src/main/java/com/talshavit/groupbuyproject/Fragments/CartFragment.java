@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.Helpers.ItemsAdapterView;
-import com.talshavit.groupbuyproject.Helpers.OnItemChangeListener;
+import com.talshavit.groupbuyproject.Helpers.Interfaces.OnItemChangeListener;
 import com.talshavit.groupbuyproject.R;
 import com.talshavit.groupbuyproject.models.Cart;
 import com.talshavit.groupbuyproject.models.Item;

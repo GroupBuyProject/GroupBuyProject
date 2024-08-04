@@ -2,6 +2,7 @@ package com.talshavit.groupbuyproject;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -22,6 +23,7 @@ import com.talshavit.groupbuyproject.Fragments.HomeFragment;
 import com.talshavit.groupbuyproject.Fragments.SalesFragment;
 import com.talshavit.groupbuyproject.Fragments.SearchFragment;
 import com.talshavit.groupbuyproject.General.GlobalResources;
+import com.talshavit.groupbuyproject.Helpers.Interfaces.OnCoinsUpdateListener;
 import com.talshavit.groupbuyproject.models.Item;
 
 import java.util.ArrayList;
@@ -29,7 +31,7 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnCoinsUpdateListener {
 
     private MeowBottomNavigation bottomNavigation;
     private HomeFragment homeFragment;
@@ -37,7 +39,8 @@ public class MainActivity extends AppCompatActivity {
     private HistoryFragment historyFragment;
     private SalesFragment salesFragment;
     private SearchFragment searchFragment;
-    private ImageView menu;
+    private ImageView menu, coins;
+    private AppCompatTextView coinsTxt;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private TextView user_name, time_of_the_day;
@@ -98,13 +101,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        animateToCoin(coins);
         homeFragment = new HomeFragment(bottomNavigation);
         historyFragment = new HistoryFragment();
         salesFragment = new SalesFragment();
         cartFragment = new CartFragment();
         //searchFragment = new SearchFragment();
         onMenu();
+        setCoins();
         onNavigation();
+    }
+
+    private void setCoins() {
+        double virtualCurrencies = GlobalResources.user.getVirtualCurrencies();
+        String formattedValue = String.format("%.2f", virtualCurrencies);
+        coinsTxt.setText(formattedValue+" מטבעות");
     }
 
     private void onNavigation() {
@@ -115,6 +126,9 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.nav_deals:
                     openDialog();
+                    break;
+                case R.id.coins:
+                    Log.d("lala", "coins");
                     break;
             }
             drawerLayout.closeDrawer(GravityCompat.END);
@@ -199,6 +213,8 @@ public class MainActivity extends AppCompatActivity {
     private void findviews() {
         bottomNavigation = findViewById(R.id.bottomNavigation);
         menu = findViewById(R.id.menu);
+        coins = findViewById(R.id.coins);
+        coinsTxt = findViewById(R.id.coinsTxt);
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
@@ -221,5 +237,26 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation.add(new MeowBottomNavigation.Model(3, R.drawable.cart));
         bottomNavigation.add(new MeowBottomNavigation.Model(4, R.drawable.sale));
         bottomNavigation.add(new MeowBottomNavigation.Model(5, R.drawable.search));
+    }
+
+    public void selectCartTab() {
+        bottomNavigation.show(3, true); // Cart ID 3
+    }
+
+    public void selectHomeTab() {
+        bottomNavigation.show(1, true); // Cart ID 1
+    }
+
+    private void animateToCoin(View imageView) {
+        imageView.animate().setDuration(1000)
+                .rotationYBy(360f)
+                .start();
+    }
+
+    @Override
+    public void onCoinsUpdated(double newCoinValue) {
+        animateToCoin(coins);
+        String formattedValue = String.format("%.2f", newCoinValue);
+        coinsTxt.setText(formattedValue + " מטבעות");
     }
 }

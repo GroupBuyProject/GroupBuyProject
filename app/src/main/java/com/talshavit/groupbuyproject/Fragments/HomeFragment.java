@@ -15,6 +15,7 @@ import android.widget.GridView;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.talshavit.groupbuyproject.General.GlobalResources;
+import com.talshavit.groupbuyproject.MainActivity;
 import com.talshavit.groupbuyproject.models.Category;
 import com.talshavit.groupbuyproject.Helpers.GridViewAdapter;
 import com.talshavit.groupbuyproject.models.Item;
@@ -110,7 +111,8 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(), new AllItemsFragment(GlobalResources.allItemsByCategories[i], listCategory.get(i).getCategoryName(), listCategory.get(i).getImg(), i));
-                bottomNavigation.show(-1, true);
+                ((MainActivity) view.getContext()).selectHomeTab();
+                //bottomNavigation.show(-1, true);
             }
         });
     }

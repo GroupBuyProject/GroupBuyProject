@@ -6,12 +6,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.bumptech.glide.Glide;
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
@@ -28,11 +30,10 @@ public class AllItemsFragment extends Fragment {
     private ArrayList<Item> allItemsByCategories;
     private ItemsAdapterView itemsAdapterView;
     private RecyclerView recyclerViewItem;
-
     private ShapeableImageView imgBackGround;
     private AppCompatTextView title;
     private String categoryName;
-
+    private ImageButton backButton;
     private String img;
     private int category;
 
@@ -69,6 +70,17 @@ public class AllItemsFragment extends Fragment {
         Glide.with(getContext()).load(img).into(imgBackGround);
         initAdapter(recyclerViewItem, itemsAdapterView);
         title.setText(categoryName);
+        onBackButton();
+    }
+
+    private void onBackButton() {
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                fragmentManager.popBackStack();
+            }
+        });
     }
 
     private void findViews(View view) {
@@ -76,6 +88,7 @@ public class AllItemsFragment extends Fragment {
         imgBackGround = view.findViewById(R.id.imgBackGround);
         itemsAdapterView = new ItemsAdapterView(getContext(), allItemsByCategories, "AllItemsFragment",category);
         title = view.findViewById(R.id.title);
+        backButton = view.findViewById(R.id.backButton);
     }
 
     private void initAdapter(RecyclerView recyclerView, RecyclerView.Adapter myAdapter) {

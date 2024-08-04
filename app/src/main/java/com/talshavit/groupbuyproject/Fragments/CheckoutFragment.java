@@ -1,6 +1,5 @@
 package com.talshavit.groupbuyproject.Fragments;
 
-import android.graphics.Paint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,7 +10,6 @@ import androidx.fragment.app.FragmentManager;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,7 +25,6 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.imageview.ShapeableImageView;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -60,7 +57,7 @@ public class CheckoutFragment extends Fragment {
     private double price, virtualCurrencies, originalPrice;
     private boolean isSaveInfoPayment = true, isUsedPoint = false;
     private DatabaseReference userReference;
-
+    private MainActivity mainActivity;
 
 
     public CheckoutFragment(double price) {
@@ -76,6 +73,7 @@ public class CheckoutFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mainActivity = (MainActivity) getActivity();
         findViews(view);
         changeCvvEplainVisibility(view);
         initViews();
@@ -117,11 +115,9 @@ public class CheckoutFragment extends Fragment {
         String formattedValue = String.format("%.2f", virtualCurrencies);
         if (GlobalResources.user.getVirtualCurrencies() > 0.0) {
             points_question.setText("יש ברשותך " + formattedValue + " נקודות. " + "האם תרצה לממש אותן?");
-            //btnPoints.setVisibility(View.VISIBLE);
         } else {
             points_question.setText("יש ברשותך 0 נקודות");
             btnPoints.setVisibility(View.INVISIBLE);
-            btnCancelPoints.setVisibility(View.GONE);
         }
     }
 
@@ -135,6 +131,7 @@ public class CheckoutFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 isUsedPoint = true;
+                btnCancelPoints.setVisibility(View.VISIBLE);
                 if (price < GlobalResources.user.getVirtualCurrencies()) {
                     price = 0.0;
                     virtualCurrencies = GlobalResources.user.getVirtualCurrencies() - price;
@@ -377,6 +374,18 @@ public class CheckoutFragment extends Fragment {
     }
 
     private void addPointsToFirebase() {
+        userReference.child("VirtualPoints").setValue(GlobalResources.user.getVirtualCurrencies()).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    if (mainActivity != null) {
+                        mainActivity.onCoinsUpdated(GlobalResources.user.getVirtualCurrencies()); // Notify the MainActivity
+                    }
+                } else {
+                    //Log.d("lala", "not added");
+                }
+            }
+        });
 
     }
 

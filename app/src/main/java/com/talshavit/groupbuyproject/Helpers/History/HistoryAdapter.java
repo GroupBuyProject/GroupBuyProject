@@ -7,11 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.talshavit.groupbuyproject.Fragments.AllItemsFragment;
+import com.talshavit.groupbuyproject.Fragments.CartFragment;
 import com.talshavit.groupbuyproject.Fragments.OrderFragment;
 import com.talshavit.groupbuyproject.General.GlobalResources;
+import com.talshavit.groupbuyproject.MainActivity;
 import com.talshavit.groupbuyproject.R;
 import com.talshavit.groupbuyproject.models.Item;
 import com.talshavit.groupbuyproject.models.Order;
@@ -24,6 +29,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryViewHolder> {
     private ArrayList<Order> orders;
 
     private FragmentManager fragmentManager;
+
 
     public HistoryAdapter() {
     }
@@ -76,8 +82,14 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryViewHolder> {
                         item.setCount(orders.get(position).getCart().items.get(finalI).getCount());
                     }
                 }
+                openCart(view);
             }
         });
+    }
+
+    private void openCart(View view) {
+        GlobalResources.replaceFragment(fragmentManager, new CartFragment());
+        ((MainActivity) view.getContext()).selectCartTab();
     }
 
     @Override

@@ -9,4 +9,13 @@
         android:icon="@drawable/baseline_arrow_drop_down_24"
         android:textAlignment="center"
         app:showAsAction="always"/>
+    <item
+        android:id="@+id/coins"
+        android:layout_gravity="center"
+        android:titleCondensed="81.9 מטבעות"
+        android:title="81.9 מטבעות"
+        android:icon="@drawable/coin"
+        android:textAlignment="center"
+        android:iconTint="@android:color/transparent"
+        app:showAsAction="always"/>
 </menu>
