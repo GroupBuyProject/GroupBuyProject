@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
+import com.talshavit.groupbuyproject.General.Constants;
 import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.models.Category;
 import com.talshavit.groupbuyproject.models.Item;
@@ -154,7 +155,7 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
 
             @Override
             public void afterTextChanged(Editable s) {
-                int remaining = 200 - s.length();
+                int remaining = Constants.MAX_CHARACTER_COMMENT - s.length();
                 currentItem.setRemainingCharacters(remaining);
             }
         });

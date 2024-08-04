@@ -6,5 +6,6 @@ public class Constants {
     public static final int CREDIT_CARD_PART = 4;
     public static final int ID_NUMBERS = 9;
     public static final int CVV_NUMBERS = 3;
+    public static final int MAX_CHARACTER_COMMENT = 200;
 
 }

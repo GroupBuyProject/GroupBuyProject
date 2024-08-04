@@ -1,6 +1,8 @@
 package com.talshavit.groupbuyproject.models;
 
 
+import com.talshavit.groupbuyproject.General.Constants;
+
 import java.util.ArrayList;
 
 public class Item {
@@ -15,7 +17,7 @@ public class Item {
     private ArrayList<Integer> relatedItems;
     private double count;
     private String comment = "";
-    private int remainingCharacters = 200;
+    private int remainingCharacters = Constants.MAX_CHARACTER_COMMENT;
 
     public Item() {
     }
