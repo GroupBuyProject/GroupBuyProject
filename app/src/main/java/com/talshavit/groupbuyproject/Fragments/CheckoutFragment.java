@@ -133,8 +133,8 @@ public class CheckoutFragment extends Fragment {
                 isUsedPoint = true;
                 btnCancelPoints.setVisibility(View.VISIBLE);
                 if (price < GlobalResources.user.getVirtualCurrencies()) {
-                    price = 0.0;
                     virtualCurrencies = GlobalResources.user.getVirtualCurrencies() - price;
+                    price = 0.0;
                     String formattedValue = String.format("%.2f", virtualCurrencies);
                     totalPriceCheckout.setText("₪ " + 0.0);
                     points_question.setText("יש ברשותך " + formattedValue + " נקודות. " + "האם תרצה לממש אותן?");

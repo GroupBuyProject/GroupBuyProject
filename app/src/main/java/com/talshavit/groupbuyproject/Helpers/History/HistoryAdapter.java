@@ -70,7 +70,19 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryViewHolder> {
             @Override
             public void onClick(View view) {
                 holder.cardView.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#BDEDBF")));
-                GlobalResources.cart.setItems(orders.get(position).getCopiedCart().items);
+
+                ArrayList<Item> copiedItems = new ArrayList<>(orders.get(position).getCart().items);
+                GlobalResources.cart.setItems(copiedItems);
+                for (int i = 0; i < GlobalResources.cart.items.size(); i++) {
+                    Item cartItem = GlobalResources.cart.items.get(i);
+                    Optional<Item> matchingItem = GlobalResources.items.stream()
+                            .filter(item -> item.getId().equals(cartItem.getId()))
+                            .findFirst();
+
+                    if (matchingItem.isPresent()) {
+                        GlobalResources.cart.items.set(i, matchingItem.get());
+                    }
+                }
                 for (int i = 0; i < orders.get(position).getCart().items.size(); i++) {
                     int finalI = i;
                     Optional<Item> isExist = GlobalResources.cart.items.stream()
@@ -79,7 +91,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryViewHolder> {
 
                     if (isExist.isPresent()) {
                         Item item = isExist.get();
-                        item.setCount(orders.get(position).getCart().items.get(finalI).getCount());
+                        item.setCount(orders.get(position).getCopiedCart().items.get(finalI).getCount());
                     }
                 }
                 openCart(view);

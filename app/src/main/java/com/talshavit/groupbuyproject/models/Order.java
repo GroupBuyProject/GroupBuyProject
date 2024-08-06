@@ -14,7 +14,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(Cart copiedCart,Cart cart, double price) {
+    public Order(Cart cart,Cart copiedCart, double price) {
         this.copiedCart = copiedCart;
         this.cart = cart;
         this.price = price;

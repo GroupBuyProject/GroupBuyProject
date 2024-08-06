@@ -27,7 +27,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.talshavit.groupbuyproject.models.Order;
+import com.talshavit.groupbuyproject.models.Payment;
 import com.talshavit.groupbuyproject.models.User;
+
+import java.util.ArrayList;
 
 
 public class LoginTabFragment extends Fragment {
@@ -113,6 +116,7 @@ public class LoginTabFragment extends Fragment {
                 if (user != null) {
                     Log.d("LoginTabFragment", "User data loaded: " + user.getName());
                     loadHistoriesFromDatabase();
+                    loadPaymentsFromDatabase();
                     loadVirtualPointsFromDatabase(user);
                     openMainActivity(user);
                 } else {
@@ -161,6 +165,25 @@ public class LoginTabFragment extends Fragment {
             }
         });
 
+    }
+
+    private void loadPaymentsFromDatabase() {
+        databaseReference.child("PaymentsInfo").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<Payment> payments = new ArrayList<>();
+                for (DataSnapshot paymentSnapshot : dataSnapshot.getChildren()) {
+                    Payment payment = paymentSnapshot.getValue(Payment.class);
+                    if (payment != null) {
+                        payments.add(payment);
+                    }
+                }
+                GlobalResources.user.setPayments(payments);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
 

@@ -45,7 +45,7 @@ public class OrderFragment extends Fragment {
     }
 
     private void initViews() {
-        itemInHistoryAdapter = new SpecificOrderFromHistoryAdapter(getContext(), order.getCart().items);
+        itemInHistoryAdapter = new SpecificOrderFromHistoryAdapter(getContext(), order.getCopiedCart().items);
         initAdapter(recyclerView, itemInHistoryAdapter);
         onStatusText();
         onBackButton();
