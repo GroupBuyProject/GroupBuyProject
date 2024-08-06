@@ -38,7 +38,6 @@ public class SpecificOrderFromHistoryAdapter extends RecyclerView.Adapter<Specif
     @Override
     public void onBindViewHolder(@NonNull SpecificOrderFromHistoryViewAdapter holder, int position) {
         Glide.with(context).load(items.get(position).getImg()).into(holder.itemImg);
-        Log.d("lala", "lalalalalala" +String.valueOf(items.get(position).getCount()));
         holder.itemCount.setText(String.valueOf(items.get(position).getCount()));
         holder.itemName.setText(items.get(position).getName());
         holder.itemPrice.setText(items.get(position).getPrice());

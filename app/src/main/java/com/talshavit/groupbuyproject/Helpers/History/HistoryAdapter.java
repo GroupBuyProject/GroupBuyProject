@@ -22,6 +22,7 @@ import com.talshavit.groupbuyproject.models.Item;
 import com.talshavit.groupbuyproject.models.Order;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Optional;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryViewHolder> {
@@ -49,7 +50,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull HistoryViewHolder holder, int position) {
-        holder.count.setText(String.valueOf(orders.get(position).getPrice()) + " ש\"ח");
+        double price = orders.get(position).getPrice();
+        String formattedPrice = String.format(Locale.US, "%.2f", price);
+        holder.count.setText(String.valueOf(formattedPrice + " ש\"ח"));
         holder.date.setText(orders.get(position).getDate());
         holder.time.setText(orders.get(position).getTime());
         onClick(holder, position);
@@ -73,30 +76,39 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryViewHolder> {
 
                 ArrayList<Item> copiedItems = new ArrayList<>(orders.get(position).getCart().items);
                 GlobalResources.cart.setItems(copiedItems);
-                for (int i = 0; i < GlobalResources.cart.items.size(); i++) {
-                    Item cartItem = GlobalResources.cart.items.get(i);
-                    Optional<Item> matchingItem = GlobalResources.items.stream()
-                            .filter(item -> item.getId().equals(cartItem.getId()))
-                            .findFirst();
-
-                    if (matchingItem.isPresent()) {
-                        GlobalResources.cart.items.set(i, matchingItem.get());
-                    }
-                }
-                for (int i = 0; i < orders.get(position).getCart().items.size(); i++) {
-                    int finalI = i;
-                    Optional<Item> isExist = GlobalResources.cart.items.stream()
-                            .filter(item -> orders.get(position).getCart().items.get(finalI).getId().equals(item.getId()))
-                            .findFirst();
-
-                    if (isExist.isPresent()) {
-                        Item item = isExist.get();
-                        item.setCount(orders.get(position).getCopiedCart().items.get(finalI).getCount());
-                    }
-                }
+                syncCartItemsWithGlobalItems();
+                updateItemCountsInGlobalCart(position);
                 openCart(view);
             }
         });
+    }
+
+    private void updateItemCountsInGlobalCart(int position){
+        for (int i = 0; i < orders.get(position).getCart().items.size(); i++) {
+            int finalI = i;
+            Optional<Item> isExist = GlobalResources.cart.items.stream()
+                    .filter(item -> orders.get(position).getCart().items.get(finalI).getId().equals(item.getId()))
+                    .findFirst();
+
+            if (isExist.isPresent()) {
+                Item item = isExist.get();
+                item.setCount(orders.get(position).getCopiedCart().items.get(finalI).getCount());
+            }
+        }
+    }
+
+
+    private void syncCartItemsWithGlobalItems(){
+        for (int i = 0; i < GlobalResources.cart.items.size(); i++) {
+            Item cartItem = GlobalResources.cart.items.get(i);
+            Optional<Item> matchingItem = GlobalResources.items.stream()
+                    .filter(item -> item.getId().equals(cartItem.getId()))
+                    .findFirst();
+
+            if (matchingItem.isPresent()) {
+                GlobalResources.cart.items.set(i, matchingItem.get());
+            }
+        }
     }
 
     private void openCart(View view) {

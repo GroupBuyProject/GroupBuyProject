@@ -4,12 +4,16 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,8 +21,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +35,7 @@ import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.talshavit.groupbuyproject.CreditCardAdapter;
 import com.talshavit.groupbuyproject.General.Constants;
 import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.Helpers.ItemsAdapterView;
@@ -42,22 +50,28 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+
 public class CheckoutFragment extends Fragment {
 
     private AppCompatButton btnPay, btnPoints, btnCancelPoints;
     private EditText etCardNumber, etID, etCVV;
     private ImageButton checkoutBackButton;
     private AutoCompleteTextView month, year;
-    private TextView cvv_explanation, points_question, totalPriceCheckout;
+    private TextView cvv_explanation, points_question, totalPriceCheckout, selectedCardText, chooseCardTXT;
     private ItemsAdapterView itemsAdapterView;
     private String[] monthsArray, yearsArray;
     private String chosenMonth, chosenYear, cardNumberText, userID;
     private ShapeableImageView cvv_explain_button;
     private View.OnFocusChangeListener focusChangeListener;
     private double price, virtualCurrencies, originalPrice;
-    private boolean isSaveInfoPayment = true, isUsedPoint = false;
+    private boolean isUsedPoint = false;
     private DatabaseReference userReference;
     private MainActivity mainActivity;
+    private RelativeLayout selectCardLayout;
+    private ImageView selectedCardIcon, selectedCardCheckIcon;
+    private Payment selectedCard;
+    private CheckBox saveCardDetailsCheckBox;
+
 
 
     public CheckoutFragment(double price) {
@@ -79,6 +93,46 @@ public class CheckoutFragment extends Fragment {
         initViews();
     }
 
+    private void openCardSelectionDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_select_card, null);
+        RecyclerView recyclerView = dialogView.findViewById(R.id.recyclerViewCards);
+
+        List<Payment> cards = GlobalResources.user.getPayments();
+        CreditCardAdapter adapter = new CreditCardAdapter(cards, new CreditCardAdapter.OnCardClickListener() {
+            @Override
+            public void onCardClick(Payment card) {
+                selectedCard = card;
+                GlobalResources.selectedCardPosition = cards.indexOf(card);
+            }
+        },GlobalResources.selectedCardPosition);
+
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+
+        builder.setView(dialogView)
+                .setTitle("בחר כרטיס אשראי")
+                .setNegativeButton("ביטול", (dialog, which) -> dialog.dismiss())
+                .setPositiveButton("אישור", (dialog, which) -> {
+                    if (selectedCard != null) {
+                        updateSelectedCardUI(selectedCard);
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_background);
+    }
+
+    private void updateSelectedCardUI(Payment selectedCard) {
+        selectedCardText.setText("כרטיס **** " + String.valueOf(selectedCard.getCardNumber()).substring(12));
+        selectedCardIcon.setImageResource(R.drawable.credit);
+        if(GlobalResources.selectedCardPosition != -1)
+            selectedCardCheckIcon.setVisibility(View.VISIBLE);
+    }
+
+
     private void initViews() {
         initUserDataBase();
         itemsAdapterView = new ItemsAdapterView(getContext(), GlobalResources.items, "", -1);
@@ -94,6 +148,38 @@ public class CheckoutFragment extends Fragment {
         onPointsBtn();
         onCancelPoints();
         onCheckoutBackButton();
+        onSelectCardLayout();
+        initSelectCardPosition();
+        initSelectCardLayout();
+        updateSelectedCardUI(GlobalResources.user.getPayments().get(0));
+    }
+
+    private void initSelectCardLayout() {
+        if(GlobalResources.user.getPayments().size() > 0){
+            chooseCardTXT.setVisibility(View.VISIBLE);
+            selectCardLayout.setVisibility(View.VISIBLE);
+        }
+        else{
+            chooseCardTXT.setVisibility(View.INVISIBLE);
+            selectCardLayout.setVisibility(View.INVISIBLE);
+        }
+
+    }
+
+    private void initSelectCardPosition() {
+        if (GlobalResources.selectedCardPosition != -1) {
+            selectedCard = GlobalResources.user.getPayments().get(GlobalResources.selectedCardPosition);
+            updateSelectedCardUI(selectedCard);
+        }
+    }
+
+    private void onSelectCardLayout() {
+        selectCardLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openCardSelectionDialog();
+            }
+        });
     }
 
     private void initUserDataBase() {
@@ -163,8 +249,6 @@ public class CheckoutFragment extends Fragment {
                 points_question.setText("יש ברשותך " + formattedValue + " נקודות. " + "האם תרצה לממש אותן?");
             }
         });
-
-
     }
 
     private void changeCvvEplainVisibility(View view) {
@@ -316,30 +400,14 @@ public class CheckoutFragment extends Fragment {
         btnPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean isValid = true;
                 cardNumberText = etCardNumber.getText().toString().replaceAll(" ", "");
-                if (etCardNumber.getText().length() < Constants.CREDIT_CARD_NUMBER) {
-                    etCardNumber.setError("מספר כרטיס חייב להכיל 16 ספרות");
-                    isValid = false;
-                }
-                if (etID.getText().length() < Constants.ID_NUMBERS) {
-                    etID.setError("מספר תעודת זהות חייב להיות 9 ספרות");
-                    isValid = false;
-                }
-                if (etCVV.getText().length() < Constants.CVV_NUMBERS) {
-                    etCVV.setError("חייב להיות 3 ספרות");
-                    isValid = false;
-                }
-                if (isValid) {
+                if (isPaymentDetailsValid()) {
                     if (isUsedPoint) {
-                        if (price < GlobalResources.user.getVirtualCurrencies()) {
-                            GlobalResources.user.setVirtualCurrencies(virtualCurrencies);
-                        } else
-                            GlobalResources.user.setVirtualCurrencies(0.0);
+                        updateVirtualCurrencies();
                     }
                     addHistoryToFirebase(view);
                     saveVirtualCurrencies();
-                    if (isSaveInfoPayment) {
+                    if (shouldSaveCardDetails()) {
                         addPaymentToFirebase(view);
                     }
                     addPointsToFirebase();
@@ -348,6 +416,65 @@ public class CheckoutFragment extends Fragment {
             }
         });
     }
+
+    private boolean shouldSaveCardDetails() {
+        return saveCardDetailsCheckBox.isChecked() && GlobalResources.selectedCardPosition == -1;
+    }
+
+    private void updateVirtualCurrencies() {
+        if (price < GlobalResources.user.getVirtualCurrencies()) {
+            GlobalResources.user.setVirtualCurrencies(virtualCurrencies);
+        } else {
+            GlobalResources.user.setVirtualCurrencies(0.0);
+        }
+    }
+
+    private boolean isPaymentDetailsValid() {
+        Calendar calendar = Calendar.getInstance();
+        int currentMonth = calendar.get(Calendar.MONTH) + 1;
+        int currentYear = calendar.get(Calendar.YEAR);
+        boolean isValid = true;
+
+        if (GlobalResources.selectedCardPosition == -1) {
+            if (isCardNumberValid()) {
+                etCardNumber.setError("מספר כרטיס חייב להכיל 16 ספרות");
+                isValid = false;
+            }
+            if (!isIDNumberValid()) {
+                etID.setError("מספר תעודת זהות חייב להיות 9 ספרות");
+                isValid = false;
+            }
+            if (!isCVVValid()) {
+                etCVV.setError("חייב להיות 3 ספרות");
+                isValid = false;
+            }
+            if (isExpired(currentMonth, currentYear)) {
+                month.setError("חודש לא תקין");
+                isValid = false;
+            }
+        }
+        return isValid;
+    }
+
+    private boolean isCardNumberValid() {
+        return etCardNumber.getText().length() < Constants.CREDIT_CARD_NUMBER;
+    }
+
+    private boolean isIDNumberValid() {
+        return etID.getText().length() == Constants.ID_NUMBERS;
+    }
+
+    private boolean isCVVValid() {
+        return etCVV.getText().length() == Constants.CVV_NUMBERS;
+    }
+
+    private boolean isExpired(int currentMonth, int currentYear) {
+        return chosenMonth != null && chosenYear != null
+                && Integer.parseInt(chosenMonth) < currentMonth
+                && Integer.parseInt(chosenYear) == currentYear;
+    }
+
+
 
     private void saveVirtualCurrencies() {
         double virtualCurrencies = price * 0.1;
@@ -360,8 +487,6 @@ public class CheckoutFragment extends Fragment {
         GlobalResources.user.addHistory(order);
         MainActivity.isPaid = true;
         GlobalResources.cart = new Cart();
-        itemsAdapterView.changeCount();
-
         userReference.child("HistoriesList").setValue(GlobalResources.user.getHistories()).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -371,6 +496,8 @@ public class CheckoutFragment extends Fragment {
                 }
             }
         });
+
+        itemsAdapterView.changeCount();
     }
 
     private void addPointsToFirebase() {
@@ -404,18 +531,34 @@ public class CheckoutFragment extends Fragment {
         int year = Integer.parseInt(chosenYear);
         int month = Integer.parseInt(chosenMonth);
         int cvv = Integer.parseInt(etCVV.getText().toString());
-        Payment payment = new Payment(cardNumber, idNumber, year, month, cvv);
-        GlobalResources.user.addPayment(payment);
+        boolean exists = checkIfCardExist(cardNumber);
 
-        userReference.child("PaymentsInfo").setValue(GlobalResources.user.getPayments()).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                } else {
-                    Toast.makeText(view.getContext(), "Failed to save order: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+        if(!exists){
+             Payment payment = new Payment(cardNumber, idNumber, year, month, cvv);
+            GlobalResources.user.addPayment(payment);
+            userReference.child("PaymentsInfo").setValue(GlobalResources.user.getPayments()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                    } else {
+                        Toast.makeText(view.getContext(), "Failed to save order: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 }
+            });
+        }
+    }
+
+    private boolean checkIfCardExist( long cardNumber)
+    {
+        boolean exists = false;
+        List<Payment> payments = GlobalResources.user.getPayments();
+        for (Payment payment : payments) {
+            if (payment.getCardNumber() == cardNumber) {
+                exists = true;
+                break;
             }
-        });
+        }
+        return exists;
     }
 
 
@@ -433,6 +576,13 @@ public class CheckoutFragment extends Fragment {
         btnCancelPoints = view.findViewById(R.id.btnCancelPoints);
         totalPriceCheckout = view.findViewById(R.id.totalPriceCheckout);
         checkoutBackButton = view.findViewById(R.id.checkoutBackButton);
+        selectCardLayout = view.findViewById(R.id.select_card_layout);
+        selectCardLayout = view.findViewById(R.id.select_card_layout);
+        selectedCardText = view.findViewById(R.id.selected_card_text);
+        selectedCardIcon = view.findViewById(R.id.selected_card_icon);
+        saveCardDetailsCheckBox = view.findViewById(R.id.saveCardDetailsCheckBox);
+        chooseCardTXT = view.findViewById(R.id.chooseCardTXT);
+        selectedCardCheckIcon = view.findViewById(R.id.selected_card_check_icon);
     }
 
     @Override

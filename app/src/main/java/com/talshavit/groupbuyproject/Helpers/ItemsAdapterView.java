@@ -93,11 +93,11 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
         holder.company.setText(allItems.get(position).getCompany());
         holder.weight.setText(allItems.get(position).getWeight());
         holder.price.setText("₪ " + allItems.get(position).getPrice());
-        if (Double.parseDouble(allItems.get(position).getSale()) > 0.0) {
-            holder.sale.setText("₪ " + allItems.get(position).getSale());
-            holder.sale.setVisibility(View.VISIBLE);
-            holder.price.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-        }
+//        if (Double.parseDouble(allItems.get(position).getSale()) > 0.0) {
+//            holder.sale.setText("₪ " + allItems.get(position).getSale());
+//            holder.sale.setVisibility(View.VISIBLE);
+//            holder.price.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+//        }
         if (allItems.get(position).getCategory().equals(Category.FruitsAndVegetables))
             holder.count.setText(String.valueOf(allItems.get(position).getCount()));
         else
@@ -349,7 +349,7 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
                 GlobalResources.items.get(index).setCount(countValue);
             }
             holder.addItemButton.setText("עדכון");
-            dialogCompletionOrder(allItems.get(position));
+          //  dialogCompletionOrder(allItems.get(position));
             animateToCart(holder.img);
         }
     }
@@ -373,7 +373,7 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
                 GlobalResources.items.get(index).setCount(countValue);
             }
             holder.addItemButton.setText("עדכון");
-            dialogCompletionOrder(allItems.get(position));
+            //dialogCompletionOrder(allItems.get(position));
             animateToCart(holder.img);
         }
     }

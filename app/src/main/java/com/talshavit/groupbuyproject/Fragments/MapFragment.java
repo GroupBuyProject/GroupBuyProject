@@ -71,6 +71,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void initCitiesMap() {
+        Log.d("lala", "CITY");
         GlobalResources.initCities();
         allCities = GlobalResources.allCities;
         allCitiesName = new ArrayList<>();

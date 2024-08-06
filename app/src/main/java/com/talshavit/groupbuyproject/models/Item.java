@@ -46,6 +46,7 @@ public class Item {
         this.category = item.category;
         this.relatedItems = item.relatedItems;
         this.count = item.count;
+        this.comment = item.comment;
         this.remainingCharacters = item.remainingCharacters;
     }
 

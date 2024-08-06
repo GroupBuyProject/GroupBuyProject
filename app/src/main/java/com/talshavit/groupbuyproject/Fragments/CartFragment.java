@@ -128,9 +128,9 @@ public class CartFragment extends Fragment implements OnItemChangeListener {
     private void updateTotalPrice() {
         totalPrice = 0.0;
         for (Item item : cart.getItems()) {
-            if (Double.parseDouble(item.getSale()) > 0.0)
-                totalPrice += Double.parseDouble(item.getSale()) * item.getCount();
-            else
+//            if (Double.parseDouble(item.getSale()) > 0.0)
+//                totalPrice += Double.parseDouble(item.getSale()) * item.getCount();
+//            else
                 totalPrice += Double.parseDouble(item.getPrice()) * item.getCount();
         }
         String total = String.format("%.2f", totalPrice);
