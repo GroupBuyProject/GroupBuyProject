@@ -15,6 +15,7 @@ public class Item {
     private String company;
     private Category category;
     private ArrayList<Integer> relatedItems;
+    private ArrayList<Integer> similarItems = new ArrayList<>();
     private double count;
     private String comment = "";
     private int remainingCharacters = Constants.MAX_CHARACTER_COMMENT;
@@ -22,7 +23,7 @@ public class Item {
     public Item() {
     }
 
-    public Item(String id, String name, String price, String sale, String img, String weight, String company, Category category, ArrayList<Integer> relatedItems) {
+    public Item(String id, String name, String price, String sale, String img, String weight, String company, Category category, ArrayList<Integer> relatedItems, ArrayList<Integer> similarItems) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -32,6 +33,7 @@ public class Item {
         this.company = company;
         this.category = category;
         this.relatedItems = relatedItems;
+        this.similarItems = similarItems;
         this.count = 0;
     }
 
@@ -46,8 +48,8 @@ public class Item {
         this.category = item.category;
         this.relatedItems = item.relatedItems;
         this.count = item.count;
-        this.comment = item.comment;
         this.remainingCharacters = item.remainingCharacters;
+        this.similarItems = item.similarItems;
         this.comment = item.comment;
     }
 
@@ -129,6 +131,15 @@ public class Item {
 
     public Item setRelatedItems(ArrayList<Integer> relatedItems) {
         this.relatedItems = relatedItems;
+        return this;
+    }
+
+    public ArrayList<Integer> getSimilarItems() {
+        return similarItems;
+    }
+
+    public Item setSimilarItems(ArrayList<Integer> similarItems) {
+        this.similarItems = similarItems;
         return this;
     }
 

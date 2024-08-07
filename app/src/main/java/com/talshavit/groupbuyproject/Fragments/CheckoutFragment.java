@@ -315,7 +315,7 @@ public class CheckoutFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 chosenYear = yearsArray[i];
-                cvv_explain_button.setVisibility(View.INVISIBLE);
+                //cvv_explain_button.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -325,7 +325,7 @@ public class CheckoutFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 chosenMonth = monthsArray[i];
-                cvv_explain_button.setVisibility(View.INVISIBLE);
+                //cvv_explain_button.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -525,7 +525,7 @@ public class CheckoutFragment extends Fragment {
     }
 
     private void saveVirtualCurrencies() {
-        double virtualCurrencies = price * 0.1;
+        double virtualCurrencies = price * 0.05;
         GlobalResources.user.addVirtualCurrencies(virtualCurrencies);
     }
 

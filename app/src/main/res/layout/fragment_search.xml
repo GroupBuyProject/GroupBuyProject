@@ -1,104 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center"
-    android:orientation="vertical"
     tools:context=".Fragments.SearchFragment">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:autoSizeMaxTextSize="32sp"
+        android:autoSizeTextType="uniform"
+        android:background="@color/lightGreen"
+        android:fontFamily="@font/rubik"
+        android:gravity="center"
+        android:maxLines="1"
+        android:paddingTop="20dp"
+        android:text="חיפוש"
+        android:textColor="@color/black"
+        android:textStyle="bold" />
 
-    <FrameLayout
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp">
-
-        <!-- The border and background of the EditText -->
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/border_with_label"
-            android:clickable="false"
-            android:focusable="false" />
-
-        <!-- The TextView acting as the label on the border -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|start"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="-10dp"
-            android:background="#FFFFFF"
-            android:padding="4dp"
-            android:text="חיפוש לפי חברה"
-            android:textColor="#000000"
-            android:textSize="14sp" />
-
-        <!-- The actual EditText for input -->
-        <EditText
-            android:id="@+id/editTxtSearchByCompany"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:background="@android:color/transparent" />
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp">
-
-        <!-- The border and background of the EditText -->
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/border_with_label"
-            android:clickable="false"
-            android:focusable="false" />
-
-        <!-- The TextView acting as the label on the border -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|end"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="-10dp"
-            android:background="#FFFFFF"
-            android:padding="4dp"
-            android:text="חיפוש לפי מוצר"
-            android:textColor="#000000"
-            android:textSize="14sp" />
-
-        <!-- The actual EditText for input -->
-        <EditText
-            android:id="@+id/editTxtSearchByItem"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:background="@android:color/transparent" />
-
-    </FrameLayout>
-
-
-</LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="10dp"
-        android:layout_marginBottom="50dp"/>
+        android:layout_below="@id/title"
+        android:orientation="vertical">
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_weight="1">
+
+                <!-- The border and background of the EditText -->
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/border_with_label"
+                    android:clickable="false"
+                    android:focusable="false" />
+
+                <!-- The TextView acting as the label on the border -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|start"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="-10dp"
+                    android:background="#FFFFFF"
+                    android:padding="4dp"
+                    android:text="חיפוש לפי חברה"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+
+                <!-- The actual EditText for input -->
+                <EditText
+                    android:id="@+id/editTxtSearchByCompany"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@android:color/transparent" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_weight="1">
+
+                <!-- The border and background of the EditText -->
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/border_with_label"
+                    android:clickable="false"
+                    android:focusable="false" />
+
+                <!-- The TextView acting as the label on the border -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|end"
+                    android:layout_marginTop="-10dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="#FFFFFF"
+                    android:padding="4dp"
+                    android:text="חיפוש לפי מוצר"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+
+                <!-- The actual EditText for input -->
+                <EditText
+                    android:id="@+id/editTxtSearchByItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@android:color/transparent" />
+
+            </FrameLayout>
+
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="50dp"
+            android:paddingTop="10dp" />
+
+    </LinearLayout>
+</RelativeLayout>

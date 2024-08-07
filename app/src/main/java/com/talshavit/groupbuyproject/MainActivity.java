@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements OnCoinsUpdateList
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
 
-        GlobalResources.replaceFragment(getSupportFragmentManager(), new SalesFragment());
+        GlobalResources.replaceFragment(getSupportFragmentManager(), new HomeFragment());
 
         findviews();
         initViews();
@@ -210,7 +210,6 @@ public class MainActivity extends AppCompatActivity implements OnCoinsUpdateList
         switch_complete_order.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                Log.d("lala", GlobalResources.isSwitchForCompleteOrder + "");
                 if (!isChecked) {
                     GlobalResources.isSwitchForCompleteOrder = false;
                 } else

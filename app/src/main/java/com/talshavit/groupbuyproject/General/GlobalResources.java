@@ -1,5 +1,7 @@
 package com.talshavit.groupbuyproject.General;
 
+import android.util.Log;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -37,18 +39,12 @@ public class GlobalResources {
 
     public interface ApiServiceCallback {
         void onSuccess();
+
         void onFailure();
     }
 
     public static void initCities() {
         allCities = cityManager.getCities();
-    }
-
-    public static void initItems() {
-        //ApiService apiService;
-        //items = new ArrayList<>();
-       // apiService = RetrofitClient.getRetrofitInstance().create(ApiService.class);
-        //getAllMarkets(apiService);
     }
 
     public static void getAllMarkets(final ApiServiceCallback callback) {
@@ -60,8 +56,7 @@ public class GlobalResources {
                 if (response.isSuccessful()) {
                     items = (ArrayList<Item>) response.body();
                     callback.onSuccess();
-                }
-                else{
+                } else {
                     callback.onFailure();
                 }
             }

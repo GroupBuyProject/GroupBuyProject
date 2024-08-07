@@ -50,7 +50,6 @@ public class LoadFromMongoDB extends AppCompatActivity {
     }
 
     private void loadMongoData() {
-        GlobalResources.initItems();
         GlobalResources.getAllMarkets(new GlobalResources.ApiServiceCallback() {
             @Override
             public void onSuccess() {

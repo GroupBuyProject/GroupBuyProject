@@ -6,11 +6,6 @@
     android:orientation="vertical"
     tools:context=".Fragments.CartFragment">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/imgBackGround"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:scaleType="centerCrop" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/title"
@@ -18,12 +13,12 @@
         android:layout_height="100dp"
         android:autoSizeMaxTextSize="32sp"
         android:autoSizeTextType="uniform"
-        android:background="#59FFFFFF"
+        android:background="@color/lightGreen"
         android:fontFamily="@font/rubik"
         android:gravity="center"
         android:maxLines="1"
         android:paddingTop="20dp"
-        android:text="עגלת קניות"
+        android:text="עגלת הקניות"
         android:textColor="@color/black"
         android:textStyle="bold" />
 
@@ -68,15 +63,34 @@
 
         </LinearLayout>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/checkout"
-            android:layout_width="120dp"
-            android:layout_height="37dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="70dp"
-            android:background="@drawable/button_background"
-            android:text="מעבר לתשלום" />
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/checkout"
+                android:layout_width="120dp"
+                android:layout_height="37dp"
+                android:layout_gravity="center"
+                android:background="@drawable/button_background"
+                android:text="מעבר לתשלום" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/replace"
+                android:layout_width="120dp"
+                android:layout_height="37dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/button_background"
+                android:text="הוזל קניה"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
 
     </LinearLayout>
 

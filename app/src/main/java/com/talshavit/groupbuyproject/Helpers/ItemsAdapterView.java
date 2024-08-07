@@ -6,7 +6,6 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +27,7 @@ import com.google.android.material.textview.MaterialTextView;
 import com.talshavit.groupbuyproject.General.Constants;
 import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.Helpers.Interfaces.OnItemChangeListener;
+import com.talshavit.groupbuyproject.Helpers.Interfaces.OnReplaceButton;
 import com.talshavit.groupbuyproject.Models.Category;
 import com.talshavit.groupbuyproject.Models.Item;
 import com.talshavit.groupbuyproject.R;
@@ -39,6 +39,8 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
 
     private ArrayList<Item> allItems;
     private ArrayList<Item> allItemsFull;
+
+    private ArrayList<Item> filteredItems;
     private Context context;
     private String type;
     // private boolean isFruitAndVeg = false;
@@ -58,6 +60,7 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
     private AlertDialog.Builder builder;
     private View dialogView;
     private OnItemChangeListener itemChangeListener;
+    private OnReplaceButton onReplaceButton;
     private Double totalPricePerOrder;
     ;
 
@@ -68,17 +71,20 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
         this.context = context;
         this.allItems = allItems;
         this.allItemsFull = new ArrayList<>(allItems);
+        this.filteredItems = new ArrayList<>(allItems);
         this.type = type;
         this.category = category;
     }
 
-    public ItemsAdapterView(Context context, ArrayList<Item> allItems, String type, int category, OnItemChangeListener itemChangeListener) {
+    public ItemsAdapterView(Context context, ArrayList<Item> allItems, String type, int category, OnItemChangeListener itemChangeListener, OnReplaceButton onReplaceButton) {
         this.context = context;
         this.allItems = allItems;
         this.allItemsFull = new ArrayList<>(allItems);
+        this.filteredItems = new ArrayList<>(allItems);
         this.type = type;
         this.category = category;
         this.itemChangeListener = itemChangeListener;
+        this.onReplaceButton = onReplaceButton;
     }
 
     @NonNull
@@ -336,7 +342,7 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
         dont_show_text = dialogView.findViewById(R.id.dont_show_text);
     }
 
-    private void removeFromCart(Item itemToRemove) {
+    public void removeFromCart(Item itemToRemove) {
         if (GlobalResources.cart.getItems().contains(itemToRemove)) {
             GlobalResources.cart.getItems().remove(itemToRemove);
         }
@@ -685,5 +691,49 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
                 allItems.get(i).setCount(0);
             }
         }
+    }
+
+    public void addToCart(Item item, double count) {
+        boolean found = false;
+        for (Item cartItem : GlobalResources.cart.items) {
+            if (cartItem.getId().equals(item.getId())) {
+                cartItem.setCount(cartItem.getCount() + count);
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            item.setCount(count);
+            GlobalResources.cart.items.add(item);
+        }
+        onReplaceButton.onButtonChangeVisibility();
+        notifyDataSetChanged();
+    }
+
+    public void filterByCategory(Category category, TextView noItemsTxt) {
+        boolean hasSale = false;
+        if (category == null) {
+            hasSale = true;
+            filteredItems = new ArrayList<>(allItemsFull);
+        } else {
+            filteredItems.clear();
+            for (Item item : allItemsFull) {
+                if (item.getCategory().equals(category)) {
+                    if (Double.parseDouble(item.getSale()) > 0.0) {
+                        hasSale = true;
+                        filteredItems.add(item);
+                    }
+                }
+            }
+        }
+        allItems.clear();
+        allItems.addAll(filteredItems);
+        if (!hasSale)
+            noItemsTxt.setVisibility(View.VISIBLE);
+        else {
+            noItemsTxt.setVisibility(View.GONE);
+        }
+
+        notifyDataSetChanged();
     }
 }

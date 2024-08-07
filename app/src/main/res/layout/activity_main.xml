@@ -5,7 +5,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:openDrawer="end"
+
     android:fitsSystemWindows="true"
     android:background="@color/lightGray"
     tools:context=".MainActivity">
@@ -61,14 +61,14 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center_horizontal"
-                android:background="@drawable/circle_background"
                 app:cardCornerRadius="50dp"
                 app:cardElevation="8dp">
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/lightGreen" />
+                    android:src="@drawable/icon_logo"
+                    android:background="@drawable/circle_background" />
             </androidx.cardview.widget.CardView>
 
             <FrameLayout
