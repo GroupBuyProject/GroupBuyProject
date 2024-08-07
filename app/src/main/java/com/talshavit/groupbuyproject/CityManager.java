@@ -16,7 +16,6 @@ public class CityManager {
     }
 
     private void initCities() {
-        Log.d("lala", "shir");
         addCity("תל אביב", new LatLng(32.0853, 34.7818), createPoints(
                 "אוניברסיטת תל אביב", new LatLng(32.1093, 34.8554),
                 "דיזינגוף סנטר", new LatLng(32.0753, 34.7747)
