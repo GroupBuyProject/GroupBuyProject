@@ -1,32 +1,53 @@
 package com.talshavit.groupbuyproject;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.talshavit.groupbuyproject.Fragments.CartFragment;
+import com.talshavit.groupbuyproject.Fragments.ChangePasswordFragment;
 import com.talshavit.groupbuyproject.Fragments.HistoryFragment;
 import com.talshavit.groupbuyproject.Fragments.HomeFragment;
 import com.talshavit.groupbuyproject.Fragments.SalesFragment;
 import com.talshavit.groupbuyproject.Fragments.SearchFragment;
 import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.Helpers.Interfaces.OnCoinsUpdateListener;
-import com.talshavit.groupbuyproject.models.Item;
+import com.talshavit.groupbuyproject.Signup_Login.StartActivity;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -48,6 +69,10 @@ public class MainActivity extends AppCompatActivity implements OnCoinsUpdateList
 
     public static boolean isPaid = false;
     private MeowBottomNavigation.ReselectListener reselectListener;
+    private Menu navMenu;
+    private MenuItem coinsMenuItem;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser user;
 
 
     @Override
@@ -55,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements OnCoinsUpdateList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
         GlobalResources.initItems();
 
         findviews();
@@ -101,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements OnCoinsUpdateList
     }
 
     private void initViews() {
+        //coinsMenuItem.setTitle("23.0 מטבעות"); //לשנות אחרי שהמסך מקבל נתונים
         animateToCoin(coins);
         homeFragment = new HomeFragment(bottomNavigation);
         historyFragment = new HistoryFragment();
@@ -115,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements OnCoinsUpdateList
     private void setCoins() {
         double virtualCurrencies = GlobalResources.user.getVirtualCurrencies();
         String formattedValue = String.format("%.2f", virtualCurrencies);
-        coinsTxt.setText(formattedValue+" מטבעות");
+        coinsTxt.setText(formattedValue + " מטבעות");
     }
 
     private void onNavigation() {
@@ -127,12 +155,118 @@ public class MainActivity extends AppCompatActivity implements OnCoinsUpdateList
                 case R.id.nav_deals:
                     openDialog();
                     break;
-                case R.id.coins:
-                    Log.d("lala", "coins");
+                case R.id.complete_order:
+                    onCompleteOrder();
+                    break;
+                case R.id.privacy_policy:
+                    onPrivacyPolicy();
+                    break;
+                case R.id.terms:
+                    onTerms();
+                    break;
+                case R.id.change_password:
+                    onChangePassword();
+                    break;
+                case R.id.delete_user:
+                    onDeleteAccount();
+                    break;
+                case R.id.log_out:
+                    openStartActivity();
                     break;
             }
             drawerLayout.closeDrawer(GravityCompat.END);
             return true;
+        });
+    }
+
+    private void onCompleteOrder() {
+        Dialog dialog = new Dialog(this);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View dialogView = inflater.inflate(R.layout.dialog_for_complete_order, null);
+        dialog.setContentView(dialogView);
+
+        Switch switch_complete_order = dialogView.findViewById(R.id.switch_complete_order);
+        if(GlobalResources.isSwitchForCompleteOrder){
+            switch_complete_order.setChecked(true);
+        }
+        else{
+            switch_complete_order.setChecked(false);
+        }
+        onSwitch(switch_complete_order);
+        dialog.show();
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_background);
+
+        Window window = dialog.getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams params = window.getAttributes();
+            params.width = 450;
+            params.height = 150;
+            window.setAttributes(params);
+        }
+    }
+
+    private void onSwitch(Switch switch_complete_order) {
+        switch_complete_order.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                Log.d("lala", GlobalResources.isSwitchForCompleteOrder+"");
+                if(!isChecked){
+                    GlobalResources.isSwitchForCompleteOrder = false;
+                }
+                else
+                    GlobalResources.isSwitchForCompleteOrder = true;
+            }
+        });
+    }
+
+    private void onChangePassword() {
+        GlobalResources.replaceFragment(getSupportFragmentManager(), new ChangePasswordFragment());
+    }
+
+    private void onDeleteAccount() {
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setTitle("מחיקת משתמש");
+        builder.setMessage("האם את/ה בטוח/ה שתרצה/י למחוק את המשתמש?");
+        builder.setCancelable(false);
+        positiveButton(builder);
+        negativeButton(builder);
+        builder.show();
+    }
+
+    private void negativeButton(android.app.AlertDialog.Builder builder) {
+        builder.setNegativeButton("ביטול", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+    private void positiveButton(android.app.AlertDialog.Builder builder) {
+        builder.setPositiveButton("אישור", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (user != null) {
+                    String userID = user.getUid();
+                    DatabaseReference userToDelete = FirebaseDatabase.getInstance().getReference("Users").child(userID);
+                    userToDelete.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            firebaseAuth.signOut();
+                                            openStartActivity();
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            }
         });
     }
 
@@ -217,6 +351,8 @@ public class MainActivity extends AppCompatActivity implements OnCoinsUpdateList
         coinsTxt = findViewById(R.id.coinsTxt);
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
+        navMenu = navigationView.getMenu();
+        coinsMenuItem = navMenu.findItem(R.id.coins);
         View headerView = navigationView.getHeaderView(0);
         user_name = headerView.findViewById(R.id.user_name);
         time_of_the_day = headerView.findViewById(R.id.time_of_the_day);
@@ -253,10 +389,74 @@ public class MainActivity extends AppCompatActivity implements OnCoinsUpdateList
                 .start();
     }
 
+    private void openStartActivity() {
+        Intent myIntent = new Intent(this, StartActivity.class);
+        startActivity(myIntent);
+    }
+
+    private void onPrivacyPolicy() {
+        String htmlContent = loadHtmlFromAsset("privacy_policy.html");
+
+        MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            materialAlertDialogBuilder.setMessage(Html.fromHtml(htmlContent, Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            materialAlertDialogBuilder.setMessage(Html.fromHtml(htmlContent));
+        }
+        materialAlertDialogBuilder.setPositiveButton("סגור", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss(); //Close the dialog
+            }
+        });
+
+        materialAlertDialogBuilder.setCancelable(false);
+        materialAlertDialogBuilder.show();
+    }
+
+    private String loadHtmlFromAsset(String filename) {
+        String textFile = "";
+        try {
+            InputStream inputStream = this.getAssets().open(filename);
+            int size = inputStream.available();
+            byte[] buffer = new byte[size];
+            inputStream.read(buffer);
+            textFile = new String(buffer);
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return textFile;
+    }
+
+    private void onTerms() {
+        String htmlContent = loadHtmlFromAsset("terms_of_conditions.html");
+        dialogFunc(htmlContent);
+    }
+
+    private void dialogFunc(String htmlContent) {
+        MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            materialAlertDialogBuilder.setMessage(Html.fromHtml(htmlContent, Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            materialAlertDialogBuilder.setMessage(Html.fromHtml(htmlContent));
+        }
+        materialAlertDialogBuilder.setPositiveButton("סגור", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss(); //Close the dialog
+            }
+        });
+
+        materialAlertDialogBuilder.setCancelable(false);
+        materialAlertDialogBuilder.show();
+    }
+
     @Override
     public void onCoinsUpdated(double newCoinValue) {
         animateToCoin(coins);
         String formattedValue = String.format("%.2f", newCoinValue);
         coinsTxt.setText(formattedValue + " מטבעות");
+        coinsMenuItem.setTitle(formattedValue + " מטבעות");
     }
 }

@@ -5,6 +5,8 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:openDrawer="end"
+    android:fitsSystemWindows="true"
     android:background="@color/lightGray"
     tools:context=".MainActivity">
 
@@ -100,6 +102,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="end"
+        app:itemIconTint="@color/darkGreen"
         android:background="@drawable/rounded_corners"
         app:headerLayout="@layout/header_nav_drawer"
         app:menu="@menu/menu" />

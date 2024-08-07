@@ -245,7 +245,7 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
                         }
                     }
                 }
-                if(type.equals("CartFragment")){
+                if (type.equals("CartFragment")) {
                     itemChangeListener.onItemQuantityChanged();
                 }
                 checkIfCloseToLimit();
@@ -398,9 +398,14 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
     }
 
     private void showDialog(Dialog dialog) {
-        GlobalResources.countForShowingDialogCompletion += 1;
+        if (GlobalResources.isSwitchForCompleteOrder) {
+            GlobalResources.countForShowingDialogCompletion += 1;
+        }
         if (GlobalResources.countForShowingDialogCompletion == 5) {
             dialog.show();
+            GlobalResources.countForShowingDialogCompletion = 0;
+        }
+        if (!GlobalResources.isSwitchForCompleteOrder) {
             GlobalResources.countForShowingDialogCompletion = 0;
         }
     }
@@ -422,7 +427,7 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
                     changeItemCount(item, item.getCount());
                 }
                 dialog.dismiss();
-                if(type.equals("CartFragment"))
+                if (type.equals("CartFragment"))
                     itemChangeListener.onItemQuantityChanged();
             }
         });

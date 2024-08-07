@@ -21,4 +21,14 @@ public class Cart {
         this.items = items;
         return this;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (Item item : items) {
+            sb.append(item.toString());
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
 }

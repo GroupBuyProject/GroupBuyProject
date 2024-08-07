@@ -1,6 +1,8 @@
 package com.talshavit.groupbuyproject.models;
 
 
+import android.util.Log;
+
 import com.talshavit.groupbuyproject.General.Constants;
 
 import java.util.ArrayList;
@@ -47,6 +49,7 @@ public class Item {
         this.relatedItems = item.relatedItems;
         this.count = item.count;
         this.remainingCharacters = item.remainingCharacters;
+        this.comment = item.comment;
     }
 
     public String getId() {
@@ -155,5 +158,32 @@ public class Item {
     public Item setRemainingCharacters(int remainingCharacters) {
         this.remainingCharacters = remainingCharacters;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("שם מוצר: ").append(name).append("\n")
+                .append("מזהה: ").append(id).append("\n")
+                .append("משקל: ").append(weight).append("\n")
+                .append("חברה: ").append(company).append("\n")
+                .append("קטגוריה: ").append(category).append("\n")
+                .append("כמות: ").append(count).append("\n");
+
+        if (Double.parseDouble(sale) > 0.0) {
+            sb.append("מחיר: ").append(sale).append("\n");
+            if (count > 1)
+                sb.append("מחיר כולל: ").append(String.valueOf(Double.parseDouble(sale) * count)).append("\n");
+        } else {
+            sb.append("מחיר: ").append(price).append("\n");
+            if (count > 1)
+                sb.append("מחיר כולל: ").append(String.valueOf(Double.parseDouble(price) * count)).append("\n");
+        }
+
+        if (!comment.isEmpty()) {
+            sb.append("הערת הלקוח במידה ויש: ").append(comment).append("\n");
+        }
+
+        return sb.toString();
     }
 }

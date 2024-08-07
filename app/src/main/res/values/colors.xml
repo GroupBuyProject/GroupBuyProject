@@ -14,5 +14,7 @@
     <color name="semiTransparant">#94FFFFFF</color>
     <color name="backGroundGreen">#596A916F</color>
     <color name="textBlue">#0812D1</color>
+    <color name="red">#85F32C2C</color>
+    <color name="gray">#252424</color>
 
 </resources>

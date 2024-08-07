@@ -33,6 +33,7 @@ public class GlobalResources {
     public static double orderPrice = 0.0;
     public static int countForShowingDialog = 0;
     public static int countForShowingDialogCompletion = 0;
+    public static boolean isSwitchForCompleteOrder = true;
     public static ArrayList<Item>[] allItemsByCategories;
 
     public static void initCities() {
