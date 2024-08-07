@@ -1,4 +1,4 @@
-package com.talshavit.groupbuyproject.models;
+package com.talshavit.groupbuyproject.Models;
 
 public class Payment {
     private long cardNumber;

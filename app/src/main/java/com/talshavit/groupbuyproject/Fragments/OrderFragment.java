@@ -10,7 +10,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,7 @@ import android.widget.ImageButton;
 import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.Helpers.SpecificOrderFromHistory.SpecificOrderFromHistoryAdapter;
 import com.talshavit.groupbuyproject.R;
-import com.talshavit.groupbuyproject.models.Order;
+import com.talshavit.groupbuyproject.Models.Order;
 
 
 public class OrderFragment extends Fragment {

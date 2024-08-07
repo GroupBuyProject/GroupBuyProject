@@ -16,11 +16,9 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import com.bumptech.glide.Glide;
-import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.talshavit.groupbuyproject.Helpers.ItemsAdapterView;
-import com.talshavit.groupbuyproject.models.Category;
-import com.talshavit.groupbuyproject.models.Item;
+import com.talshavit.groupbuyproject.Models.Item;
 import com.talshavit.groupbuyproject.R;
 
 import java.util.ArrayList;

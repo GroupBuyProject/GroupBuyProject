@@ -26,7 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.talshavit.groupbuyproject.MainActivity;
 import com.talshavit.groupbuyproject.R;
-import com.talshavit.groupbuyproject.models.User;
+import com.talshavit.groupbuyproject.Models.User;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -107,7 +107,7 @@ public class SignUpFragment extends Fragment {
         } else {
             materialAlertDialogBuilder.setMessage(Html.fromHtml(htmlContent));
         }
-        materialAlertDialogBuilder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
+        materialAlertDialogBuilder.setPositiveButton("סגור", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss(); //Close the dialog

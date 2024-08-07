@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,16 +37,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.talshavit.groupbuyproject.CreditCardAdapter;
+import com.talshavit.groupbuyproject.Helpers.CreditCardAdapter;
 import com.talshavit.groupbuyproject.General.Constants;
 import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.Helpers.ItemsAdapterView;
 import com.talshavit.groupbuyproject.MainActivity;
 import com.talshavit.groupbuyproject.R;
-import com.talshavit.groupbuyproject.models.Cart;
-import com.talshavit.groupbuyproject.models.Item;
-import com.talshavit.groupbuyproject.models.Order;
-import com.talshavit.groupbuyproject.models.Payment;
+import com.talshavit.groupbuyproject.Models.Cart;
+import com.talshavit.groupbuyproject.Models.Item;
+import com.talshavit.groupbuyproject.Models.Order;
+import com.talshavit.groupbuyproject.Models.Payment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -581,10 +580,8 @@ public class CheckoutFragment extends Fragment {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     if (mainActivity != null) {
-                        mainActivity.onCoinsUpdated(GlobalResources.user.getVirtualCurrencies()); // Notify the MainActivity
+                        mainActivity.onCoinsUpdated(GlobalResources.user.getVirtualCurrencies());
                     }
-                } else {
-                    //Log.d("lala", "not added");
                 }
             }
         });

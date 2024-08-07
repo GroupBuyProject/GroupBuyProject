@@ -1,8 +1,6 @@
-package com.talshavit.groupbuyproject;
-import android.util.Log;
+package com.talshavit.groupbuyproject.Models;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.talshavit.groupbuyproject.models.City;
 
 import java.util.ArrayList;
 import java.util.HashMap;

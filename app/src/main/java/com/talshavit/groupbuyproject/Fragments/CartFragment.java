@@ -9,31 +9,18 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.talshavit.groupbuyproject.General.Constants;
 import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.Helpers.ItemsAdapterView;
 import com.talshavit.groupbuyproject.Helpers.Interfaces.OnItemChangeListener;
 import com.talshavit.groupbuyproject.R;
-import com.talshavit.groupbuyproject.models.Cart;
-import com.talshavit.groupbuyproject.models.Item;
-
-import java.util.Properties;
-
-import javax.mail.Authenticator;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import com.talshavit.groupbuyproject.Models.Cart;
+import com.talshavit.groupbuyproject.Models.Item;
 
 
 public class CartFragment extends Fragment implements OnItemChangeListener {
@@ -143,9 +130,9 @@ public class CartFragment extends Fragment implements OnItemChangeListener {
     private void updateTotalPrice() {
         totalPrice = 0.0;
         for (Item item : cart.getItems()) {
-//            if (Double.parseDouble(item.getSale()) > 0.0)
-//                totalPrice += Double.parseDouble(item.getSale()) * item.getCount();
-//            else
+            if (Double.parseDouble(item.getSale()) > 0.0)
+                totalPrice += Double.parseDouble(item.getSale()) * item.getCount();
+            else
                 totalPrice += Double.parseDouble(item.getPrice()) * item.getCount();
         }
         String total = String.format("%.2f", totalPrice);

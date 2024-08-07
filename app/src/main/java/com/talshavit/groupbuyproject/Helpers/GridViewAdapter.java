@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.talshavit.groupbuyproject.R;
-import com.talshavit.groupbuyproject.models.CategoriesModel;
+import com.talshavit.groupbuyproject.Models.CategoriesModel;
 
 import java.util.ArrayList;
 

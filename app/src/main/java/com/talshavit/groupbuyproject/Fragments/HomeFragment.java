@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,15 +15,14 @@ import android.widget.GridView;
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.MainActivity;
-import com.talshavit.groupbuyproject.models.Category;
+import com.talshavit.groupbuyproject.Models.Category;
 import com.talshavit.groupbuyproject.Helpers.GridViewAdapter;
-import com.talshavit.groupbuyproject.models.Item;
+import com.talshavit.groupbuyproject.Models.Item;
 import com.talshavit.groupbuyproject.R;
-import com.talshavit.groupbuyproject.models.ArrayListCategory;
-import com.talshavit.groupbuyproject.models.CategoriesModel;
+import com.talshavit.groupbuyproject.Models.ArrayListCategory;
+import com.talshavit.groupbuyproject.Models.CategoriesModel;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 
 public class HomeFragment extends Fragment implements AdapterView.OnItemClickListener {

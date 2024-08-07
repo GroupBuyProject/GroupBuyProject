@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,7 @@ import android.view.ViewGroup;
 import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.Helpers.ItemsAdapterView;
 import com.talshavit.groupbuyproject.R;
-import com.talshavit.groupbuyproject.models.Item;
+import com.talshavit.groupbuyproject.Models.Item;
 
 import java.util.ArrayList;
 

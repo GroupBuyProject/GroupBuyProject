@@ -1,7 +1,5 @@
-package com.talshavit.groupbuyproject.models;
+package com.talshavit.groupbuyproject.Models;
 
-
-import android.util.Log;
 
 import com.talshavit.groupbuyproject.General.Constants;
 

@@ -1,4 +1,4 @@
-package com.talshavit.groupbuyproject;
+package com.talshavit.groupbuyproject.Helpers;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.talshavit.groupbuyproject.R;
-import com.talshavit.groupbuyproject.models.Payment;
+import com.talshavit.groupbuyproject.Models.Payment;
 
 import java.util.List;
 

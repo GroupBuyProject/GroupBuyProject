@@ -1,8 +1,4 @@
-package com.talshavit.groupbuyproject.models;
-
-import android.graphics.drawable.Drawable;
-
-import com.talshavit.groupbuyproject.R;
+package com.talshavit.groupbuyproject.Models;
 
 public class CategoriesModel {
 

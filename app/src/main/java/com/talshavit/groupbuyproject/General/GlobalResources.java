@@ -1,24 +1,20 @@
 package com.talshavit.groupbuyproject.General;
 
-import android.util.Log;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.talshavit.groupbuyproject.Helpers.Retrofit.ApiService;
 import com.talshavit.groupbuyproject.Helpers.Retrofit.RetrofitClient;
 import com.talshavit.groupbuyproject.R;
-import com.talshavit.groupbuyproject.models.Cart;
-import com.talshavit.groupbuyproject.models.City;
-import com.talshavit.groupbuyproject.models.Item;
-import com.talshavit.groupbuyproject.models.User;
-import com.talshavit.groupbuyproject.CityManager;
+import com.talshavit.groupbuyproject.Models.Cart;
+import com.talshavit.groupbuyproject.Models.City;
+import com.talshavit.groupbuyproject.Models.Item;
+import com.talshavit.groupbuyproject.Models.User;
+import com.talshavit.groupbuyproject.Models.CityManager;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,28 +35,40 @@ public class GlobalResources {
     public static ArrayList<Item>[] allItemsByCategories;
     public static int selectedCardPosition = -1;
 
+    public interface ApiServiceCallback {
+        void onSuccess();
+        void onFailure();
+    }
+
     public static void initCities() {
         allCities = cityManager.getCities();
     }
 
     public static void initItems() {
-        ApiService apiService;
-        items = new ArrayList<>();
-        apiService = RetrofitClient.getRetrofitInstance().create(ApiService.class);
-        getAllMarkets(apiService);
+        //ApiService apiService;
+        //items = new ArrayList<>();
+       // apiService = RetrofitClient.getRetrofitInstance().create(ApiService.class);
+        //getAllMarkets(apiService);
     }
 
-    public static void getAllMarkets(ApiService apiService) {
+    public static void getAllMarkets(final ApiServiceCallback callback) {
+        items = new ArrayList<>();
+        ApiService apiService = RetrofitClient.getRetrofitInstance().create(ApiService.class);
         apiService.getAllItems().enqueue(new Callback<List<Item>>() {
             @Override
             public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
                 if (response.isSuccessful()) {
                     items = (ArrayList<Item>) response.body();
+                    callback.onSuccess();
+                }
+                else{
+                    callback.onFailure();
                 }
             }
 
             @Override
             public void onFailure(Call<List<Item>> call, Throwable t) {
+                callback.onFailure();
             }
         });
     }

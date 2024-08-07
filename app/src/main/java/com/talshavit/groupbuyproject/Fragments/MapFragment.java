@@ -35,7 +35,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.R;
-import com.talshavit.groupbuyproject.models.City;
+import com.talshavit.groupbuyproject.Models.City;
 
 import java.util.ArrayList;
 import java.util.HashMap;

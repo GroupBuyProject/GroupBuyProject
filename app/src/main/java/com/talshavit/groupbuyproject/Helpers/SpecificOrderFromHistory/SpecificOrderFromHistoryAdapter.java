@@ -1,7 +1,6 @@
 package com.talshavit.groupbuyproject.Helpers.SpecificOrderFromHistory;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.talshavit.groupbuyproject.R;
-import com.talshavit.groupbuyproject.models.Item;
+import com.talshavit.groupbuyproject.Models.Item;
 
 import java.util.ArrayList;
 

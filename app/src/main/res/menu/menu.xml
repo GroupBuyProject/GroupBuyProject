@@ -14,10 +14,6 @@
             android:icon="@drawable/order"
             android:title="השלמת קניה" />
         <item
-            android:id="@+id/coins"
-            android:icon="@drawable/coin"
-            android:title="מטבעות" />
-        <item
             android:id="@+id/privacy_policy"
             android:icon="@drawable/shield"
             android:title="מדיניות הפרטיות" />

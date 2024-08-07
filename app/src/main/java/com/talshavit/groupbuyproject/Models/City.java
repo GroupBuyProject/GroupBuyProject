@@ -1,4 +1,4 @@
-package com.talshavit.groupbuyproject.models;
+package com.talshavit.groupbuyproject.Models;
 
 import com.google.android.gms.maps.model.LatLng;
 

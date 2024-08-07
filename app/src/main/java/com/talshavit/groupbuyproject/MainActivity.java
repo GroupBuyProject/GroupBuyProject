@@ -69,10 +69,10 @@ public class MainActivity extends AppCompatActivity implements OnCoinsUpdateList
 
     public static boolean isPaid = false;
     private MeowBottomNavigation.ReselectListener reselectListener;
-    private Menu navMenu;
-    private MenuItem coinsMenuItem;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
+
+    private AlertDialog.Builder builder;
 
 
     @Override
@@ -82,14 +82,16 @@ public class MainActivity extends AppCompatActivity implements OnCoinsUpdateList
 
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
-        GlobalResources.initItems();
+
+        GlobalResources.replaceFragment(getSupportFragmentManager(), new SalesFragment());
 
         findviews();
         initViews();
-
         initBottomNav();
         checkIfNavNull();
         onNavigationBar();
+
+
     }
 
     private void onNavigationBar() {
@@ -128,13 +130,13 @@ public class MainActivity extends AppCompatActivity implements OnCoinsUpdateList
     }
 
     private void initViews() {
-        //coinsMenuItem.setTitle("23.0 מטבעות"); //לשנות אחרי שהמסך מקבל נתונים
+        builder = new AlertDialog.Builder(this);
         animateToCoin(coins);
         homeFragment = new HomeFragment(bottomNavigation);
         historyFragment = new HistoryFragment();
-        salesFragment = new SalesFragment();
         cartFragment = new CartFragment();
-        //searchFragment = new SearchFragment();
+        salesFragment = new SalesFragment();
+        searchFragment = new SearchFragment();
         onMenu();
         setCoins();
         onNavigation();
@@ -186,10 +188,9 @@ public class MainActivity extends AppCompatActivity implements OnCoinsUpdateList
         dialog.setContentView(dialogView);
 
         Switch switch_complete_order = dialogView.findViewById(R.id.switch_complete_order);
-        if(GlobalResources.isSwitchForCompleteOrder){
+        if (GlobalResources.isSwitchForCompleteOrder) {
             switch_complete_order.setChecked(true);
-        }
-        else{
+        } else {
             switch_complete_order.setChecked(false);
         }
         onSwitch(switch_complete_order);
@@ -209,11 +210,10 @@ public class MainActivity extends AppCompatActivity implements OnCoinsUpdateList
         switch_complete_order.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                Log.d("lala", GlobalResources.isSwitchForCompleteOrder+"");
-                if(!isChecked){
+                Log.d("lala", GlobalResources.isSwitchForCompleteOrder + "");
+                if (!isChecked) {
                     GlobalResources.isSwitchForCompleteOrder = false;
-                }
-                else
+                } else
                     GlobalResources.isSwitchForCompleteOrder = true;
             }
         });
@@ -298,12 +298,13 @@ public class MainActivity extends AppCompatActivity implements OnCoinsUpdateList
     }
 
     private void openDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_limit_order, null);
         builder.setView(dialogView);
 
         TextInputEditText inputAmount = dialogView.findViewById(R.id.edit_text_input_amount);
+        if (GlobalResources.limitAmount > 0)
+            inputAmount.setText(String.valueOf(GlobalResources.limitAmount));
 
         builder.setTitle("")
                 .setPositiveButton("אישור", (dialog, id) -> {
@@ -351,8 +352,6 @@ public class MainActivity extends AppCompatActivity implements OnCoinsUpdateList
         coinsTxt = findViewById(R.id.coinsTxt);
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
-        navMenu = navigationView.getMenu();
-        coinsMenuItem = navMenu.findItem(R.id.coins);
         View headerView = navigationView.getHeaderView(0);
         user_name = headerView.findViewById(R.id.user_name);
         time_of_the_day = headerView.findViewById(R.id.time_of_the_day);
@@ -380,8 +379,9 @@ public class MainActivity extends AppCompatActivity implements OnCoinsUpdateList
     }
 
     public void selectHomeTab() {
-        bottomNavigation.show(1, true); // Cart ID 1
+        bottomNavigation.show(1, true); // Home ID 1
     }
+
 
     private void animateToCoin(View imageView) {
         imageView.animate().setDuration(1000)
@@ -457,6 +457,5 @@ public class MainActivity extends AppCompatActivity implements OnCoinsUpdateList
         animateToCoin(coins);
         String formattedValue = String.format("%.2f", newCoinValue);
         coinsTxt.setText(formattedValue + " מטבעות");
-        coinsMenuItem.setTitle(formattedValue + " מטבעות");
     }
 }

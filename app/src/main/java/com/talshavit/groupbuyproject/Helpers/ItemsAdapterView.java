@@ -27,8 +27,8 @@ import com.google.android.material.textview.MaterialTextView;
 import com.talshavit.groupbuyproject.General.Constants;
 import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.Helpers.Interfaces.OnItemChangeListener;
-import com.talshavit.groupbuyproject.models.Category;
-import com.talshavit.groupbuyproject.models.Item;
+import com.talshavit.groupbuyproject.Models.Category;
+import com.talshavit.groupbuyproject.Models.Item;
 import com.talshavit.groupbuyproject.R;
 
 import java.util.ArrayList;
@@ -93,11 +93,11 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
         holder.company.setText(allItems.get(position).getCompany());
         holder.weight.setText(allItems.get(position).getWeight());
         holder.price.setText("₪ " + allItems.get(position).getPrice());
-//        if (Double.parseDouble(allItems.get(position).getSale()) > 0.0) {
-//            holder.sale.setText("₪ " + allItems.get(position).getSale());
-//            holder.sale.setVisibility(View.VISIBLE);
-//            holder.price.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-//        }
+        if (Double.parseDouble(allItems.get(position).getSale()) > 0.0) {
+            holder.sale.setText("₪ " + allItems.get(position).getSale());
+            holder.sale.setVisibility(View.VISIBLE);
+            holder.price.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+        }
         if (allItems.get(position).getCategory().equals(Category.FruitsAndVegetables))
             holder.count.setText(String.valueOf(allItems.get(position).getCount()));
         else
@@ -258,13 +258,20 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
             GlobalResources.orderPrice = 0;
             double temporaryAmount = GlobalResources.limitAmount;
             for (int i = 0; i < GlobalResources.cart.items.size(); i++) {
-                GlobalResources.orderPrice += Double.parseDouble(GlobalResources.cart.items.get(i).getPrice()) * GlobalResources.cart.items.get(i).getCount();
-                if ((temporaryAmount - GlobalResources.orderPrice) <= GlobalResources.limitPercent && (temporaryAmount - GlobalResources.orderPrice) > 0) {
-                    openDialog(temporaryAmount - GlobalResources.orderPrice);
+                Double price;
+                Item item = GlobalResources.cart.items.get(i);
+                if (Double.parseDouble(item.getSale()) > 0.0) {
+                    price = Double.parseDouble(item.getSale());
+                } else {
+                    price = Double.parseDouble(item.getPrice());
                 }
-                if ((temporaryAmount - GlobalResources.orderPrice) <= 0 && GlobalResources.countForShowingDialog == 0) {
-                    openDialog(0.0);
-                }
+                GlobalResources.orderPrice += price * GlobalResources.cart.items.get(i).getCount();
+            }
+            if ((temporaryAmount - GlobalResources.orderPrice) <= GlobalResources.limitPercent && (temporaryAmount - GlobalResources.orderPrice) > 0) {
+                openDialog(temporaryAmount - GlobalResources.orderPrice);
+            }
+            if ((temporaryAmount - GlobalResources.orderPrice) <= 0 && GlobalResources.countForShowingDialog == 0) {
+                openDialog(0.0);
             }
         }
     }
@@ -349,7 +356,7 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
                 GlobalResources.items.get(index).setCount(countValue);
             }
             holder.addItemButton.setText("עדכון");
-          //  dialogCompletionOrder(allItems.get(position));
+            dialogCompletionOrder(allItems.get(position));
             animateToCart(holder.img);
         }
     }
@@ -373,7 +380,7 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
                 GlobalResources.items.get(index).setCount(countValue);
             }
             holder.addItemButton.setText("עדכון");
-            //dialogCompletionOrder(allItems.get(position));
+            dialogCompletionOrder(allItems.get(position));
             animateToCart(holder.img);
         }
     }

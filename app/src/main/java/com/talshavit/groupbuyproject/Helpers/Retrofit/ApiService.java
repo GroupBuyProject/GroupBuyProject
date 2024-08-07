@@ -1,6 +1,6 @@
 package com.talshavit.groupbuyproject.Helpers.Retrofit;
 
-import com.talshavit.groupbuyproject.models.Item;
+import com.talshavit.groupbuyproject.Models.Item;
 
 import java.util.List;
 

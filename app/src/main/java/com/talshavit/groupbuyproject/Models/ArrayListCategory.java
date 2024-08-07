@@ -1,6 +1,4 @@
-package com.talshavit.groupbuyproject.models;
-
-import com.talshavit.groupbuyproject.R;
+package com.talshavit.groupbuyproject.Models;
 
 import java.util.ArrayList;
 

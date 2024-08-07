@@ -2,7 +2,6 @@ package com.talshavit.groupbuyproject.Signup_Login;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,16 +18,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.talshavit.groupbuyproject.General.GlobalResources;
-import com.talshavit.groupbuyproject.MainActivity;
+import com.talshavit.groupbuyproject.LoadFromMongoDB;
 import com.talshavit.groupbuyproject.R;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.AuthResult;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.talshavit.groupbuyproject.models.Order;
-import com.talshavit.groupbuyproject.models.Payment;
-import com.talshavit.groupbuyproject.models.User;
+import com.talshavit.groupbuyproject.Models.Order;
+import com.talshavit.groupbuyproject.Models.Payment;
+import com.talshavit.groupbuyproject.Models.User;
 
 import java.util.ArrayList;
 
@@ -114,19 +113,16 @@ public class LoginTabFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 if (user != null) {
-                    Log.d("LoginTabFragment", "User data loaded: " + user.getName());
                     loadHistoriesFromDatabase();
                     loadPaymentsFromDatabase();
                     loadVirtualPointsFromDatabase(user);
-                    openMainActivity(user);
+                    openLoadActivity(user);
                 } else {
-                    Log.d("LoginTabFragment", "User data is null");
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d("LoginTabFragment", "Failed to load user data: " + databaseError.getMessage());
             }
         });
     }
@@ -180,6 +176,7 @@ public class LoginTabFragment extends Fragment {
                 }
                 GlobalResources.user.setPayments(payments);
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
@@ -193,9 +190,9 @@ public class LoginTabFragment extends Fragment {
         loginButton = view.findViewById(R.id.loginButton);
     }
 
-    private void openMainActivity(User user) {
+    private void openLoadActivity(User user) {
         GlobalResources.setUser(user);
-        Intent myIntent = new Intent(getContext(), MainActivity.class);
+        Intent myIntent = new Intent(getContext(), LoadFromMongoDB.class);
         startActivity(myIntent);
     }
 }
