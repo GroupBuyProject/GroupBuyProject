@@ -14,7 +14,7 @@ import com.talshavit.groupbuyproject.R;
 
 public class MyViewHolderItems extends RecyclerView.ViewHolder{
 
-    AppCompatTextView itemName, weight, company, unit, count, price, sale;
+    AppCompatTextView itemName, weight, company, unit, count, price, sale, totalPrice;
     ShapeableImageView img;
     AppCompatButton addItemButton;
     AppCompatImageButton minus, plus, comment, xButton;
@@ -39,5 +39,6 @@ public class MyViewHolderItems extends RecyclerView.ViewHolder{
         plus = itemView.findViewById(R.id.plus);
         comment = itemView.findViewById(R.id.comment);
         xButton = itemView.findViewById(R.id.xButton);
+        totalPrice = itemView.findViewById(R.id.totalPrice);
     }
 }

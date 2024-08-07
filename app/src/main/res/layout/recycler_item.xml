@@ -88,35 +88,56 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:orientation="vertical">
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:orientation="horizontal">
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/sale"
+                            android:id="@+id/totalPrice"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:fontFamily="@font/rubik"
-                            android:text=""
-                            android:textColor="#EA2E2E"
-                            android:textSize="20sp"
-                            android:visibility="invisible" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/price"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/rubik"
+                            android:gravity="bottom"
                             android:text=""
                             android:textColor="@color/black"
-                            android:textSize="20sp" />
+                            android:textSize="16sp"
+                            android:visibility="invisible" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="end|bottom"
+                            android:orientation="vertical">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/sale"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/rubik"
+                                android:text=""
+                                android:textColor="#EA2E2E"
+                                android:textSize="16sp"
+                                android:visibility="invisible" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/price"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/rubik"
+                                android:text="שח 5"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+
+                        </LinearLayout>
 
 
                     </LinearLayout>
 
-
                 </LinearLayout>
+
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/img"

@@ -136,7 +136,7 @@ public class CartFragment extends Fragment implements OnItemChangeListener {
                 totalPrice += Double.parseDouble(item.getPrice()) * item.getCount();
         }
         String total = String.format("%.2f", totalPrice);
-        totalAmount.setText("₪" + total);
+        totalAmount.setText("₪ " + total);
     }
 
     @Override

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +48,6 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
     private AppCompatImageButton minus, plus, exit_button;
     private AppCompatTextView countInDialog;
     private GridLayout.LayoutParams params;
-
     private GridLayout gridLayout;
     private MaterialButton confirm_button;
     private int category;
@@ -58,6 +58,8 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
     private AlertDialog.Builder builder;
     private View dialogView;
     private OnItemChangeListener itemChangeListener;
+    private Double totalPricePerOrder;
+    ;
 
     public ItemsAdapterView() {
     }
@@ -114,6 +116,14 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
         onXbutton(holder, position);
         checkCategory(holder, position);
         onCommentButton(holder, position);
+        totalPriceCart(holder, position);
+    }
+
+    private void totalPriceCart(MyViewHolderItems holder, int position) {
+        if (type.equals("CartFragment")) {
+            setTotalPrice(holder, position);
+            holder.totalPrice.setVisibility(View.VISIBLE);
+        }
     }
 
     private void onCommentButton(MyViewHolderItems holder, int position) {
@@ -246,12 +256,26 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
                     }
                 }
                 if (type.equals("CartFragment")) {
+                    if (position < allItems.size()) {
+                        setTotalPrice(holder, position);
+                    }
                     itemChangeListener.onItemQuantityChanged();
                 }
                 checkIfCloseToLimit();
             }
         });
     }
+
+    private void setTotalPrice(MyViewHolderItems holder, int position) {
+        Item item = allItems.get(position);
+        if (Double.parseDouble(item.getSale()) > 0.0)
+            totalPricePerOrder = Double.parseDouble(item.getSale()) * item.getCount();
+        else
+            totalPricePerOrder = Double.parseDouble(item.getPrice()) * item.getCount();
+        if (totalPricePerOrder > 0.0)
+            holder.totalPrice.setText("סהכ לתשלום " + totalPricePerOrder + " ₪");
+    }
+
 
     private void checkIfCloseToLimit() {
         if (GlobalResources.limitAmount > 0) {
@@ -510,7 +534,8 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
         gridLayout.addView(itemView, params);
     }
 
-    private void onImageClick(ImageView imageView, LinearLayout linearLayout, AppCompatTextView count) {
+    private void onImageClick(ImageView imageView, LinearLayout linearLayout, AppCompatTextView
+            count) {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -567,7 +592,8 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
 
     }
 
-    private void onMinusButton(AppCompatImageButton minusButton, AppCompatTextView countTextView, boolean isFruitAndVeg) {
+    private void onMinusButton(AppCompatImageButton minusButton, AppCompatTextView
+            countTextView, boolean isFruitAndVeg) {
         minusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -608,7 +634,8 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
     }
 
 
-    private void onPlusButton(AppCompatImageButton plusButton, AppCompatTextView countTextView, boolean isFruitAndVeg) {
+    private void onPlusButton(AppCompatImageButton plusButton, AppCompatTextView countTextView,
+                              boolean isFruitAndVeg) {
         plusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
