@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,116 +7,161 @@
     android:orientation="vertical"
     tools:context=".Fragments.MapFragment">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="@color/darkGreen">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <ImageButton
-            android:id="@+id/mapBackButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="end"
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/darkGreen">
+
+            <ImageButton
+                android:id="@+id/mapBackButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end"
+                android:layout_margin="8dp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/arrow_small_right" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:autoSizeMaxTextSize="32sp"
+                android:autoSizeTextType="uniform"
+                android:fontFamily="@font/rubik"
+                android:gravity="center"
+                android:maxLines="1"
+                android:paddingTop="20dp"
+                android:text="בחירת מיקום לאיסוף המשלוח"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/linear"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:layout_margin="8dp"
-            android:scaleType="fitCenter"
-            android:background="@android:color/transparent"
-            android:src="@drawable/arrow_small_right" />
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/addressSearch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:autoSizeMaxTextSize="18sp"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeStepGranularity="1sp"
+                android:autoSizeTextType="uniform"
+                android:background="@drawable/border_with_label"
+                android:drawableStart="@drawable/ic_arrow"
+                android:gravity="center"
+                android:hint="בחר כתובת"
+                android:maxLines="1"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <!--        <TextView-->
+            <!--            android:id="@+id/addressSearch"-->
+            <!--            android:layout_width="0dp"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:layout_weight="1"-->
+            <!--            android:background="@drawable/border_with_label"-->
+            <!--            android:drawableStart="@drawable/ic_arrow"-->
+            <!--            android:gravity="center"-->
+            <!--            android:hint="בחר כתובת"-->
+            <!--            android:autoSizeTextType="uniform"-->
+            <!--            android:maxLines="1"-->
+            <!--            android:padding="10dp"-->
+            <!--            android:textColor="@color/black"-->
+            <!--            android:textSize="18sp"-->
+            <!--            android:textStyle="bold" />-->
+
+            <View
+                android:layout_width="16dp"
+                android:layout_height="0dp" />
+
+            <TextView
+                android:id="@+id/pickUpCitySearch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:autoSizeMaxTextSize="18sp"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeStepGranularity="1sp"
+                android:autoSizeTextType="uniform"
+                android:background="@drawable/border_with_label"
+                android:drawableStart="@drawable/ic_arrow"
+                android:gravity="center"
+                android:hint="בחר עיר"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <!--        <TextView-->
+            <!--            android:id="@+id/pickUpCitySearch"-->
+            <!--            android:layout_width="0dp"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:layout_centerHorizontal="true"-->
+            <!--            android:layout_weight="1"-->
+            <!--            android:background="@drawable/border_with_label"-->
+            <!--            android:drawableStart="@drawable/ic_arrow"-->
+            <!--            android:gravity="center"-->
+            <!--            android:hint="בחר עיר"-->
+            <!--            android:padding="10dp"-->
+            <!--            android:textColor="@color/black"-->
+            <!--            android:textSize="18sp"-->
+            <!--            android:textStyle="bold" />-->
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/pickUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:text="" />
+
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="445dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:autoSizeMaxTextSize="32sp"
-            android:autoSizeTextType="uniform"
-            android:fontFamily="@font/rubik"
-            android:gravity="center"
-            android:maxLines="1"
-            android:paddingTop="20dp"
-            android:text="בחירת מיקום לאיסוף המשלוח"
-            android:textColor="@color/black"
-            android:textStyle="bold" />
+            android:id="@+id/addNewPoint"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:clickable="true"
+            android:text="לבקשת הוספת מיקום נוסף"
+            android:textColor="#1047B8" />
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/confirmLocation"
+            android:layout_width="120dp"
+            android:layout_height="37dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="70dp"
+            android:background="@drawable/button_background"
+            android:text="אישור" />
 
-    </FrameLayout>
-
-    <LinearLayout
-        android:id="@+id/linear"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="8dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/addressSearch"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/border_with_label"
-            android:drawableStart="@drawable/ic_arrow"
-            android:gravity="center"
-            android:hint="בחר כתובת"
-            android:autoSizeTextType="uniform"
-            android:maxLines="1"
-            android:padding="10dp"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <View
-            android:layout_width="16dp"
-            android:layout_height="0dp" />
-
-        <TextView
-            android:id="@+id/pickUpCitySearch"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_weight="1"
-            android:background="@drawable/border_with_label"
-            android:drawableStart="@drawable/ic_arrow"
-            android:gravity="center"
-            android:hint="בחר עיר"
-            android:padding="10dp"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/pickUp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        android:text="" />
-
-    <fragment
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="445dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/addNewPoint"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:clickable="true"
-        android:text="לבקשת הוספת מיקום נוסף"
-        android:textColor="#1047B8" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/confirmLocation"
-        android:layout_width="120dp"
-        android:layout_height="37dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="70dp"
-        android:background="@drawable/button_background"
-        android:text="אישור" />
-
-</LinearLayout>
+</ScrollView>

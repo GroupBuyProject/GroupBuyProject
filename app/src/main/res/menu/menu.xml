@@ -1,21 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/nav_deals"
-        android:layout_gravity="center"
-        android:titleCondensed="מבצעי הרשת"
-        android:title="מבצעי הרשת"
-        android:icon="@drawable/baseline_arrow_drop_down_24"
-        android:textAlignment="center"
-        app:showAsAction="always"/>
-    <item
-        android:id="@+id/coins"
-        android:layout_gravity="center"
-        android:titleCondensed="81.9 מטבעות"
-        android:title="81.9 מטבעות"
-        android:icon="@drawable/coin"
-        android:textAlignment="center"
-        android:iconTint="@android:color/transparent"
-        app:showAsAction="always"/>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_deals"
+            android:icon="@drawable/traffic"
+            android:title="הגבלת קניה" />
+        <item
+            android:id="@+id/complete_order"
+            android:icon="@drawable/order"
+            android:title="השלמת קניה" />
+        <item
+            android:id="@+id/coins"
+            android:icon="@drawable/coin"
+            android:title="מטבעות" />
+        <item
+            android:id="@+id/privacy_policy"
+            android:icon="@drawable/shield"
+            android:title="מדיניות הפרטיות" />
+        <item
+            android:id="@+id/terms"
+            android:icon="@drawable/file"
+            android:title="תנאים" />
+        <item
+            android:id="@+id/change_password"
+            android:icon="@drawable/lockcheck"
+            android:title="שינוי סיסמא" />
+        <item
+            android:id="@+id/delete_user"
+            android:icon="@drawable/delete_user"
+            android:title="מחיקת משתמש" />
+        <item
+            android:id="@+id/log_out"
+            android:icon="@drawable/log_out"
+            android:title="יציאה מהמשתמש" />
+    </group>
+
+
 </menu>

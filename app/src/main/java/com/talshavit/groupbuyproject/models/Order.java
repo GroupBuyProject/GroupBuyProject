@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.Calendar;
 
 public class Order {
-    private int orderID;
+    private Long orderID;
     private Cart cart;
     private String date;
     private String time;
@@ -14,7 +14,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(Cart cart,Cart copiedCart, double price) {
+    public Order(Cart cart, Cart copiedCart, double price) {
         this.copiedCart = copiedCart;
         this.cart = cart;
         this.price = price;
@@ -22,11 +22,11 @@ public class Order {
         setTime();
     }
 
-    public int getOrderID() {
+    public Long getOrderID() {
         return orderID;
     }
 
-    public Order setOrderID(int orderID) {
+    public Order setOrderID(Long orderID) {
         this.orderID = orderID;
         return this;
     }
@@ -79,5 +79,16 @@ public class Order {
         String currentTime = hour + ":" + minute + ":" + second;
         this.time = currentTime;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        String total = String.format("%.2f", price);
+        return "הזמנה חדשה" + "\n" +
+                "הזמנה מספר: " + orderID + "\n" +
+                "התקבלה בתאריך " + date +
+                " בשעה " + time + "\n" +
+                "מוצרי ההזמנה: " + "\n" + copiedCart.toString() + "\n" +
+                " סה\"כ לתשלום: " + total;
     }
 }

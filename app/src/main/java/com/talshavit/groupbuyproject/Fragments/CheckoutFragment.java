@@ -33,8 +33,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.talshavit.groupbuyproject.CreditCardAdapter;
 import com.talshavit.groupbuyproject.General.Constants;
 import com.talshavit.groupbuyproject.General.GlobalResources;
@@ -49,6 +52,16 @@ import com.talshavit.groupbuyproject.models.Payment;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Properties;
+
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 
 public class CheckoutFragment extends Fragment {
@@ -67,6 +80,7 @@ public class CheckoutFragment extends Fragment {
     private boolean isUsedPoint = false;
     private DatabaseReference userReference;
     private MainActivity mainActivity;
+    private Long newOrderId;
     private RelativeLayout selectCardLayout;
     private ImageView selectedCardIcon, selectedCardCheckIcon;
     private Payment selectedCard;
@@ -476,6 +490,41 @@ public class CheckoutFragment extends Fragment {
 
 
 
+    private void sendOrderEmail(String orderDetails) {
+        Properties properties = System.getProperties();
+        properties.put("mail.smtp.host", Constants.GMAIL_HOST);
+        properties.put("mail.smtp.port", "465");
+        properties.put("mail.smtp.ssl.enable", "true");
+        properties.put("mail.smtp.auth", "true");
+
+        Session session = Session.getInstance(properties, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(Constants.SENDER_EMAIL, Constants.SENDER_PASSWORD);
+            }
+        });
+
+        MimeMessage message = new MimeMessage(session);
+        try {
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(Constants.RECIVER_EMAIL));
+            message.setSubject("הזמנה מספר - " + newOrderId);
+            message.setText(orderDetails);
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Transport.send(message);
+                    } catch (MessagingException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+            thread.start();
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private void saveVirtualCurrencies() {
         double virtualCurrencies = price * 0.1;
         GlobalResources.user.addVirtualCurrencies(virtualCurrencies);
@@ -484,9 +533,15 @@ public class CheckoutFragment extends Fragment {
     private void addHistoryToFirebase(View view) {
         Cart currentCart = duplicateCartItems();
         Order order = new Order(GlobalResources.cart, currentCart, price);
+        setLastOrderId(order);
         GlobalResources.user.addHistory(order);
         MainActivity.isPaid = true;
         GlobalResources.cart = new Cart();
+        setHistoryOnFirebase(view);
+        itemsAdapterView.changeCount();
+    }
+
+    private void setHistoryOnFirebase(View view) {
         userReference.child("HistoriesList").setValue(GlobalResources.user.getHistories()).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -497,7 +552,27 @@ public class CheckoutFragment extends Fragment {
             }
         });
 
-        itemsAdapterView.changeCount();
+    }
+
+    private void setLastOrderId(Order order) {
+        DatabaseReference orderLastIdRef = FirebaseDatabase.getInstance().getReference().child("LastOrderId");
+        orderLastIdRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Long lastOrderId = snapshot.getValue(Long.class);
+                if (lastOrderId == null)
+                    lastOrderId = 0L;
+                newOrderId = lastOrderId + 1;
+                orderLastIdRef.setValue(newOrderId);
+                order.setOrderID(newOrderId);
+                sendOrderEmail(order.toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void addPointsToFirebase() {

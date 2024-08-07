@@ -1,5 +1,9 @@
 package com.talshavit.groupbuyproject.models;
 
+import android.graphics.drawable.Drawable;
+
+import com.talshavit.groupbuyproject.R;
+
 public class CategoriesModel {
 
     private final String categoryName;
@@ -9,6 +13,7 @@ public class CategoriesModel {
         this.categoryName = categoryName;
         this.img = img;
     }
+
 
     public String getCategoryName() {
         return categoryName;
