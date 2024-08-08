@@ -1,6 +1,7 @@
 package com.talshavit.groupbuyproject.General;
 
 public class Constants {
+    public static final int SUBSTRING_CARD = 12;
     public static final int CREDIT_WITH_SPACE_NUMBER = 19;
     public static final int CREDIT_CARD_NUMBER = 16;
     public static final int CREDIT_CARD_SPACE = 5;

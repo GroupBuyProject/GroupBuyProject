@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,10 +42,6 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         for (int i = 0; i < GlobalResources.allItemsByCategories.length; i++) {
             GlobalResources.allItemsByCategories[i] = new ArrayList<>();
         }
-        initAllItemsByCategory(newItem);
-    }
-
-    private void initAllItemsByCategory(ArrayList<Item> newItem) {
         for (int i = 0; i < newItem.size(); i++) {
             if (newItem.get(i).getCategory().equals(Category.FruitsAndVegetables)) {
                 GlobalResources.allItemsByCategories[0].add(newItem.get(i));

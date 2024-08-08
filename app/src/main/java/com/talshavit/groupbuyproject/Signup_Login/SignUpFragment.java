@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.talshavit.groupbuyproject.General.GlobalResources;
+import com.talshavit.groupbuyproject.LoadFromMongoDB;
 import com.talshavit.groupbuyproject.MainActivity;
 import com.talshavit.groupbuyproject.R;
 import com.talshavit.groupbuyproject.Models.User;
@@ -162,7 +163,7 @@ public class SignUpFragment extends Fragment {
     }
 
     private void openMainActivity() {
-        Intent myIntent = new Intent(getContext(), MainActivity.class);
+        Intent myIntent = new Intent(getContext(), LoadFromMongoDB.class);
         startActivity(myIntent);
     }
 }

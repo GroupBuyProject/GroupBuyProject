@@ -22,6 +22,7 @@ import com.talshavit.groupbuyproject.MainActivity;
 import com.talshavit.groupbuyproject.Models.Cart;
 import com.talshavit.groupbuyproject.Models.Item;
 import com.talshavit.groupbuyproject.Models.Order;
+import com.talshavit.groupbuyproject.R;
 
 import java.util.Properties;
 
@@ -51,6 +52,31 @@ public class BasePaymentFragment {
             btnPoints.setVisibility(View.INVISIBLE);
         }
     }
+
+//    private void onPointsBtn() {
+//        btnPoints.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                isUsedPoint = true;
+//                btnCancelPoints.setVisibility(View.VISIBLE);
+//                if (price < GlobalResources.user.getVirtualCurrencies()) {
+//                    virtualCurrencies = GlobalResources.user.getVirtualCurrencies() - price;
+//                    price = 0.0;
+//                    totalPriceCheckout.setText("₪ " + 0.0);
+//                    GlobalResources.setPointsQuestionTxt(points_question, virtualCurrencies);
+//                    btnPoints.setVisibility(View.VISIBLE);
+//                } else {
+//                    virtualCurrencies = 0.0;
+//                    price = price - GlobalResources.user.getVirtualCurrencies();
+//                    String currentPrice = String.format("%.2f", price);
+//                    totalPriceCheckout.setText("₪ " + currentPrice);
+//                    points_question.setText(R.string.zeroPoints);
+//                }
+//                btnCancelPoints.setVisibility(View.VISIBLE);
+//                btnPoints.setVisibility(View.GONE);
+//            }
+//        });
+//    }
 
     public static void setTotalPrice(double price, TextView totalPriceCheckout) {
         String currentPrice = String.format("%.2f", price);

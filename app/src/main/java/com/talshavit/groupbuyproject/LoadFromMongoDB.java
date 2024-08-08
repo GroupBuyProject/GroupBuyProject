@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.Animator;
+import android.util.Log;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.talshavit.groupbuyproject.General.GlobalResources;

@@ -6,16 +6,18 @@ public class Payment {
     private int year;
     private int month;
     private int cvv;
+    private String uniqueId;
 
     public Payment() {
     }
 
-    public Payment(long cardNumber, int idNumber, int year, int month, int cvv) {
+    public Payment(long cardNumber, int idNumber, int year, int month, int cvv, String uniqueId) {
         this.cardNumber = cardNumber;
         this.idNumber = idNumber;
         this.year = year;
         this.month = month;
         this.cvv = cvv;
+        this.uniqueId = uniqueId;
     }
 
     public long getCardNumber() {
@@ -61,5 +63,13 @@ public class Payment {
     public Payment setCvv(int cvv) {
         this.cvv = cvv;
         return this;
+    }
+
+    public String getUniqueId() {
+        return uniqueId;
+    }
+
+    public void setUniqueId(String uniqueId) {
+        this.uniqueId = uniqueId;
     }
 }

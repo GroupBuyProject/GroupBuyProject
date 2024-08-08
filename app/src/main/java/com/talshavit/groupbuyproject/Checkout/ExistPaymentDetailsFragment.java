@@ -29,6 +29,7 @@ import com.talshavit.groupbuyproject.Fragments.AcceptedPayment;
 import com.talshavit.groupbuyproject.General.Constants;
 import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.Helpers.CreditCardAdapter;
+import com.talshavit.groupbuyproject.Helpers.Interfaces.OnCardDeletedListener;
 import com.talshavit.groupbuyproject.Helpers.ItemsAdapterView;
 import com.talshavit.groupbuyproject.MainActivity;
 import com.talshavit.groupbuyproject.Models.Cart;
@@ -90,7 +91,6 @@ public class ExistPaymentDetailsFragment extends Fragment {
     private void initViews() {
         initUserDataBase();
         itemsAdapterView = new ItemsAdapterView(getContext(), GlobalResources.items, "", -1);
-        onPayBtn();
         setPointsQuestion();
         setTotalPrice();
         onPointsBtn();
@@ -98,7 +98,10 @@ public class ExistPaymentDetailsFragment extends Fragment {
         onSelectCardLayout();
         initSelectCardPosition();
         initSelectCardLayout();
-        updateSelectedCardUI(GlobalResources.user.getPayments().get(0));
+        if (GlobalResources.user.getPayments().size() > 0) {
+            updateSelectedCardUI(GlobalResources.user.getPayments().get(0));
+            onPayBtn();
+        }
     }
 
     private void openCardSelectionDialog() {
@@ -114,7 +117,12 @@ public class ExistPaymentDetailsFragment extends Fragment {
                 selectedCard = card;
                 GlobalResources.selectedCardPosition = cards.indexOf(card);
             }
-        }, GlobalResources.selectedCardPosition);
+        }, GlobalResources.selectedCardPosition, userReference, new OnCardDeletedListener() {
+            @Override
+            public void onCardDeleted() {
+                updateSelectedCardAfterDeletion();
+            }
+        });
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -131,6 +139,20 @@ public class ExistPaymentDetailsFragment extends Fragment {
         AlertDialog dialog = builder.create();
         dialog.show();
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_background);
+    }
+
+    private void updateSelectedCardAfterDeletion() {
+        List<Payment> cards = GlobalResources.user.getPayments();
+        if (cards.isEmpty()) {
+            //chooseCardTXT.setVisibility(View.INVISIBLE);
+            selectCardLayout.setVisibility(View.INVISIBLE);
+            //selectedCardText.setText("");
+            //selectedCardIcon.setImageResource(0);
+            //selectedCardCheckIcon.setVisibility(View.GONE);
+        } else {
+            updateSelectedCardUI(cards.get(0));
+        }
+        initSelectCardLayout();
     }
 
     private void updateSelectedCardUI(Payment selectedCard) {

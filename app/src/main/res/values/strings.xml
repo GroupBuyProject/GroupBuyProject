@@ -22,7 +22,4 @@
     <string name="notMatchPasswords">סיסמאות לא זהות!</string>
     <string name="replaceItemsTxt">האם תרצה להחליף למוצר זול יותר?</string>
 
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

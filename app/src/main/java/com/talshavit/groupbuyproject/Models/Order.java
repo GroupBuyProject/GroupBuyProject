@@ -2,6 +2,7 @@ package com.talshavit.groupbuyproject.Models;
 
 import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 public class Order {
     private Long orderID;
@@ -10,6 +11,7 @@ public class Order {
     private String time;
     private double price;
     private Cart copiedCart;
+    private long timestamp;
 
     public Order() {
     }
@@ -20,6 +22,7 @@ public class Order {
         this.price = price;
         setDate();
         setTime();
+        setTimestamp();
     }
 
     public Long getOrderID() {
@@ -72,13 +75,21 @@ public class Order {
     }
 
     public Order setTime() {
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Jerusalem"));
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
         int second = calendar.get(Calendar.SECOND);
         String currentTime = hour + ":" + minute + ":" + second;
         this.time = currentTime;
         return this;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    private void setTimestamp() {
+        this.timestamp = System.currentTimeMillis();
     }
 
     @Override

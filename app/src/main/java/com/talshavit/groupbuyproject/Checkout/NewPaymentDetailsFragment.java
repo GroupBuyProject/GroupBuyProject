@@ -61,7 +61,6 @@ public class NewPaymentDetailsFragment extends Fragment {
     private AutoCompleteTextView month, year;
     private TextView cvv_explanation, points_question, totalPriceCheckout;
     private EditText etCardNumber, etID, etCVV;
-
     private ItemsAdapterView itemsAdapterView;
     private String[] monthsArray, yearsArray;
     private String chosenMonth, chosenYear, cardNumberText, userID;
@@ -133,7 +132,7 @@ public class NewPaymentDetailsFragment extends Fragment {
     private void setPointsQuestion() {
         double virtualCurrencies = GlobalResources.user.getVirtualCurrencies();
         if (GlobalResources.user.getVirtualCurrencies() > 0.0) {
-            GlobalResources.setPointsQuestionTxt(points_question,virtualCurrencies);
+            GlobalResources.setPointsQuestionTxt(points_question, virtualCurrencies);
         } else {
             points_question.setText(R.string.zeroPoints);
             btnPoints.setVisibility(View.INVISIBLE);
@@ -518,9 +517,10 @@ public class NewPaymentDetailsFragment extends Fragment {
         boolean exists = checkIfCardExist(cardNumber);
 
         if (!exists) {
-            Payment payment = new Payment(cardNumber, idNumber, year, month, cvv);
+            String uniqueId = userReference.push().getKey();
+            Payment payment = new Payment(cardNumber, idNumber, year, month, cvv, uniqueId);
             GlobalResources.user.addPayment(payment);
-            userReference.child("PaymentsInfo").setValue(GlobalResources.user.getPayments()).addOnCompleteListener(new OnCompleteListener<Void>() {
+            userReference.child("PaymentsInfo").child(uniqueId).setValue(payment).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {

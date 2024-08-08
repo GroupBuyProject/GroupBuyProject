@@ -14,7 +14,11 @@ import android.view.ViewGroup;
 
 import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.Helpers.History.HistoryAdapter;
+import com.talshavit.groupbuyproject.Models.Order;
 import com.talshavit.groupbuyproject.R;
+
+import java.util.Collections;
+import java.util.Comparator;
 
 public class HistoryFragment extends Fragment {
 
@@ -37,6 +41,13 @@ public class HistoryFragment extends Fragment {
     }
 
     private void initViews() {
+        Collections.sort(GlobalResources.user.getHistories(), new Comparator<Order>() {
+            @Override
+            public int compare(Order o1, Order o2) {
+                return Long.compare(o2.getTimestamp(), o1.getTimestamp());
+            }
+        });
+
         orderAdapter = new HistoryAdapter(requireActivity().getSupportFragmentManager(), GlobalResources.user.getHistories());
         initAdapter(recyclerView, orderAdapter);
     }

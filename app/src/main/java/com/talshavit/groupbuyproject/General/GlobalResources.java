@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.text.Html;
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -74,6 +75,7 @@ public class GlobalResources {
             public void onFailure(Call<List<Item>> call, Throwable t) {
                 callback.onFailure();
             }
+
         });
     }
 

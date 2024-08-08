@@ -112,16 +112,6 @@ public class CheckoutFragment extends Fragment {
         RecyclerView recyclerView = dialogView.findViewById(R.id.recyclerViewCards);
 
         List<Payment> cards = GlobalResources.user.getPayments();
-        CreditCardAdapter adapter = new CreditCardAdapter(cards, new CreditCardAdapter.OnCardClickListener() {
-            @Override
-            public void onCardClick(Payment card) {
-                selectedCard = card;
-                GlobalResources.selectedCardPosition = cards.indexOf(card);
-            }
-        }, GlobalResources.selectedCardPosition);
-
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         builder.setView(dialogView)
                 .setTitle("בחר כרטיס אשראי")
@@ -606,7 +596,7 @@ public class CheckoutFragment extends Fragment {
         boolean exists = checkIfCardExist(cardNumber);
 
         if (!exists) {
-            Payment payment = new Payment(cardNumber, idNumber, year, month, cvv);
+            Payment payment = new Payment(cardNumber, idNumber, year, month, cvv, "");
             GlobalResources.user.addPayment(payment);
             userReference.child("PaymentsInfo").setValue(GlobalResources.user.getPayments()).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
