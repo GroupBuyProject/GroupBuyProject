@@ -33,6 +33,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.talshavit.groupbuyproject.Checkout.CheckoutTabFragment;
 import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.R;
 import com.talshavit.groupbuyproject.Models.City;
@@ -100,7 +101,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View view) {
                 if (!pickUp.getText().toString().isEmpty())
-                    GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(), new CheckoutFragment(price));
+                    GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(), new CheckoutTabFragment(price));
+                    //GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(), new CheckoutFragment(price));
                 else
                     Toast.makeText(getContext(), "בחר/י מיקום לאיסוף המשלוח", Toast.LENGTH_SHORT).show();
             }

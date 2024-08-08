@@ -1,18 +1,15 @@
-package com.talshavit.groupbuyproject.Fragments;
+package com.talshavit.groupbuyproject;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,9 +19,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,12 +31,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.talshavit.groupbuyproject.Helpers.CreditCardAdapter;
+import com.talshavit.groupbuyproject.Fragments.AcceptedPayment;
 import com.talshavit.groupbuyproject.General.Constants;
 import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.Helpers.ItemsAdapterView;
-import com.talshavit.groupbuyproject.MainActivity;
-import com.talshavit.groupbuyproject.R;
 import com.talshavit.groupbuyproject.Models.Cart;
 import com.talshavit.groupbuyproject.Models.Item;
 import com.talshavit.groupbuyproject.Models.Order;
@@ -62,14 +54,13 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-
-public class CheckoutFragment extends Fragment {
+public class NewPaymentDetailsFragment extends Fragment {
 
     private AppCompatButton btnPay, btnPoints, btnCancelPoints;
-    private EditText etCardNumber, etID, etCVV;
-    private ImageButton checkoutBackButton;
     private AutoCompleteTextView month, year;
-    private TextView cvv_explanation, points_question, totalPriceCheckout, selectedCardText, chooseCardTXT;
+    private TextView cvv_explanation, points_question, totalPriceCheckout;
+    private EditText etCardNumber, etID, etCVV;
+
     private ItemsAdapterView itemsAdapterView;
     private String[] monthsArray, yearsArray;
     private String chosenMonth, chosenYear, cardNumberText, userID;
@@ -80,13 +71,10 @@ public class CheckoutFragment extends Fragment {
     private DatabaseReference userReference;
     private MainActivity mainActivity;
     private Long newOrderId;
-    private RelativeLayout selectCardLayout;
-    private ImageView selectedCardIcon, selectedCardCheckIcon;
-    private Payment selectedCard;
     private CheckBox saveCardDetailsCheckBox;
 
 
-    public CheckoutFragment(double price) {
+    public NewPaymentDetailsFragment(double price) {
         this.price = price;
         this.originalPrice = price;
     }
@@ -97,51 +85,18 @@ public class CheckoutFragment extends Fragment {
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_new_payment_details, container, false);
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mainActivity = (MainActivity) getActivity();
         findViews(view);
         changeCvvEplainVisibility(view);
         initViews();
-    }
-
-    private void openCardSelectionDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        LayoutInflater inflater = getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.dialog_select_card, null);
-        RecyclerView recyclerView = dialogView.findViewById(R.id.recyclerViewCards);
-
-        List<Payment> cards = GlobalResources.user.getPayments();
-        CreditCardAdapter adapter = new CreditCardAdapter(cards, new CreditCardAdapter.OnCardClickListener() {
-            @Override
-            public void onCardClick(Payment card) {
-                selectedCard = card;
-                GlobalResources.selectedCardPosition = cards.indexOf(card);
-            }
-        }, GlobalResources.selectedCardPosition);
-
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-
-        builder.setView(dialogView)
-                .setTitle("בחר כרטיס אשראי")
-                .setNegativeButton("ביטול", (dialog, which) -> dialog.dismiss())
-                .setPositiveButton("אישור", (dialog, which) -> {
-                    if (selectedCard != null) {
-                        updateSelectedCardUI(selectedCard);
-                    }
-                });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
-        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_background);
-    }
-
-    private void updateSelectedCardUI(Payment selectedCard) {
-        selectedCardText.setText("כרטיס **** " + String.valueOf(selectedCard.getCardNumber()).substring(12));
-        selectedCardIcon.setImageResource(R.drawable.credit);
-        if (GlobalResources.selectedCardPosition != -1)
-            selectedCardCheckIcon.setVisibility(View.VISIBLE);
     }
 
     private void initViews() {
@@ -158,38 +113,6 @@ public class CheckoutFragment extends Fragment {
         setTotalPrice();
         onPointsBtn();
         onCancelPoints();
-        onCheckoutBackButton();
-        onSelectCardLayout();
-        initSelectCardPosition();
-        initSelectCardLayout();
-        updateSelectedCardUI(GlobalResources.user.getPayments().get(0));
-    }
-
-    private void initSelectCardLayout() {
-        if (GlobalResources.user.getPayments().size() > 0) {
-            chooseCardTXT.setVisibility(View.VISIBLE);
-            selectCardLayout.setVisibility(View.VISIBLE);
-        } else {
-            chooseCardTXT.setVisibility(View.INVISIBLE);
-            selectCardLayout.setVisibility(View.INVISIBLE);
-        }
-
-    }
-
-    private void initSelectCardPosition() {
-        if (GlobalResources.selectedCardPosition != -1) {
-            selectedCard = GlobalResources.user.getPayments().get(GlobalResources.selectedCardPosition);
-            updateSelectedCardUI(selectedCard);
-        }
-    }
-
-    private void onSelectCardLayout() {
-        selectCardLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openCardSelectionDialog();
-            }
-        });
     }
 
     private void initUserDataBase() {
@@ -269,16 +192,6 @@ public class CheckoutFragment extends Fragment {
         onScreen(view);
         onElement(view);
         setChanges();
-    }
-
-    private void onCheckoutBackButton() {
-        checkoutBackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                fragmentManager.popBackStack();
-            }
-        });
     }
 
     private void setChanges() {
@@ -414,6 +327,7 @@ public class CheckoutFragment extends Fragment {
         btnPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                GlobalResources.selectedCardPosition = -1;
                 cardNumberText = etCardNumber.getText().toString().replaceAll(" ", "");
                 if (isPaymentDetailsValid()) {
                     if (isUsedPoint) {
@@ -646,20 +560,7 @@ public class CheckoutFragment extends Fragment {
         btnPoints = view.findViewById(R.id.btnPoints);
         btnCancelPoints = view.findViewById(R.id.btnCancelPoints);
         totalPriceCheckout = view.findViewById(R.id.totalPriceCheckout);
-        checkoutBackButton = view.findViewById(R.id.checkoutBackButton);
-        selectCardLayout = view.findViewById(R.id.select_card_layout);
-        selectCardLayout = view.findViewById(R.id.select_card_layout);
-        selectedCardText = view.findViewById(R.id.selected_card_text);
-        selectedCardIcon = view.findViewById(R.id.selected_card_icon);
         saveCardDetailsCheckBox = view.findViewById(R.id.saveCardDetailsCheckBox);
-        chooseCardTXT = view.findViewById(R.id.chooseCardTXT);
-        selectedCardCheckIcon = view.findViewById(R.id.selected_card_check_icon);
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_checkout, container, false);
-    }
 }
