@@ -86,7 +86,6 @@ public class CheckoutFragment extends Fragment {
     private CheckBox saveCardDetailsCheckBox;
 
 
-
     public CheckoutFragment(double price) {
         this.price = price;
         this.originalPrice = price;
@@ -119,7 +118,7 @@ public class CheckoutFragment extends Fragment {
                 selectedCard = card;
                 GlobalResources.selectedCardPosition = cards.indexOf(card);
             }
-        },GlobalResources.selectedCardPosition);
+        }, GlobalResources.selectedCardPosition);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -141,7 +140,7 @@ public class CheckoutFragment extends Fragment {
     private void updateSelectedCardUI(Payment selectedCard) {
         selectedCardText.setText("כרטיס **** " + String.valueOf(selectedCard.getCardNumber()).substring(12));
         selectedCardIcon.setImageResource(R.drawable.credit);
-        if(GlobalResources.selectedCardPosition != -1)
+        if (GlobalResources.selectedCardPosition != -1)
             selectedCardCheckIcon.setVisibility(View.VISIBLE);
     }
 
@@ -168,11 +167,10 @@ public class CheckoutFragment extends Fragment {
     }
 
     private void initSelectCardLayout() {
-        if(GlobalResources.user.getPayments().size() > 0){
+        if (GlobalResources.user.getPayments().size() > 0) {
             chooseCardTXT.setVisibility(View.VISIBLE);
             selectCardLayout.setVisibility(View.VISIBLE);
-        }
-        else{
+        } else {
             chooseCardTXT.setVisibility(View.INVISIBLE);
             selectCardLayout.setVisibility(View.INVISIBLE);
         }
@@ -245,6 +243,8 @@ public class CheckoutFragment extends Fragment {
                     totalPriceCheckout.setText("₪ " + currentPrice);
                     points_question.setText("יש ברשותך 0 נקודות");
                 }
+                btnCancelPoints.setVisibility(View.VISIBLE);
+                btnPoints.setVisibility(View.GONE);
             }
         });
     }
@@ -260,6 +260,8 @@ public class CheckoutFragment extends Fragment {
                 double virtualCurrencies = GlobalResources.user.getVirtualCurrencies();
                 String formattedValue = String.format("%.2f", virtualCurrencies);
                 points_question.setText("יש ברשותך " + formattedValue + " נקודות. " + "האם תרצה לממש אותן?");
+                btnPoints.setVisibility(View.VISIBLE);
+                btnCancelPoints.setVisibility(View.GONE);
             }
         });
     }
@@ -488,7 +490,6 @@ public class CheckoutFragment extends Fragment {
     }
 
 
-
     private void sendOrderEmail(String orderDetails) {
         Properties properties = System.getProperties();
         properties.put("mail.smtp.host", Constants.GMAIL_HOST);
@@ -605,8 +606,8 @@ public class CheckoutFragment extends Fragment {
         int cvv = Integer.parseInt(etCVV.getText().toString());
         boolean exists = checkIfCardExist(cardNumber);
 
-        if(!exists){
-             Payment payment = new Payment(cardNumber, idNumber, year, month, cvv);
+        if (!exists) {
+            Payment payment = new Payment(cardNumber, idNumber, year, month, cvv);
             GlobalResources.user.addPayment(payment);
             userReference.child("PaymentsInfo").setValue(GlobalResources.user.getPayments()).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
@@ -620,8 +621,7 @@ public class CheckoutFragment extends Fragment {
         }
     }
 
-    private boolean checkIfCardExist( long cardNumber)
-    {
+    private boolean checkIfCardExist(long cardNumber) {
         boolean exists = false;
         List<Payment> payments = GlobalResources.user.getPayments();
         for (Payment payment : payments) {

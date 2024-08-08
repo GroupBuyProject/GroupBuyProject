@@ -278,8 +278,10 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
             totalPricePerOrder = Double.parseDouble(item.getSale()) * item.getCount();
         else
             totalPricePerOrder = Double.parseDouble(item.getPrice()) * item.getCount();
-        if (totalPricePerOrder > 0.0)
-            holder.totalPrice.setText("סהכ לתשלום " + totalPricePerOrder + " ₪");
+        if (totalPricePerOrder > 0.0) {
+            String formattedValue = String.format("%.2f", totalPricePerOrder);
+            holder.totalPrice.setText("סהכ לתשלום " + formattedValue + " ₪");
+        }
     }
 
 

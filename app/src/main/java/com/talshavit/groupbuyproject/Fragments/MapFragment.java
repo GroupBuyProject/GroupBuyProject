@@ -71,7 +71,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void initCitiesMap() {
-        Log.d("lala", "CITY");
         GlobalResources.initCities();
         allCities = GlobalResources.allCities;
         allCitiesName = new ArrayList<>();
@@ -90,6 +89,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         findViews(view);
         initViews();
         onConfirmButton();
+
+        if (myMap != null) {
+            myMap.clear();
+        }
     }
 
     private void onConfirmButton() {
@@ -121,6 +124,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         pickUpCitySearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                pickUp.setText("");
+                addressSearch.setText("בחר כתובת");
                 initDialog(allCitiesName);
                 clickOnListView();
             }
@@ -151,23 +156,38 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         searchBar_LISTV_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                pickUpCitySearch.setText(arrayAdapter.getItem(position));
-                String name = arrayAdapter.getItem(position);
-                LatLng latLan = citiesMap.get(name);
-                allPointsName.clear();
-                for (String pointName : allCities.get(position).getPoints().keySet()) {
-                    allPointsName.add(pointName);
-                }
+                String cityName = arrayAdapter.getItem(position);
+                pickUpCitySearch.setText(cityName);
+                pickUp.setText("");
+                addressSearch.setText("בחר כתובת");
 
-                if (latLan != null && myMap != null) {
-                    myMap.clear();
-                    myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLan, 12));
-                    for (Map.Entry<String, LatLng> point : allCities.get(position).getPoints().entrySet()) {
-                        myMap.addMarker(new MarkerOptions().position(point.getValue()).title(point.getKey()));
+                City selectedCity = null;
+                for (City city : allCities) {
+                    if (city.getName().equals(cityName)) {
+                        selectedCity = city;
+                        break;
                     }
                 }
-                onSpinnerPoint();
+
+                if (selectedCity != null) {
+                    LatLng latLan = selectedCity.getLatLng();
+                    allPointsName.clear();
+                    for (String pointName : selectedCity.getPoints().keySet()) {
+                        allPointsName.add(pointName);
+                    }
+
+                    if (latLan != null && myMap != null) {
+                        myMap.clear();
+                        myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLan, 12));
+                        for (Map.Entry<String, LatLng> point : selectedCity.getPoints().entrySet()) {
+                            myMap.addMarker(new MarkerOptions().position(point.getValue()).title(point.getKey()));
+                        }
+                    }
+                    onSpinnerPoint();
+                }
+
                 dialog.dismiss();
+
             }
         });
     }
@@ -176,9 +196,25 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         searchBar_LISTV_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                addressSearch.setText(arrayAdapter.getItem(position));
+                String pointName = arrayAdapter.getItem(position);
+                addressSearch.setText(pointName);
+                pickUp.setText(pickUpCitySearch.getText().toString() + " - " + pointName);
+
+                LatLng pointLatLng = null;
+                for (City city : allCities) {
+                    if (city.getName().equals(pickUpCitySearch.getText().toString())) {
+                        pointLatLng = city.getPoints().get(pointName);
+                        break;
+                    }
+                }
+
+                if (pointLatLng != null && myMap != null) {
+                    myMap.clear();
+                    myMap.addMarker(new MarkerOptions().position(pointLatLng).title(pointName));
+                    myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pointLatLng, 15));
+                }
+
                 dialog.dismiss();
-                pickUp.setText(pickUpCitySearch.getText().toString() + " - " + arrayAdapter.getItem(position));
             }
         });
     }
@@ -237,7 +273,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_map, container, false);
     }
 
@@ -252,7 +287,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public boolean onMarkerClick(Marker marker) {
                 selectedPickupName = marker.getTitle().toString();
-                pickUp.setText(pickUpCitySearch.getText().toString() + " - " +selectedPickupName);
+                pickUp.setText(pickUpCitySearch.getText().toString() + " - " + selectedPickupName);
                 addressSearch.setText(selectedPickupName);
                 return false;
             }
@@ -271,7 +306,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             intent.setData(Uri.parse(url));
             startActivity(intent);
         } catch (Exception e) {
-            Log.d("lala", "whatsapp not install");
         }
     }
 }

@@ -53,7 +53,7 @@ public class AcceptedPayment extends Fragment {
 
             @Override
             public void onAnimationEnd(@NonNull Animator animator) {
-                GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(), new MainFragment());
+                GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(), new HomeFragment());
             }
 
             @Override

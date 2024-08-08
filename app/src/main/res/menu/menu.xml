@@ -8,11 +8,11 @@
         <item
             android:id="@+id/nav_deals"
             android:icon="@drawable/traffic"
-            android:title="הגבלת קניה" />
+            android:title="הגבלת סכום לקניה" />
         <item
             android:id="@+id/complete_order"
             android:icon="@drawable/order"
-            android:title="השלמת קניה" />
+            android:title="ביטול/הפעלה השלמת קניה" />
         <item
             android:id="@+id/privacy_policy"
             android:icon="@drawable/shield"

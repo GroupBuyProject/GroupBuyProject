@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,6 +43,7 @@ public class CartFragment extends Fragment implements OnItemChangeListener, OnRe
     private ItemsAdapterView itemsAdapterView;
     private RecyclerView recyclerViewItem;
     private AppCompatButton checkout, replace;
+    private AppCompatImageButton exit_button;
     private TextView totalAmount, textView;
     private double totalPrice;
     private AppCompatTextView text;
@@ -52,6 +54,7 @@ public class CartFragment extends Fragment implements OnItemChangeListener, OnRe
     private ArrayList<Item> itemsWithSimilar;
     private ArrayList<HashMap<Item, Item>> similarItemsToShow;
     private ArrayList<HashMap<Item, Item>> itemsToReplace;
+    private int counterFotItems;
 
     public CartFragment() {
         this.cart = GlobalResources.cart;
@@ -118,20 +121,28 @@ public class CartFragment extends Fragment implements OnItemChangeListener, OnRe
         checkItemsWithSimilar();
         checkMaxDifferencePrice();
 
-        //ArrayList<Item> relatedItems = getRandomRelatedItems(currentItem.getRelatedItems());
         addItemsToGridLayout(gridLayout, similarItemsToShow);
 
-
         onConfirmButton(dialog);
-        //onExitButton(dialog);
+        onExitButton(dialog);
 
-        dialog.setCancelable(true);
+        dialog.setCancelable(false);
         dialog.show();
 
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_background);
     }
 
+    private void onExitButton(Dialog dialog) {
+        exit_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+    }
+
     private void onConfirmButton(Dialog dialog) {
+
         confirm_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -150,6 +161,7 @@ public class CartFragment extends Fragment implements OnItemChangeListener, OnRe
 
     private void checkMaxDifferencePrice() {
         similarItemsToShow = new ArrayList<>();
+        counterFotItems = 0;
         for (int i = 0; i < itemsWithSimilar.size(); i++) {
             Double maxDifference = 0.0;
             Item maxItem = null;
@@ -179,6 +191,7 @@ public class CartFragment extends Fragment implements OnItemChangeListener, OnRe
                 HashMap<Item, Item> itemHashMap = new HashMap<>();
                 itemHashMap.put(mainItem, maxItem);
                 similarItemsToShow.add(itemHashMap);
+                counterFotItems++;
             }
         }
     }
@@ -200,7 +213,18 @@ public class CartFragment extends Fragment implements OnItemChangeListener, OnRe
 
             Item mainItem = similarItems.get(i).entrySet().iterator().next().getKey();
             Item similarItem = similarItems.get(i).entrySet().iterator().next().getValue();
-            textView.setText("החלף " + mainItem.getName() + "\n" + "ב" + similarItem.getName());
+            double mainPrice, similarPrice, price;
+            if (Double.parseDouble(mainItem.getSale()) > 0.0)
+                mainPrice = Double.parseDouble(mainItem.getSale()) * mainItem.getCount();
+            else
+                mainPrice = Double.parseDouble(mainItem.getPrice()) * mainItem.getCount();
+            if (Double.parseDouble(similarItem.getSale()) > 0.0)
+                similarPrice = Double.parseDouble(similarItem.getSale()) * mainItem.getCount();
+            else
+                similarPrice = Double.parseDouble(similarItem.getPrice()) * mainItem.getCount();
+            price = mainPrice - similarPrice;
+            String formattedValue = String.format("%.2f", price);
+            textView.setText("החלף " + mainItem.getName() + "\n" + "ב" + similarItem.getName() + " ותחסוך " + formattedValue + " ₪");
             Glide.with(getContext()).load(similarItem.getImg()).into(imageView);
 
             initGridAdapter(itemView, gridLayout, i);
@@ -227,23 +251,20 @@ public class CartFragment extends Fragment implements OnItemChangeListener, OnRe
                             break;
                         }
                     }
+                    counterFotItems++;
                 } else {
                     check.setVisibility(View.VISIBLE);
                     HashMap<Item, Item> itemHashMap = new HashMap<>();
                     itemHashMap.put(mainItem, similarItem);
                     itemsToReplace.add(itemHashMap);
+                    counterFotItems--;
                 }
-//                itemsAdapterView.addToCart(similarItem, mainItem.getCount());
-//                itemsAdapterView.removeFromCart(mainItem);
-//                updateTotalPrice();
-                //Log.d("lala", mainItem.getName()+" "+mainItem.getCount());
             }
         });
     }
 
     private void updateReplaceButtonVisibility() {
-        Log.d("lala", similarItemsToShow.size()+"");
-        if (similarItemsToShow.isEmpty()) {
+        if (counterFotItems == 0) {
             replace.setVisibility(View.GONE);
         } else {
             replace.setVisibility(View.VISIBLE);
@@ -297,7 +318,7 @@ public class CartFragment extends Fragment implements OnItemChangeListener, OnRe
         text = dialog.findViewById(R.id.text);
         gridLayout = dialog.findViewById(R.id.gridLayout);
         confirm_button = dialog.findViewById(R.id.confirm_button);
-        //exit_button = dialog.findViewById(R.id.exit_button);
+        exit_button = dialog.findViewById(R.id.exit_button);
         text.setText("האם תרצה להחליף למוצר זול יותר?");
     }
 
