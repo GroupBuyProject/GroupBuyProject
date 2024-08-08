@@ -10,7 +10,6 @@ public class CategoriesModel {
         this.img = img;
     }
 
-
     public String getCategoryName() {
         return categoryName;
     }

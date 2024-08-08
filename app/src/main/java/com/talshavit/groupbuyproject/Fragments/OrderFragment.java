@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,9 +19,7 @@ import com.talshavit.groupbuyproject.Helpers.SpecificOrderFromHistory.SpecificOr
 import com.talshavit.groupbuyproject.R;
 import com.talshavit.groupbuyproject.Models.Order;
 
-
 public class OrderFragment extends Fragment {
-
     private Order order;
     private RecyclerView recyclerView;
     private SpecificOrderFromHistoryAdapter itemInHistoryAdapter;
@@ -70,8 +67,7 @@ public class OrderFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                fragmentManager.popBackStack();
+                GlobalResources.backToPrevFragment(requireActivity().getSupportFragmentManager());
             }
         });
     }

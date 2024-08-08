@@ -1,10 +1,7 @@
 package com.talshavit.groupbuyproject.Signup_Login;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,56 +16,43 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.MainActivity;
 import com.talshavit.groupbuyproject.R;
 import com.talshavit.groupbuyproject.Models.User;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 public class SignUpFragment extends Fragment {
 
     private EditText nameEditText, emailSignUp, passwordSignup, confirmSignup;
     private androidx.appcompat.widget.AppCompatButton signupButton;
-
     private TextView privacypolicytXT, termTxt;
-
     private String name, email, password;
     private FirebaseAuth firebaseAuth;
-
-    // private FirebaseAuth firebaseAuth;
 
 
     public SignUpFragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_sign_up_tab, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
         firebaseAuth = FirebaseAuth.getInstance();
-
         findViews(view);
         initViews();
     }
@@ -83,8 +67,8 @@ public class SignUpFragment extends Fragment {
         termTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String htmlContent = loadHtmlFromAsset("terms_of_conditions.html");
-                dialogFunc(htmlContent);
+                String htmlContent = GlobalResources.loadHtmlFromAsset(getActivity(), "terms_of_conditions.html");
+                GlobalResources.dialogFunc(getContext(), htmlContent);
             }
         });
     }
@@ -93,29 +77,10 @@ public class SignUpFragment extends Fragment {
         privacypolicytXT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String htmlContent = loadHtmlFromAsset("privacy_policy.html");
-                dialogFunc(htmlContent);
-
+                String htmlContent = GlobalResources.loadHtmlFromAsset(getActivity(), "privacy_policy.html");
+                GlobalResources.dialogFunc(getContext(), htmlContent);
             }
         });
-    }
-
-    private void dialogFunc(String htmlContent) {
-        MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(getContext());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            materialAlertDialogBuilder.setMessage(Html.fromHtml(htmlContent, Html.FROM_HTML_MODE_LEGACY));
-        } else {
-            materialAlertDialogBuilder.setMessage(Html.fromHtml(htmlContent));
-        }
-        materialAlertDialogBuilder.setPositiveButton("סגור", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss(); //Close the dialog
-            }
-        });
-
-        materialAlertDialogBuilder.setCancelable(false);
-        materialAlertDialogBuilder.show();
     }
 
     private void onSingUp() {
@@ -129,31 +94,31 @@ public class SignUpFragment extends Fragment {
                 boolean isValid = true;
 
                 if (name.isEmpty()) {
-                    nameEditText.setError("חובה למלא שם!");
+                    nameEditText.setError(getString(R.string.mustName));
                     isValid = false;
                 }
                 if (email.isEmpty()) {
-                    emailSignUp.setError("חובה למלא מייל!");
+                    emailSignUp.setError(getString(R.string.mustEmail));
                     isValid = false;
                 } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    emailSignUp.setError("כתובת המייל לא בפורמט תקין!");
+                    emailSignUp.setError(getString(R.string.invalidEmail));
                     isValid = false;
                 }
                 if (password.isEmpty()) {
-                    passwordSignup.setError("חובה למלא סיסמא!");
+                    passwordSignup.setError(getString(R.string.mustPassword));
                     isValid = false;
                 } else if (password.length() < 6) {
-                    passwordSignup.setError("סיסמא חייבת להכיל לפחות 6 תווים!");
+                    passwordSignup.setError(getString(R.string.limitPassword));
                     isValid = false;
                 }
                 if (confirmPassword.isEmpty()) {
-                    confirmSignup.setError("יש למלא אימות סיסמא!");
+                    confirmSignup.setError(getString(R.string.mustPassword));
                     isValid = false;
                 } else if (confirmPassword.length() < 6) {
-                    confirmSignup.setError("סיסמא חייבת להכיל לפחות 6 תווים!");
+                    confirmSignup.setError(getString(R.string.limitPassword));
                     isValid = false;
                 } else if (!password.equals(confirmPassword)) {
-                    confirmSignup.setError("סיסמאות לא זהות!");
+                    confirmSignup.setError(getString(R.string.notMatchPasswords));
                     isValid = false;
                 }
                 if (isValid) {
@@ -199,20 +164,5 @@ public class SignUpFragment extends Fragment {
     private void openMainActivity() {
         Intent myIntent = new Intent(getContext(), MainActivity.class);
         startActivity(myIntent);
-    }
-
-    private String loadHtmlFromAsset(String filename) {
-        String textFile = "";
-        try {
-            InputStream inputStream = requireContext().getAssets().open(filename);
-            int size = inputStream.available();
-            byte[] buffer = new byte[size];
-            inputStream.read(buffer);
-            textFile = new String(buffer);
-            inputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return textFile;
     }
 }

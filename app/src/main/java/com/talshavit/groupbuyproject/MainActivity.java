@@ -10,13 +10,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -28,7 +23,6 @@ import android.widget.TextView;
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputEditText;
@@ -46,11 +40,8 @@ import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.Helpers.Interfaces.OnCoinsUpdateListener;
 import com.talshavit.groupbuyproject.Signup_Login.StartActivity;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Calendar;
 import java.util.TimeZone;
-
 
 public class MainActivity extends AppCompatActivity implements OnCoinsUpdateListener {
 
@@ -59,32 +50,25 @@ public class MainActivity extends AppCompatActivity implements OnCoinsUpdateList
     private CartFragment cartFragment;
     private HistoryFragment historyFragment;
     private SalesFragment salesFragment;
-    private SearchFragment searchFragment;
     private ImageView menu, coins;
     private AppCompatTextView coinsTxt;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private TextView user_name, time_of_the_day;
     private ShapeableImageView imageTime;
-
     public static boolean isPaid = false;
     private MeowBottomNavigation.ReselectListener reselectListener;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
-
     private AlertDialog.Builder builder;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        user = firebaseAuth.getCurrentUser();
-
+        initUserDatabase();
         GlobalResources.replaceFragment(getSupportFragmentManager(), new HomeFragment());
-
         findviews();
         initViews();
         initBottomNav();
@@ -92,6 +76,11 @@ public class MainActivity extends AppCompatActivity implements OnCoinsUpdateList
         onNavigationBar();
 
 
+    }
+
+    private void initUserDatabase() {
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
     }
 
     private void onNavigationBar() {
@@ -132,11 +121,10 @@ public class MainActivity extends AppCompatActivity implements OnCoinsUpdateList
     private void initViews() {
         builder = new AlertDialog.Builder(this);
         animateToCoin(coins);
-        homeFragment = new HomeFragment(bottomNavigation);
+        homeFragment = new HomeFragment();
         historyFragment = new HistoryFragment();
         cartFragment = new CartFragment();
         salesFragment = new SalesFragment();
-        searchFragment = new SearchFragment();
         onMenu();
         setCoins();
         onNavigation();
@@ -233,7 +221,7 @@ public class MainActivity extends AppCompatActivity implements OnCoinsUpdateList
     }
 
     private void negativeButton(android.app.AlertDialog.Builder builder) {
-        builder.setNegativeButton("ביטול", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -242,7 +230,7 @@ public class MainActivity extends AppCompatActivity implements OnCoinsUpdateList
     }
 
     private void positiveButton(android.app.AlertDialog.Builder builder) {
-        builder.setPositiveButton("אישור", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (user != null) {
@@ -306,7 +294,7 @@ public class MainActivity extends AppCompatActivity implements OnCoinsUpdateList
             inputAmount.setText(String.valueOf(GlobalResources.limitAmount));
 
         builder.setTitle("")
-                .setPositiveButton("אישור", (dialog, id) -> {
+                .setPositiveButton(R.string.confirm, (dialog, id) -> {
                     String amount = inputAmount.getText().toString();
                     if (amount != null && !amount.isEmpty()) {
                         int limit = Integer.parseInt(amount);
@@ -314,7 +302,7 @@ public class MainActivity extends AppCompatActivity implements OnCoinsUpdateList
                         GlobalResources.limitPercent = limit * 0.1;
                     }
                 })
-                .setNegativeButton("ביטול", (dialog, id) -> dialog.cancel());
+                .setNegativeButton(R.string.cancel, (dialog, id) -> dialog.cancel());
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
@@ -381,7 +369,6 @@ public class MainActivity extends AppCompatActivity implements OnCoinsUpdateList
         bottomNavigation.show(1, true); // Home ID 1
     }
 
-
     private void animateToCoin(View imageView) {
         imageView.animate().setDuration(1000)
                 .rotationYBy(360f)
@@ -394,61 +381,13 @@ public class MainActivity extends AppCompatActivity implements OnCoinsUpdateList
     }
 
     private void onPrivacyPolicy() {
-        String htmlContent = loadHtmlFromAsset("privacy_policy.html");
-
-        MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(this);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            materialAlertDialogBuilder.setMessage(Html.fromHtml(htmlContent, Html.FROM_HTML_MODE_LEGACY));
-        } else {
-            materialAlertDialogBuilder.setMessage(Html.fromHtml(htmlContent));
-        }
-        materialAlertDialogBuilder.setPositiveButton("סגור", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss(); //Close the dialog
-            }
-        });
-
-        materialAlertDialogBuilder.setCancelable(false);
-        materialAlertDialogBuilder.show();
-    }
-
-    private String loadHtmlFromAsset(String filename) {
-        String textFile = "";
-        try {
-            InputStream inputStream = this.getAssets().open(filename);
-            int size = inputStream.available();
-            byte[] buffer = new byte[size];
-            inputStream.read(buffer);
-            textFile = new String(buffer);
-            inputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return textFile;
+        String htmlContent = GlobalResources.loadHtmlFromAsset(this, "privacy_policy.html");
+        GlobalResources.dialogFunc(this,htmlContent);
     }
 
     private void onTerms() {
-        String htmlContent = loadHtmlFromAsset("terms_of_conditions.html");
-        dialogFunc(htmlContent);
-    }
-
-    private void dialogFunc(String htmlContent) {
-        MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(this);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            materialAlertDialogBuilder.setMessage(Html.fromHtml(htmlContent, Html.FROM_HTML_MODE_LEGACY));
-        } else {
-            materialAlertDialogBuilder.setMessage(Html.fromHtml(htmlContent));
-        }
-        materialAlertDialogBuilder.setPositiveButton("סגור", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss(); //Close the dialog
-            }
-        });
-
-        materialAlertDialogBuilder.setCancelable(false);
-        materialAlertDialogBuilder.show();
+        String htmlContent = GlobalResources.loadHtmlFromAsset(this,"terms_of_conditions.html");
+        GlobalResources.dialogFunc(this,htmlContent);
     }
 
     @Override

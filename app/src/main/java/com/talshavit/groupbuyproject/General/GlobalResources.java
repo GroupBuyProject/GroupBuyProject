@@ -1,13 +1,20 @@
 package com.talshavit.groupbuyproject.General;
 
-import android.util.Log;
+import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.os.Build;
+import android.text.Html;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.talshavit.groupbuyproject.Helpers.Retrofit.ApiService;
 import com.talshavit.groupbuyproject.Helpers.Retrofit.RetrofitClient;
+import com.talshavit.groupbuyproject.MainActivity;
 import com.talshavit.groupbuyproject.R;
 import com.talshavit.groupbuyproject.Models.Cart;
 import com.talshavit.groupbuyproject.Models.City;
@@ -15,6 +22,8 @@ import com.talshavit.groupbuyproject.Models.Item;
 import com.talshavit.groupbuyproject.Models.User;
 import com.talshavit.groupbuyproject.Models.CityManager;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,4 +92,45 @@ public class GlobalResources {
         user = userObject;
     }
 
+    public static void backToPrevFragment(FragmentManager fragmentManager) {
+        fragmentManager.popBackStack();
+    }
+
+    public static void setPointsQuestionTxt(TextView points_question, double virtualCurrencies) {
+        String formattedValue = String.format("%.2f", virtualCurrencies);
+        points_question.setText("יש ברשותך " + formattedValue + " נקודות. " + "האם תרצה לממש אותן?");
+    }
+
+    public static String loadHtmlFromAsset(Activity activity, String filename) {
+        String textFile = "";
+        try {
+            InputStream inputStream = activity.getAssets().open(filename);
+            int size = inputStream.available();
+            byte[] buffer = new byte[size];
+            inputStream.read(buffer);
+            textFile = new String(buffer);
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return textFile;
+    }
+
+    public static void dialogFunc(Context context, String htmlContent) {
+        MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            materialAlertDialogBuilder.setMessage(Html.fromHtml(htmlContent, Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            materialAlertDialogBuilder.setMessage(Html.fromHtml(htmlContent));
+        }
+        materialAlertDialogBuilder.setPositiveButton("סגור", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss(); //Close the dialog
+            }
+        });
+
+        materialAlertDialogBuilder.setCancelable(false);
+        materialAlertDialogBuilder.show();
+    }
 }

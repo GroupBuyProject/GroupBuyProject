@@ -10,11 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,7 +100,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             public void onClick(View view) {
                 if (!pickUp.getText().toString().isEmpty())
                     GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(), new CheckoutTabFragment(price));
-                    //GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(), new CheckoutFragment(price));
                 else
                     Toast.makeText(getContext(), "בחר/י מיקום לאיסוף המשלוח", Toast.LENGTH_SHORT).show();
             }
@@ -148,8 +145,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mapBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                fragmentManager.popBackStack();
+                GlobalResources.backToPrevFragment(requireActivity().getSupportFragmentManager());
             }
         });
     }
@@ -260,7 +256,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 sendWhatsAppMessage(PHONE_NUMBER, MESSAGE);
             }
         });
-
     }
 
     private void findViews(View view) {
@@ -294,11 +289,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 return false;
             }
         });
-
-    }
-
-    private void addPickupPoint(LatLng location, String title) {
-        myMap.addMarker(new MarkerOptions().position(location).title(title));
     }
 
     private void sendWhatsAppMessage(String phoneNumber, String message) {
@@ -310,4 +300,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         } catch (Exception e) {
         }
     }
+
+    //    private void addPickupPoint(LatLng location, String title) {
+//        myMap.addMarker(new MarkerOptions().position(location).title(title));
+//    }
+
 }

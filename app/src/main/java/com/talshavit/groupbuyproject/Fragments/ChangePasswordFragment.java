@@ -5,7 +5,6 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -14,13 +13,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.R;
 
 public class ChangePasswordFragment extends Fragment {
@@ -68,23 +67,23 @@ public class ChangePasswordFragment extends Fragment {
                 String newPW = newPasswordEditText.getText().toString().trim();;
                 String confirmPW = confirmPasswordEditText.getText().toString().trim();;
                 if (newPW.isEmpty()) {
-                    newPasswordEditText.setError("חובה למלא סיסמא!");
+                    newPasswordEditText.setError(getString(R.string.mustPassword));
                     isValid = false;
                 }
                 else if (newPW.length() < 6) {
-                    newPasswordEditText.setError("סיסמא חייבת להכיל לפחות 6 תווים!");
+                    newPasswordEditText.setError(getString(R.string.limitPassword));
                     isValid = false;
                 }
                 if (confirmPW.isEmpty()) {
-                    confirmPasswordEditText.setError("חובה למלא סיסמא!");
+                    confirmPasswordEditText.setError(getString(R.string.mustPassword));
                     isValid = false;
                 }
                 else if (confirmPW.length() < 6) {
-                    confirmPasswordEditText.setError("סיסמא חייבת להכיל לפחות 6 תווים!");
+                    confirmPasswordEditText.setError(getString(R.string.limitPassword));
                     isValid = false;
                 }
                 else if(!newPW.equals(confirmPW)){
-                    confirmPasswordEditText.setError("סיסמאות לא זהות!");
+                    confirmPasswordEditText.setError(getString(R.string.notMatchPasswords));
                     isValid = false;
                 }
                 if(isValid){
@@ -116,7 +115,7 @@ public class ChangePasswordFragment extends Fragment {
         exitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requireActivity().getSupportFragmentManager().popBackStackImmediate();
+                GlobalResources.backToPrevFragment(requireActivity().getSupportFragmentManager());
             }
         });
     }
@@ -128,7 +127,6 @@ public class ChangePasswordFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            // Password updated successfully
                             changeFragment();
                         }
                     }
@@ -136,7 +134,7 @@ public class ChangePasswordFragment extends Fragment {
     }
 
     private void changeFragment() {
-        requireActivity().getSupportFragmentManager().popBackStackImmediate();
+        GlobalResources.backToPrevFragment(requireActivity().getSupportFragmentManager());
     }
 
     private void findViews(View view) {

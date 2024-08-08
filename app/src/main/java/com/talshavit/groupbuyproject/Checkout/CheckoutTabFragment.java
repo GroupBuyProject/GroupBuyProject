@@ -5,7 +5,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
@@ -14,8 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import com.google.android.material.tabs.TabLayout;
+import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.R;
-import com.talshavit.groupbuyproject.Signup_Login.MyPageAdapter;
 
 
 public class CheckoutTabFragment extends Fragment {
@@ -58,8 +57,7 @@ public class CheckoutTabFragment extends Fragment {
         checkoutBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                fragmentManager.popBackStack();
+                GlobalResources.backToPrevFragment(requireActivity().getSupportFragmentManager());
             }
         });
     }

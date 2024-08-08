@@ -1,7 +1,6 @@
 package com.talshavit.groupbuyproject.Fragments;
 
 import android.animation.Animator;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,16 +13,14 @@ import android.view.ViewGroup;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.talshavit.groupbuyproject.General.GlobalResources;
-import com.talshavit.groupbuyproject.MainActivity;
 import com.talshavit.groupbuyproject.R;
-import com.airbnb.lottie.LottieListener;
 
 public class AcceptedPayment extends Fragment {
 
     private LottieAnimationView lottieAnimationView;
 
     public AcceptedPayment() {
-        
+
     }
 
     @Override

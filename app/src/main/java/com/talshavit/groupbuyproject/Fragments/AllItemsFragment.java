@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,6 +16,7 @@ import android.widget.ImageButton;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.Helpers.ItemsAdapterView;
 import com.talshavit.groupbuyproject.Models.Item;
 import com.talshavit.groupbuyproject.R;
@@ -75,8 +75,7 @@ public class AllItemsFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                fragmentManager.popBackStack();
+                GlobalResources.backToPrevFragment(requireActivity().getSupportFragmentManager());
             }
         });
     }
@@ -84,7 +83,7 @@ public class AllItemsFragment extends Fragment {
     private void findViews(View view) {
         recyclerViewItem = view.findViewById(R.id.recyclerView);
         imgBackGround = view.findViewById(R.id.imgBackGround);
-        itemsAdapterView = new ItemsAdapterView(getContext(), allItemsByCategories, "AllItemsFragment",category);
+        itemsAdapterView = new ItemsAdapterView(getContext(), allItemsByCategories, "AllItemsFragment", category);
         title = view.findViewById(R.id.title);
         backButton = view.findViewById(R.id.backButton);
     }

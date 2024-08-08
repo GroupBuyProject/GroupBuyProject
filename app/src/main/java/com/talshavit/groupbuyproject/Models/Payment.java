@@ -9,6 +9,7 @@ public class Payment {
 
     public Payment() {
     }
+
     public Payment(long cardNumber, int idNumber, int year, int month, int cvv) {
         this.cardNumber = cardNumber;
         this.idNumber = idNumber;

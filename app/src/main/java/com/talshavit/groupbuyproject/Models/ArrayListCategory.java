@@ -21,7 +21,6 @@ public class ArrayListCategory {
         arrayList.add(new CategoriesModel("מוצרי ניקיון וחד פעמי", "https://cdn.leonardo.ai/users/e1804e9b-fce8-4de9-8eb3-9d9df05fd280/generations/9dd868b2-7fd2-4b30-b270-a8779e04c185/Default_Cleaning_Products_And_Disposables_draw_background_for_2.jpg"));
         arrayList.add(new CategoriesModel("פארם ותינוקות", "https://cdn.leonardo.ai/users/e1804e9b-fce8-4de9-8eb3-9d9df05fd280/generations/04e0e7cf-d28c-44e2-8745-3d40a8864b41/Default_Shampoo_And_Baby_Products_draw_or_cartoon_background_1.jpg"));
 
-
         return arrayList;
     }
 }

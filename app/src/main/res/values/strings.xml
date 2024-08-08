@@ -1,10 +1,26 @@
 <resources>
     <string name="app_name">GroupBuyProject</string>
     <string name="addItem">הוספה</string>
+    <string name="updateItem">עדכון</string>
     <string name="confirm">אישור</string>
+    <string name="cancel">ביטול</string>
     <string name="unit">יח\'</string>
     <string name="unitFruit">ק"\ג</string>
     <string name="my_map_api_key">AIzaSyBF6AgBzDBDCb3EPrxuAWE6tFwn5N8Uwjs</string>
+    <string name="chooseCard">בחר כרטיס אשראי</string>
+    <string name="zeroPoints">יש ברשותך 0 נקודות</string>
+    <string name="cardNumberError">מספר כרטיס חייב להכיל 16 ספרות</string>
+    <string name="idNumberError">מספר תעודת זהות חייב להיות 9 ספרות</string>
+    <string name="cvvNumberError">חייב להיות 3 ספרות</string>
+    <string name="invalidMonth">חודש לא תקין</string>
+    <string name="mustPassword">חובה למלא סיסמא!</string>
+    <string name="mustEmail">חובה למלא מייל!</string>
+    <string name="mustName">חובה למלא שם!</string>
+    <string name="wrongMailPass">מייל או סיסמא שגויים!</string>
+    <string name="invalidEmail">כתובת המייל לא בפורמט תקין!</string>
+    <string name="limitPassword">סיסמא חייבת להכיל לפחות 6 תווים!</string>
+    <string name="notMatchPasswords">סיסמאות לא זהות!</string>
+    <string name="replaceItemsTxt">האם תרצה להחליף למוצר זול יותר?</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

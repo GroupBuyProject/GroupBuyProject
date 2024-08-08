@@ -25,9 +25,7 @@ import java.util.Optional;
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryViewHolder> {
 
     private ArrayList<Order> orders;
-
     private FragmentManager fragmentManager;
-
 
     public HistoryAdapter() {
     }
@@ -43,7 +41,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryViewHolder> {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_order, parent, false);
         return new HistoryViewHolder(view);
     }
-
 
     @Override
     public void onBindViewHolder(@NonNull HistoryViewHolder holder, int position) {
@@ -93,7 +90,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryViewHolder> {
             }
         }
     }
-
 
     private void syncCartItemsWithGlobalItems(){
         for (int i = 0; i < GlobalResources.cart.items.size(); i++) {

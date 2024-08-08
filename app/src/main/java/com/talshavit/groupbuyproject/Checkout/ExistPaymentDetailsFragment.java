@@ -1,4 +1,4 @@
-package com.talshavit.groupbuyproject;
+package com.talshavit.groupbuyproject.Checkout;
 
 import android.os.Bundle;
 
@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -26,16 +25,17 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.talshavit.groupbuyproject.Checkout.BasePaymentFragment;
 import com.talshavit.groupbuyproject.Fragments.AcceptedPayment;
 import com.talshavit.groupbuyproject.General.Constants;
 import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.Helpers.CreditCardAdapter;
 import com.talshavit.groupbuyproject.Helpers.ItemsAdapterView;
+import com.talshavit.groupbuyproject.MainActivity;
 import com.talshavit.groupbuyproject.Models.Cart;
 import com.talshavit.groupbuyproject.Models.Item;
 import com.talshavit.groupbuyproject.Models.Order;
 import com.talshavit.groupbuyproject.Models.Payment;
+import com.talshavit.groupbuyproject.R;
 
 import java.util.List;
 import java.util.Properties;
@@ -61,7 +61,6 @@ public class ExistPaymentDetailsFragment extends Fragment {
     private boolean isUsedPoint = false;
     private DatabaseReference userReference;
     private MainActivity mainActivity;
-
     private Long newOrderId;
 
     public ExistPaymentDetailsFragment(double price) {
@@ -121,9 +120,9 @@ public class ExistPaymentDetailsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         builder.setView(dialogView)
-                .setTitle("בחר כרטיס אשראי")
-                .setNegativeButton("ביטול", (dialog, which) -> dialog.dismiss())
-                .setPositiveButton("אישור", (dialog, which) -> {
+                .setTitle(R.string.chooseCard)
+                .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
+                .setPositiveButton(R.string.confirm, (dialog, which) -> {
                     if (selectedCard != null) {
                         updateSelectedCardUI(selectedCard);
                     }
@@ -149,7 +148,6 @@ public class ExistPaymentDetailsFragment extends Fragment {
             chooseCardTXT.setVisibility(View.INVISIBLE);
             selectCardLayout.setVisibility(View.INVISIBLE);
         }
-
     }
 
     private void initSelectCardPosition() {
@@ -175,11 +173,10 @@ public class ExistPaymentDetailsFragment extends Fragment {
 
     private void setPointsQuestion() {
         double virtualCurrencies = GlobalResources.user.getVirtualCurrencies();
-        String formattedValue = String.format("%.2f", virtualCurrencies);
         if (GlobalResources.user.getVirtualCurrencies() > 0.0) {
-            points_question.setText("יש ברשותך " + formattedValue + " נקודות. " + "האם תרצה לממש אותן?");
+            GlobalResources.setPointsQuestionTxt(points_question, virtualCurrencies);
         } else {
-            points_question.setText("יש ברשותך 0 נקודות");
+            points_question.setText(R.string.zeroPoints);
             btnPoints.setVisibility(View.INVISIBLE);
         }
     }
@@ -198,16 +195,15 @@ public class ExistPaymentDetailsFragment extends Fragment {
                 if (price < GlobalResources.user.getVirtualCurrencies()) {
                     virtualCurrencies = GlobalResources.user.getVirtualCurrencies() - price;
                     price = 0.0;
-                    String formattedValue = String.format("%.2f", virtualCurrencies);
                     totalPriceCheckout.setText("₪ " + 0.0);
-                    points_question.setText("יש ברשותך " + formattedValue + " נקודות. " + "האם תרצה לממש אותן?");
+                    GlobalResources.setPointsQuestionTxt(points_question, virtualCurrencies);
                     btnPoints.setVisibility(View.VISIBLE);
                 } else {
                     virtualCurrencies = 0.0;
                     price = price - GlobalResources.user.getVirtualCurrencies();
                     String currentPrice = String.format("%.2f", price);
                     totalPriceCheckout.setText("₪ " + currentPrice);
-                    points_question.setText("יש ברשותך 0 נקודות");
+                    points_question.setText(R.string.zeroPoints);
                 }
                 btnCancelPoints.setVisibility(View.VISIBLE);
                 btnPoints.setVisibility(View.GONE);
@@ -224,8 +220,7 @@ public class ExistPaymentDetailsFragment extends Fragment {
                 String currentPrice = String.format("%.2f", price);
                 totalPriceCheckout.setText("₪ " + currentPrice);
                 double virtualCurrencies = GlobalResources.user.getVirtualCurrencies();
-                String formattedValue = String.format("%.2f", virtualCurrencies);
-                points_question.setText("יש ברשותך " + formattedValue + " נקודות. " + "האם תרצה לממש אותן?");
+                GlobalResources.setPointsQuestionTxt(points_question, virtualCurrencies);
                 btnPoints.setVisibility(View.VISIBLE);
                 btnCancelPoints.setVisibility(View.GONE);
             }
@@ -311,8 +306,6 @@ public class ExistPaymentDetailsFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                } else {
-                    Toast.makeText(view.getContext(), "Failed to save order: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });

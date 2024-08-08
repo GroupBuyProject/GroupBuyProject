@@ -81,11 +81,11 @@ public class User {
         });
     }
 
-    public void addPayment(Payment payment){
+    public void addPayment(Payment payment) {
         payments.add(payment);
     }
 
-    public void addVirtualCurrencies(double virtualCurrencies){
+    public void addVirtualCurrencies(double virtualCurrencies) {
         this.virtualCurrencies += virtualCurrencies;
     }
 }

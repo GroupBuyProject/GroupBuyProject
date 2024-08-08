@@ -1,4 +1,4 @@
-package com.talshavit.groupbuyproject;
+package com.talshavit.groupbuyproject.Checkout;
 
 import android.os.Bundle;
 
@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -35,10 +34,12 @@ import com.talshavit.groupbuyproject.Fragments.AcceptedPayment;
 import com.talshavit.groupbuyproject.General.Constants;
 import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.Helpers.ItemsAdapterView;
+import com.talshavit.groupbuyproject.MainActivity;
 import com.talshavit.groupbuyproject.Models.Cart;
 import com.talshavit.groupbuyproject.Models.Item;
 import com.talshavit.groupbuyproject.Models.Order;
 import com.talshavit.groupbuyproject.Models.Payment;
+import com.talshavit.groupbuyproject.R;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -131,11 +132,10 @@ public class NewPaymentDetailsFragment extends Fragment {
 
     private void setPointsQuestion() {
         double virtualCurrencies = GlobalResources.user.getVirtualCurrencies();
-        String formattedValue = String.format("%.2f", virtualCurrencies);
         if (GlobalResources.user.getVirtualCurrencies() > 0.0) {
-            points_question.setText("יש ברשותך " + formattedValue + " נקודות. " + "האם תרצה לממש אותן?");
+            GlobalResources.setPointsQuestionTxt(points_question,virtualCurrencies);
         } else {
-            points_question.setText("יש ברשותך 0 נקודות");
+            points_question.setText(R.string.zeroPoints);
             btnPoints.setVisibility(View.INVISIBLE);
         }
     }
@@ -154,16 +154,15 @@ public class NewPaymentDetailsFragment extends Fragment {
                 if (price < GlobalResources.user.getVirtualCurrencies()) {
                     virtualCurrencies = GlobalResources.user.getVirtualCurrencies() - price;
                     price = 0.0;
-                    String formattedValue = String.format("%.2f", virtualCurrencies);
                     totalPriceCheckout.setText("₪ " + 0.0);
-                    points_question.setText("יש ברשותך " + formattedValue + " נקודות. " + "האם תרצה לממש אותן?");
+                    GlobalResources.setPointsQuestionTxt(points_question, virtualCurrencies);
                     btnPoints.setVisibility(View.VISIBLE);
                 } else {
                     virtualCurrencies = 0.0;
                     price = price - GlobalResources.user.getVirtualCurrencies();
                     String currentPrice = String.format("%.2f", price);
                     totalPriceCheckout.setText("₪ " + currentPrice);
-                    points_question.setText("יש ברשותך 0 נקודות");
+                    points_question.setText(R.string.zeroPoints);
                 }
                 btnCancelPoints.setVisibility(View.VISIBLE);
                 btnPoints.setVisibility(View.GONE);
@@ -180,8 +179,7 @@ public class NewPaymentDetailsFragment extends Fragment {
                 String currentPrice = String.format("%.2f", price);
                 totalPriceCheckout.setText("₪ " + currentPrice);
                 double virtualCurrencies = GlobalResources.user.getVirtualCurrencies();
-                String formattedValue = String.format("%.2f", virtualCurrencies);
-                points_question.setText("יש ברשותך " + formattedValue + " נקודות. " + "האם תרצה לממש אותן?");
+                GlobalResources.setPointsQuestionTxt(points_question, virtualCurrencies);
                 btnPoints.setVisibility(View.VISIBLE);
                 btnCancelPoints.setVisibility(View.GONE);
             }
@@ -229,7 +227,7 @@ public class NewPaymentDetailsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 chosenYear = yearsArray[i];
-                //cvv_explain_button.setVisibility(View.INVISIBLE);
+                cvv_explanation.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -239,7 +237,7 @@ public class NewPaymentDetailsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 chosenMonth = monthsArray[i];
-                //cvv_explain_button.setVisibility(View.INVISIBLE);
+                cvv_explanation.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -365,19 +363,19 @@ public class NewPaymentDetailsFragment extends Fragment {
 
         if (GlobalResources.selectedCardPosition == -1) {
             if (isCardNumberValid()) {
-                etCardNumber.setError("מספר כרטיס חייב להכיל 16 ספרות");
+                etCardNumber.setError(getString(R.string.cardNumberError));
                 isValid = false;
             }
             if (!isIDNumberValid()) {
-                etID.setError("מספר תעודת זהות חייב להיות 9 ספרות");
+                etID.setError(getString(R.string.idNumberError));
                 isValid = false;
             }
             if (!isCVVValid()) {
-                etCVV.setError("חייב להיות 3 ספרות");
+                etCVV.setError(getString(R.string.cvvNumberError));
                 isValid = false;
             }
             if (isExpired(currentMonth, currentYear)) {
-                month.setError("חודש לא תקין");
+                month.setError(getString(R.string.invalidMonth));
                 isValid = false;
             }
         }
@@ -385,7 +383,7 @@ public class NewPaymentDetailsFragment extends Fragment {
     }
 
     private boolean isCardNumberValid() {
-        return etCardNumber.getText().length() < Constants.CREDIT_CARD_NUMBER;
+        return etCardNumber.getText().length() < Constants.CREDIT_WITH_SPACE_NUMBER;
     }
 
     private boolean isIDNumberValid() {

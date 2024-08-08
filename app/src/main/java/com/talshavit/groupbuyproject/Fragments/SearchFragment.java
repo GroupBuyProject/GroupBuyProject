@@ -26,7 +26,6 @@ public class SearchFragment extends Fragment {
     private RecyclerView recyclerViewItem;
 
     public SearchFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -34,29 +33,13 @@ public class SearchFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    private void initViews(View view) {
-        itemsAdapterView = new ItemsAdapterView(getContext(), GlobalResources.items, "", -1);
-        editTxtSearchByItem = view.findViewById(R.id.editTxtSearchByItem);
-        editTxtSearchByCompany = view.findViewById(R.id.editTxtSearchByCompany);
-        recyclerViewItem = view.findViewById(R.id.recyclerView);
+    private void initViews() {
         initAdapter(recyclerViewItem, itemsAdapterView);
-        editTxtSearchByItem.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+        onSearchByItem();
+        onSearchByCompany();
+    }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String textItem = s.toString();
-                String textCompany = editTxtSearchByCompany.getText().toString();
-                itemsAdapterView.filterByItemAndCompany(textItem, textCompany);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-
+    private void onSearchByCompany() {
         editTxtSearchByCompany.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -75,6 +58,26 @@ public class SearchFragment extends Fragment {
         });
     }
 
+    private void onSearchByItem() {
+        editTxtSearchByItem.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String textItem = s.toString();
+                String textCompany = editTxtSearchByCompany.getText().toString();
+                itemsAdapterView.filterByItemAndCompany(textItem, textCompany);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -85,7 +88,15 @@ public class SearchFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initViews(view);
+        findViews(view);
+        initViews();
+    }
+
+    private void findViews(View view) {
+        itemsAdapterView = new ItemsAdapterView(getContext(), GlobalResources.items, "", -1);
+        editTxtSearchByItem = view.findViewById(R.id.editTxtSearchByItem);
+        editTxtSearchByCompany = view.findViewById(R.id.editTxtSearchByCompany);
+        recyclerViewItem = view.findViewById(R.id.recyclerView);
     }
 
     private void initAdapter(RecyclerView recyclerView, RecyclerView.Adapter myAdapter) {

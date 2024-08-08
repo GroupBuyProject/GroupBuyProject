@@ -36,14 +36,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
-
-    private ArrayList<Item> allItems;
-    private ArrayList<Item> allItemsFull;
-
-    private ArrayList<Item> filteredItems;
+    private ArrayList<Item> allItems, allItemsFull, filteredItems;
     private Context context;
     private String type;
-    // private boolean isFruitAndVeg = false;
     private LinearLayout lastVisibleControls = null, linearLayout;
     private ImageView imageView;
     private TextView textView, red_text, count_text, dont_show_text;
@@ -56,13 +51,11 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
     private Item itemToRemove, currentItem;
     private TextInputEditText inputComments;
     private MaterialTextView remainingCharacters;
-
     private AlertDialog.Builder builder;
     private View dialogView;
     private OnItemChangeListener itemChangeListener;
     private OnReplaceButton onReplaceButton;
     private Double totalPricePerOrder;
-    ;
 
     public ItemsAdapterView() {
     }
@@ -96,7 +89,6 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolderItems holder, int position) {
-        //isFruitAndVeg = checkCategory(holder, position);
         holder.itemName.setText(allItems.get(position).getName());
         holder.company.setText(allItems.get(position).getCompany());
         holder.weight.setText(allItems.get(position).getWeight());
@@ -161,11 +153,11 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
 
     private void setBuilder() {
         builder.setTitle("")
-                .setPositiveButton("אישור", (dialog, id) -> {
+                .setPositiveButton(R.string.confirm, (dialog, id) -> {
                     String comments = inputComments.getText().toString();
                     currentItem.setComment(comments);
                 })
-                .setNegativeButton("ביטול", (dialog, id) -> dialog.cancel());
+                .setNegativeButton(R.string.cancel, (dialog, id) -> dialog.cancel());
     }
 
     private void commentTextWatcher() {
@@ -231,7 +223,7 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
 
     private void onAddItemButton(MyViewHolderItems holder, int position) {
         if (type.equals("CartFragment")) {
-            holder.addItemButton.setText("עדכון");
+            holder.addItemButton.setText(R.string.updateItem);
         }
         holder.addItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -249,7 +241,7 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
                                     GlobalResources.items.get(position).setCount(0.0);
                                 else
                                     GlobalResources.items.get(position).setCount(0);
-                                holder.addItemButton.setText("הוספה");
+                                holder.addItemButton.setText(R.string.addItem);
                             }
                             if (type.equals("CartFragment")) {
                                 itemToRemove = GlobalResources.cart.getItems().get(position);
@@ -325,7 +317,7 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
         if (count > 0.0) {
             red_text.setText("אתה מתקרב לסכום המוגבל");
             String formattedCount = String.format("%.2f", count);
-            count_text.setText("נותר לך עוד " + formattedCount + " ש''ח");
+            count_text.setText("נותר לך עוד " + formattedCount + "₪ ");
         } else {
             dont_show_text.setPaintFlags(dont_show_text.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             dont_show_text.setVisibility(View.VISIBLE);
@@ -387,7 +379,7 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
                 int index = GlobalResources.items.indexOf(allItems.get(position));
                 GlobalResources.items.get(index).setCount(countValue);
             }
-            holder.addItemButton.setText("עדכון");
+            holder.addItemButton.setText(R.string.updateItem);
             dialogCompletionOrder(allItems.get(position));
             animateToCart(holder.img);
         }
@@ -411,7 +403,7 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
                 int index = GlobalResources.items.indexOf(allItems.get(position));
                 GlobalResources.items.get(index).setCount(countValue);
             }
-            holder.addItemButton.setText("עדכון");
+            holder.addItemButton.setText(R.string.updateItem);
             dialogCompletionOrder(allItems.get(position));
             animateToCart(holder.img);
         }
@@ -561,7 +553,6 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
         if (isFruitAndVeg) {
             if (currentCount != 0.0) {
                 currentCount -= 0.5;
-
             }
             countTextView.setText(String.valueOf(currentCount));
         } else {
@@ -597,7 +588,6 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
                 item.setCount(currentCount);
             }
         });
-
     }
 
     private void onMinusButton(AppCompatImageButton minusButton, AppCompatTextView
@@ -640,7 +630,6 @@ public class ItemsAdapterView extends RecyclerView.Adapter<MyViewHolderItems> {
             }
         });
     }
-
 
     private void onPlusButton(AppCompatImageButton plusButton, AppCompatTextView countTextView,
                               boolean isFruitAndVeg) {

@@ -11,8 +11,6 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.talshavit.groupbuyproject.General.GlobalResources;
 
 public class LoadFromMongoDB extends AppCompatActivity {
-
-
     private LottieAnimationView lottieAnimationView;
     private boolean dataLoaded = false;
     private boolean animationFinished = false;
@@ -22,6 +20,11 @@ public class LoadFromMongoDB extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_load_from_mongo_db);
         lottieAnimationView = findViewById(R.id.lottieAnimationView);
+        LottieFunc();
+        loadMongoData();
+    }
+
+    private void LottieFunc() {
         lottieAnimationView.playAnimation();
 
         lottieAnimationView.addAnimatorListener(new Animator.AnimatorListener() {
@@ -45,8 +48,6 @@ public class LoadFromMongoDB extends AppCompatActivity {
                 checkIfFinished();
             }
         });
-
-        loadMongoData();
     }
 
     private void loadMongoData() {

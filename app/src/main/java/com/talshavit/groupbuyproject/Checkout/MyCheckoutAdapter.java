@@ -5,10 +5,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.talshavit.groupbuyproject.ExistPaymentDetailsFragment;
-import com.talshavit.groupbuyproject.Fragments.CheckoutFragment;
-import com.talshavit.groupbuyproject.NewPaymentDetailsFragment;
-
 public class MyCheckoutAdapter extends FragmentStatePagerAdapter {
     private final int numOfTabes;
     private double price;

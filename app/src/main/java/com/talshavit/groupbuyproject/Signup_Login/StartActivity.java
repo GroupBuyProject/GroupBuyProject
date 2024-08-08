@@ -13,7 +13,6 @@ public class StartActivity extends AppCompatActivity {
     TabLayout tableLayout;
     ViewPager viewPager;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

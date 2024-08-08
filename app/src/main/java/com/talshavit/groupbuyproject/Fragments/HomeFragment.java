@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.talshavit.groupbuyproject.General.GlobalResources;
 import com.talshavit.groupbuyproject.MainActivity;
 import com.talshavit.groupbuyproject.Models.Category;
@@ -24,16 +23,9 @@ import com.talshavit.groupbuyproject.Models.CategoriesModel;
 
 import java.util.ArrayList;
 
-
 public class HomeFragment extends Fragment implements AdapterView.OnItemClickListener {
 
-    private MeowBottomNavigation bottomNavigation;
-
     public HomeFragment() {
-    }
-
-    public HomeFragment(MeowBottomNavigation bottomNavigation) {
-        this.bottomNavigation = bottomNavigation;
     }
 
     @Override
@@ -49,6 +41,10 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         for (int i = 0; i < GlobalResources.allItemsByCategories.length; i++) {
             GlobalResources.allItemsByCategories[i] = new ArrayList<>();
         }
+        initAllItemsByCategory(newItem);
+    }
+
+    private void initAllItemsByCategory(ArrayList<Item> newItem) {
         for (int i = 0; i < newItem.size(); i++) {
             if (newItem.get(i).getCategory().equals(Category.FruitsAndVegetables)) {
                 GlobalResources.allItemsByCategories[0].add(newItem.get(i));
@@ -110,7 +106,6 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 GlobalResources.replaceFragment(requireActivity().getSupportFragmentManager(), new AllItemsFragment(GlobalResources.allItemsByCategories[i], listCategory.get(i).getCategoryName(), listCategory.get(i).getImg(), i));
                 ((MainActivity) view.getContext()).selectHomeTab();
-                //bottomNavigation.show(-1, true);
             }
         });
     }

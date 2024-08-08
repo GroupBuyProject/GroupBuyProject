@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,8 +51,7 @@ public class CartFragment extends Fragment implements OnItemChangeListener, OnRe
     private GridLayout.LayoutParams params;
     private MaterialButton confirm_button;
     private ArrayList<Item> itemsWithSimilar;
-    private ArrayList<HashMap<Item, Item>> similarItemsToShow;
-    private ArrayList<HashMap<Item, Item>> itemsToReplace;
+    private ArrayList<HashMap<Item, Item>> similarItemsToShow, itemsToReplace;
     private int counterFotItems;
 
     public CartFragment() {
@@ -114,21 +112,18 @@ public class CartFragment extends Fragment implements OnItemChangeListener, OnRe
         Dialog dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_pop_up_completion_order);
+
         itemsWithSimilar = new ArrayList<>();
 
         findViewsCompletion(dialog);
-
         checkItemsWithSimilar();
         checkMaxDifferencePrice();
-
         addItemsToGridLayout(gridLayout, similarItemsToShow);
-
         onConfirmButton(dialog);
         onExitButton(dialog);
 
         dialog.setCancelable(false);
         dialog.show();
-
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_background);
     }
 
@@ -166,20 +161,13 @@ public class CartFragment extends Fragment implements OnItemChangeListener, OnRe
             Double maxDifference = 0.0;
             Item maxItem = null;
             Item mainItem = itemsWithSimilar.get(i);
-            Double mainPrice;
-            if (Double.parseDouble(mainItem.getSale()) > 0.0)
-                mainPrice = Double.parseDouble(mainItem.getSale());
-            else
-                mainPrice = Double.parseDouble(mainItem.getPrice());
+            Double mainPrice = saleOrPrice(mainItem, mainItem);
+
             for (int j = 0; j < itemsWithSimilar.get(i).getSimilarItems().size() - 1; j++) {
                 int ID = itemsWithSimilar.get(i).getSimilarItems().get(j);
                 for (Item item : GlobalResources.items) {
                     if (item.getId().equals(String.valueOf(ID))) {
-                        Double similarItemPrice;
-                        if (Double.parseDouble(item.getSale()) > 0.0)
-                            similarItemPrice = Double.parseDouble(item.getSale());
-                        else
-                            similarItemPrice = Double.parseDouble(item.getPrice());
+                        Double similarItemPrice = saleOrPrice(item, mainItem);
                         if (mainPrice - similarItemPrice > maxDifference) {
                             maxDifference = mainPrice - similarItemPrice;
                             maxItem = item;
@@ -196,6 +184,15 @@ public class CartFragment extends Fragment implements OnItemChangeListener, OnRe
         }
     }
 
+    private Double saleOrPrice(Item item, Item mainItem) {
+        Double price;
+        if (Double.parseDouble(item.getSale()) > 0.0)
+            price = Double.parseDouble(item.getSale()) * mainItem.getCount();
+        else
+            price = Double.parseDouble(item.getPrice()) * mainItem.getCount();
+        return price;
+    }
+
     private void checkItemsWithSimilar() {
         itemsWithSimilar = new ArrayList<>();
         for (int i = 0; i < cart.items.size(); i++) {
@@ -208,21 +205,15 @@ public class CartFragment extends Fragment implements OnItemChangeListener, OnRe
     private void addItemsToGridLayout(GridLayout gridLayout, ArrayList<HashMap<Item, Item>> similarItems) {
         for (int i = 0; i < similarItems.size(); i++) {
             View itemView = LayoutInflater.from(getContext()).inflate(R.layout.grid_item_replace, null);
-
             findViewsGridAdapter(itemView);
 
             Item mainItem = similarItems.get(i).entrySet().iterator().next().getKey();
             Item similarItem = similarItems.get(i).entrySet().iterator().next().getValue();
             double mainPrice, similarPrice, price;
-            if (Double.parseDouble(mainItem.getSale()) > 0.0)
-                mainPrice = Double.parseDouble(mainItem.getSale()) * mainItem.getCount();
-            else
-                mainPrice = Double.parseDouble(mainItem.getPrice()) * mainItem.getCount();
-            if (Double.parseDouble(similarItem.getSale()) > 0.0)
-                similarPrice = Double.parseDouble(similarItem.getSale()) * mainItem.getCount();
-            else
-                similarPrice = Double.parseDouble(similarItem.getPrice()) * mainItem.getCount();
+            mainPrice = saleOrPrice(mainItem, mainItem);
+            similarPrice = saleOrPrice(similarItem, mainItem);
             price = mainPrice - similarPrice;
+
             String formattedValue = String.format("%.2f", price);
             textView.setText("החלף " + mainItem.getName() + "\n" + "ב" + similarItem.getName() + " ותחסוך " + formattedValue + " ₪");
             Glide.with(getContext()).load(similarItem.getImg()).into(imageView);
@@ -243,24 +234,32 @@ public class CartFragment extends Fragment implements OnItemChangeListener, OnRe
                 isChecked = !isChecked;
                 if (!isChecked) {
                     check.setVisibility(View.INVISIBLE);
-                    Iterator<HashMap<Item, Item>> iterator = itemsToReplace.iterator();
-                    while (iterator.hasNext()) {
-                        HashMap<Item, Item> map = iterator.next();
-                        if (map.containsKey(mainItem)) {
-                            iterator.remove();
-                            break;
-                        }
-                    }
+                    removeFromArr(mainItem);
                     counterFotItems++;
                 } else {
                     check.setVisibility(View.VISIBLE);
-                    HashMap<Item, Item> itemHashMap = new HashMap<>();
-                    itemHashMap.put(mainItem, similarItem);
-                    itemsToReplace.add(itemHashMap);
+                    addToArr(mainItem, similarItem);
                     counterFotItems--;
                 }
             }
         });
+    }
+
+    private void addToArr(Item mainItem, Item similarItem) {
+        HashMap<Item, Item> itemHashMap = new HashMap<>();
+        itemHashMap.put(mainItem, similarItem);
+        itemsToReplace.add(itemHashMap);
+    }
+
+    private void removeFromArr(Item mainItem) {
+        Iterator<HashMap<Item, Item>> iterator = itemsToReplace.iterator();
+        while (iterator.hasNext()) {
+            HashMap<Item, Item> map = iterator.next();
+            if (map.containsKey(mainItem)) {
+                iterator.remove();
+                break;
+            }
+        }
     }
 
     private void updateReplaceButtonVisibility() {
@@ -286,40 +285,12 @@ public class CartFragment extends Fragment implements OnItemChangeListener, OnRe
         gridLayout.addView(itemView, params);
     }
 
-//    private void addItemsToGridLayout(GridLayout gridLayout, ArrayList<Item> relatedItems) {
-//        for (int i = 0; i < relatedItems.size(); i++) {
-//            View itemView = LayoutInflater.from(context).inflate(R.layout.grid_item_completion, null);
-//
-//            findViewsGridAdapter(itemView);
-//
-//            Item item = relatedItems.get(i);
-//            textView.setText(item.getName());
-//            Glide.with(context).load(item.getImg()).into(imageView);
-//
-//            setCountText(item);
-//            initGridAdapter(itemView, gridLayout, i);
-//
-//            onImageClick(imageView, linearLayout, countInDialog);
-//            onMinusClick2(countInDialog, item.getCategory().equals(Category.FruitsAndVegetables), item);
-//            onPlusClick2(countInDialog, item.getCategory().equals(Category.FruitsAndVegetables), item);
-//        }
-//    }
-
-//    private void findViewsGridAdapter(View itemView) {
-//        imageView = itemView.findViewById(R.id.item_image);
-//        textView = itemView.findViewById(R.id.item_name);
-//        linearLayout = itemView.findViewById(R.id.add_item_controls);
-//        minus = itemView.findViewById(R.id.minus);
-//        plus = itemView.findViewById(R.id.plus);
-//        countInDialog = itemView.findViewById(R.id.count);
-//    }
-
     private void findViewsCompletion(Dialog dialog) {
         text = dialog.findViewById(R.id.text);
         gridLayout = dialog.findViewById(R.id.gridLayout);
         confirm_button = dialog.findViewById(R.id.confirm_button);
         exit_button = dialog.findViewById(R.id.exit_button);
-        text.setText("האם תרצה להחליף למוצר זול יותר?");
+        text.setText(R.string.replaceItemsTxt);
     }
 
     private void findViews(View view) {

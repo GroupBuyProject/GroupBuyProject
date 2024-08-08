@@ -36,26 +36,21 @@ public class LoginTabFragment extends Fragment {
 
     private EditText emailLogin, passwordLogin;
     private androidx.appcompat.widget.AppCompatButton loginButton;
-
     private FirebaseAuth firebaseAuth;
     private String userID;
     private DatabaseReference databaseReference;
 
     public LoginTabFragment() {
-        // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_login_tab, container, false);
     }
 
@@ -64,7 +59,6 @@ public class LoginTabFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         firebaseAuth = FirebaseAuth.getInstance();
-
         findViews(view);
         initViews();
 
@@ -79,10 +73,10 @@ public class LoginTabFragment extends Fragment {
                 String password = passwordLogin.getText().toString().trim();
 
                 if (email.isEmpty()) {
-                    emailLogin.setError("חובה למלא מייל!");
+                    emailLogin.setError(getString(R.string.mustEmail));
                 }
                 if (password.isEmpty()) {
-                    passwordLogin.setError("חובה למלא סיסמא!");
+                    passwordLogin.setError(getString(R.string.mustPassword));
                 } else if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches() && !password.isEmpty()) {
                     firebaseAuth.signInWithEmailAndPassword(email, password)
                             .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
@@ -93,12 +87,12 @@ public class LoginTabFragment extends Fragment {
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    emailLogin.setError("מייל או סיסמא שגויים!");
-                                    passwordLogin.setError("מייל או סיסמא שגויים!");
+                                    emailLogin.setError(getString(R.string.wrongMailPass));
+                                    passwordLogin.setError(getString(R.string.wrongMailPass));
                                 }
                             });
                 } else {
-                    emailLogin.setError("Please enter valid email");
+                    emailLogin.setError(getString(R.string.invalidEmail));
                 }
             }
         });

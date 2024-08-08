@@ -12,26 +12,43 @@
         android:background="@color/darkGreen"
         android:scaleType="centerCrop" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/title"
+    <FrameLayout
+        android:id="@+id/frame_layout"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:autoSizeMaxTextSize="32sp"
-        android:autoSizeTextType="uniform"
-        android:background="#59FFFFFF"
-        android:fontFamily="@font/rubik"
-        android:gravity="center"
-        android:maxLines="1"
-        android:paddingTop="20dp"
-        android:text="סטטוס הזמנה"
-        android:textColor="@color/black"
-        android:textStyle="bold" />
+        android:background="@color/lightGreen">
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="end"
+            android:layout_margin="8dp"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/arrow_small_right" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:autoSizeMaxTextSize="32sp"
+            android:autoSizeTextType="uniform"
+            android:fontFamily="@font/rubik"
+            android:gravity="center"
+            android:maxLines="1"
+            android:paddingTop="20dp"
+            android:text="סטטוס הזמנה"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+    </FrameLayout>
 
     <TextView
         android:id="@+id/orderNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/title"
+        android:layout_below="@id/frame_layout"
         android:layout_marginTop="16dp"
         android:layout_centerHorizontal="true"
         android:text="מספר הזמנה: 123456"
